@@ -2,21 +2,27 @@ package com.example.hitsmobile
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ClipData.Item
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.menu.MenuView.ItemView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class PhotoActivity : AppCompatActivity() {
@@ -25,9 +31,14 @@ class PhotoActivity : AppCompatActivity() {
     private lateinit var photoView:ImageView
     private lateinit var permissionLauncher: ActivityResultLauncher<String>
 
-    private lateinit var imgGallery:ImageView
+    private lateinit var imgGallery: MenuItem
 
-    @SuppressLint("MissingInflatedId")
+    private lateinit var bottomNavigationView:BottomNavigationView
+
+
+    private lateinit var textArr: ArrayList<String>
+
+    @SuppressLint("MissingInflatedId", "WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -35,6 +46,20 @@ class PhotoActivity : AppCompatActivity() {
         checkPermission()
 
         setContentView(R.layout.activity_photo)
+
+
+        bottomNavigationView.background = null
+        bottomNavigationView.menu.getItem(2).isEnabled = false
+
+
+
+
+        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.adapter = CustomRecyclerAdapter(fillList())
+
+
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -42,18 +67,32 @@ class PhotoActivity : AppCompatActivity() {
         }
 
         photoView = findViewById(R.id.photo_container)
-        cameraOpenId = findViewById(R.id.camera)
+        cameraOpenId = findViewById(R.id.it_camera)
 
-        imgGallery = findViewById(R.id.imageView1)
+        imgGallery = findViewById(R.id.it_gallery)
 
         cameraOpenId.setOnClickListener(){
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             startActivityForResult(cameraIntent, pic_id)
         }
 
-        imgGallery.setOnClickListener(){
-            pickImageFromGallery()
+        fun onOptionsItemSelected(item: MenuItem?): Boolean {
+            when (item!!.itemId) {
+                R.id.it_gallery -> pickImageFromGallery()
+            }
+
+            return true
         }
+
+        /*imgGallery.setOnMenuItemClickListener(){
+            pickImageFromGallery()
+        }*/
+    }
+
+    private fun fillList(): List<String> {
+        val data = mutableListOf<String>()
+        (0..30).forEach { i -> data.add("$i element") }
+        return data
     }
 
     private fun checkPermission(){

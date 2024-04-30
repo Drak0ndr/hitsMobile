@@ -11,10 +11,10 @@
         android:right="3dp"
         android:left="3dp">
         <shape android:shape="oval">
-            <solid android:color="#282f32"/>
+
         </shape>
     </item>
-    <item android:drawable="@drawable/ic_dashboard_black_24dp"
+    <item android:drawable="@drawable/baseline_add_a_photo_24"
         android:top = "15dp" android:bottom="15dp"
         android:left = "15dp" android:right="15dp"/>
 </layer-list>
