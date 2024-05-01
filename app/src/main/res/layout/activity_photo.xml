@@ -12,12 +12,13 @@
         android:id="@+id/photoEditorView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="20dp"
         app:layout_constraintBottom_toTopOf="@+id/recyclerViewTools"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/white" />
+        android:background="@color/main_bg"
+        android:scaleType="centerInside"
+        android:src="@drawable/white_background"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

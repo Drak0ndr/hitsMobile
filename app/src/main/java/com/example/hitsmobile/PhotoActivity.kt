@@ -1,7 +1,12 @@
 package com.example.hitsmobile
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
+import android.view.View
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -11,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hitsmobile.tools.ToolsAdapter
 import com.example.hitsmobile.tools.ToolsAdapter.OnItemSelected
 import com.example.hitsmobile.tools.ToolsType
+import java.io.IOException
 
 
 /*class PhotoActivity : AppCompatActivity() {
@@ -131,8 +137,13 @@ import com.example.hitsmobile.tools.ToolsType
 
 class PhotoActivity: AppCompatActivity(), OnItemSelected {
 
-    private lateinit var rvTools: RecyclerView
+    private lateinit var rvTools: RecyclerView /*Скролл для алгоритмов*/
     private val toolsAdapter = ToolsAdapter(this)
+
+    private lateinit var galleryButton: ImageView /*Работа с камерой и галлереей*/
+    private lateinit var cameraButton :ImageView
+    private lateinit var img: ImageView
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -140,13 +151,9 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected {
 
         setContentView(R.layout.activity_photo)
 
-
-        initViews()
-
+        rvTools = findViewById(R.id.recyclerViewTools) /*Адаптер для алгоритмов*/
         rvTools.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvTools.adapter = toolsAdapter
-
-
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -154,12 +161,40 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected {
             insets
         }
 
+        cameraButton = findViewById(R.id.imgCamera) /*Работа с камерой*/
+        cameraButton.setOnClickListener(){
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(cameraIntent, CAMERA_REQUEST)
+        }
+
+        galleryButton = findViewById(R.id.imgGallery) /*Работа с галереей*/
+        galleryButton.setOnClickListener {
+            val photoPickerIntent = Intent(Intent.ACTION_PICK)
+            photoPickerIntent.setType("image/*")
+            startActivityForResult(photoPickerIntent, GALLERY_REQUEST)
+        }
+
     }
 
+    /*Загружаем фото из галереи*/
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        var bitmap: Bitmap? = null
+        img = findViewById(R.id.photoEditorView)
 
-    private fun initViews() {
-        rvTools = findViewById(R.id.recyclerViewTools)
+        when (requestCode) {
+            GALLERY_REQUEST -> if (resultCode == RESULT_OK) {
+                val selectedImage = data?.data
 
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImage)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+
+                img.setImageBitmap(bitmap)
+            }
+        }
     }
 
     override fun onToolSelected(toolType: ToolsType) {
@@ -175,6 +210,9 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected {
             ToolsType.MASKING-> {}
         }
     }
+
+    companion object{
+        private const val GALLERY_REQUEST = 1
+        private const val CAMERA_REQUEST = 2
+    }
 }
-
-
