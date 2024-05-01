@@ -1,31 +1,19 @@
 package com.example.hitsmobile
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.ClipData.Item
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
-import android.view.MenuItem
-import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.menu.MenuView.ItemView
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.example.hitsmobile.tools.ToolsAdapter
+import com.example.hitsmobile.tools.ToolsAdapter.OnItemSelected
+import com.example.hitsmobile.tools.ToolsType
 
-class PhotoActivity : AppCompatActivity() {
+
+/*class PhotoActivity : AppCompatActivity() {
 
     private lateinit var cameraOpenId:FloatingActionButton
     private lateinit var photoView:ImageView
@@ -139,4 +127,54 @@ class PhotoActivity : AppCompatActivity() {
         private const val pic_id = 123
         private const val PICK_IMAGE_REQUEST = 1
     }
+}*/
+
+class PhotoActivity: AppCompatActivity(), OnItemSelected {
+
+    private lateinit var rvTools: RecyclerView
+    private val toolsAdapter = ToolsAdapter(this)
+    @SuppressLint("MissingInflatedId")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+
+        setContentView(R.layout.activity_photo)
+
+
+        initViews()
+
+        rvTools.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rvTools.adapter = toolsAdapter
+
+
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
+    }
+
+
+    private fun initViews() {
+        rvTools = findViewById(R.id.recyclerViewTools)
+
+    }
+
+    override fun onToolSelected(toolType: ToolsType) {
+        when (toolType) {
+            ToolsType.ROTATE -> {}
+
+            ToolsType.RESIZE -> {}
+
+            ToolsType.FILTER -> {}
+
+            ToolsType.RETOUCH -> {}
+
+            ToolsType.MASKING-> {}
+        }
+    }
 }
+
+
