@@ -11,7 +11,7 @@
         android:id="@+id/imageView"
         android:layout_width="317dp"
         android:layout_height="334dp"
-        android:src="@android:mipmap/sym_def_app_icon"
+        android:src="@drawable/picture"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
