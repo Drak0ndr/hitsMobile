@@ -3,32 +3,35 @@ package com.example.hitsmobile
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
-import android.view.View
+import android.view.animation.AnticipateOvershootInterpolator
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.ChangeBounds
+import androidx.transition.TransitionManager
 import com.example.hitsmobile.tools.ToolsAdapter
 import com.example.hitsmobile.tools.ToolsAdapter.OnItemSelected
 import com.example.hitsmobile.tools.ToolsType
 import java.io.IOException
+import java.util.concurrent.Executors
+import com.example.hitsmobile.filters.FilterListener
+import com.example.hitsmobile.filters.FilterViewAdapter
+import com.example.hitsmobile.filters.PhotoFilter
 
 
 /*class PhotoActivity : AppCompatActivity() {
-
-    private lateinit var cameraOpenId:FloatingActionButton
-    private lateinit var photoView:ImageView
     private lateinit var permissionLauncher: ActivityResultLauncher<String>
-
-    private lateinit var imgGallery: MenuItem
-
-    private lateinit var bottomNavigationView:BottomNavigationView
-
 
     private lateinit var textArr: ArrayList<String>
 
@@ -41,18 +44,12 @@ import java.io.IOException
 
         setContentView(R.layout.activity_photo)
 
-
         bottomNavigationView.background = null
         bottomNavigationView.menu.getItem(2).isEnabled = false
-
-
-
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = CustomRecyclerAdapter(fillList())
-
-
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -81,12 +78,6 @@ import java.io.IOException
         /*imgGallery.setOnMenuItemClickListener(){
             pickImageFromGallery()
         }*/
-    }
-
-    private fun fillList(): List<String> {
-        val data = mutableListOf<String>()
-        (0..30).forEach { i -> data.add("$i element") }
-        return data
     }
 
     private fun checkPermission(){
@@ -135,14 +126,22 @@ import java.io.IOException
     }
 }*/
 
-class PhotoActivity: AppCompatActivity(), OnItemSelected {
-
-    private lateinit var rvTools: RecyclerView /*Скролл для алгоритмов*/
+class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
+    /*Скролл для алгоритмов*/
+    private lateinit var rvTools: RecyclerView
     private val toolsAdapter = ToolsAdapter(this)
 
-    private lateinit var galleryButton: ImageView /*Работа с камерой и галлереей*/
+    /*Работа с камерой и галереей*/
+    private lateinit var galleryButton: ImageView
     private lateinit var cameraButton :ImageView
     private lateinit var img: ImageView
+
+    /*Скролл для фильтров*/
+    private lateinit var rvFilters: RecyclerView
+    private val filterAdapter = FilterViewAdapter(this)
+    private lateinit var mainView: ConstraintLayout
+    private val mConstraintSet = ConstraintSet()
+    private var mIsFilterVisible = false
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -151,9 +150,40 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected {
 
         setContentView(R.layout.activity_photo)
 
-        rvTools = findViewById(R.id.recyclerViewTools) /*Адаптер для алгоритмов*/
+        /*Динамическая загрузка изображения*/
+        val imageView = findViewById<ImageView>(R.id.photoEditorView)
+        val executor = Executors.newSingleThreadExecutor()
+        val handler = Handler(Looper.getMainLooper())
+        var image: Bitmap? = null
+
+        executor.execute {
+            val imageURL =
+                "https://fydi.ru/wp-content/uploads/2021/08/koty-i-koshki-89.jpg"
+            try {
+                val `in` = java.net.URL(imageURL).openStream()
+                image = BitmapFactory.decodeStream(`in`)
+
+                handler.post {
+                    imageView.setImageBitmap(image)
+                }
+            }
+
+            catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        /*Адаптер для алгоритмов*/
+        rvTools = findViewById(R.id.recyclerViewTools)
         rvTools.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvTools.adapter = toolsAdapter
+
+        mainView = findViewById(R.id.main)
+
+        /*Адаптер для фильтров*/
+        rvFilters = findViewById(R.id.recyclerViewFilter)
+        rvFilters.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rvFilters.adapter = filterAdapter
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -161,13 +191,15 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected {
             insets
         }
 
-        cameraButton = findViewById(R.id.imgCamera) /*Работа с камерой*/
+        /*Работа с камерой*/
+        cameraButton = findViewById(R.id.imgCamera)
         cameraButton.setOnClickListener(){
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             startActivityForResult(cameraIntent, CAMERA_REQUEST)
         }
 
-        galleryButton = findViewById(R.id.imgGallery) /*Работа с галереей*/
+        /*Работа с галереей*/
+        galleryButton = findViewById(R.id.imgGallery)
         galleryButton.setOnClickListener {
             val photoPickerIntent = Intent(Intent.ACTION_PICK)
             photoPickerIntent.setType("image/*")
@@ -197,13 +229,56 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected {
         }
     }
 
+    override fun onFilterSelected(photoFilter: PhotoFilter) {
+
+    }
+
+    /*Отображаем блок с фильтрами*/
+    private fun showFilter(isVisible: Boolean) {
+        mIsFilterVisible = isVisible
+        mConstraintSet.clone(mainView)
+
+        val rvFilterId: Int = rvFilters.id
+
+        if (isVisible) {
+            mConstraintSet.clear(rvFilterId, ConstraintSet.START)
+            mConstraintSet.connect(
+                rvFilterId, ConstraintSet.START,
+                ConstraintSet.PARENT_ID, ConstraintSet.START
+            )
+
+            mConstraintSet.connect(
+                rvFilterId, ConstraintSet.END,
+                ConstraintSet.PARENT_ID, ConstraintSet.END
+            )
+
+        } else {
+            mConstraintSet.connect(
+                rvFilterId, ConstraintSet.START,
+                ConstraintSet.PARENT_ID, ConstraintSet.END
+            )
+
+            mConstraintSet.clear(rvFilterId, ConstraintSet.END)
+        }
+
+        val changeBounds = ChangeBounds()
+        changeBounds.duration = 300 /*Анимация*/
+        changeBounds.interpolator = AnticipateOvershootInterpolator(1.0f) /*Анимация*/
+        TransitionManager.beginDelayedTransition(mainView, changeBounds)
+
+        mConstraintSet.applyTo(mainView)
+    }
+
     override fun onToolSelected(toolType: ToolsType) {
         when (toolType) {
             ToolsType.ROTATE -> {}
 
             ToolsType.RESIZE -> {}
 
-            ToolsType.FILTER -> {}
+            /*Скролл для фильтров*/
+            ToolsType.FILTER -> {
+                showFilter(true)
+            }
 
             ToolsType.RETOUCH -> {}
 

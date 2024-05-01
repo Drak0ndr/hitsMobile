@@ -26,10 +26,11 @@
         android:gravity="center"
         android:padding="4dp"
         android:textColor="@android:color/white"
-        android:textSize="10dp"
+        android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/imgFilterView"
         app:layout_constraintEnd_toEndOf="@+id/imgFilterView"
         app:layout_constraintStart_toStartOf="@+id/imgFilterView"
-        tools:text="Фильтер" />
+        tools:text="Фильтр" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
