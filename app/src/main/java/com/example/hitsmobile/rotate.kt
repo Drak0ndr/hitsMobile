@@ -96,17 +96,17 @@ class Rotate: AppCompatActivity() {
                 pixel[5] = 0f
             }
             ans.add(pixel)
-//            mutableCopy.remove(pixel)
+            mutableCopy.remove(pixel)
             i++
         }
 
         return ans
     }
     fun rotatefloat(bitmap: Bitmap, deg: Int): Bitmap {
-        var rotatedBitmap = Bitmap.createBitmap(bitmap.width * 3, bitmap.height * 3,Bitmap.Config.ARGB_8888)
+        var rotatedBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height,Bitmap.Config.ARGB_8888)
         var arr = mutableListOf<MutableList<Float>>()
-        var y0 = bitmap.height - 1
-        var x0 = bitmap.width - 1
+        var y0 = bitmap.height /2
+        var x0 = bitmap.width /2
         var angle = PI / 360 * deg
         var y = 0
         while (y < bitmap.height) {
@@ -126,17 +126,17 @@ class Rotate: AppCompatActivity() {
             }
             y++
         }
-        var centerX = bitmap.width * 2
-        var centerY = bitmap.height * 2 - 1
+        var centerX = rotatedBitmap.width / 2
+        var centerY = rotatedBitmap.height / 2
         y = 0
         while (y < rotatedBitmap.height) {
             var x = 0
             while (x < rotatedBitmap.width) {
                 var temp = getFourPixels(arr, (centerX - x).toFloat(), (centerY - y).toFloat())
-                var red = 0.25f * (temp[0][2] + temp[1][2] + temp[2][2] + temp[3][2])
-                var green = 0.25f * (temp[0][3] + temp[1][3] + temp[2][3] + temp[3][3])
-                var blue = 0.25f * (temp[0][4] + temp[1][4] + temp[2][4] + temp[3][4])
-                var alfa = 0.25f * (temp[0][5] + temp[1][5] + temp[2][5] + temp[3][5])
+                var red =  0.5f * temp[0][2] + 0.25f * temp[1][2] + 0.13f * temp[2][2] + 0.12f * temp[3][2]
+                var green = 0.5f * temp[0][3] + 0.25f * temp[1][3] + 0.13f * temp[2][3] + 0.12f * temp[3][3]
+                var blue = 0.5f * temp[0][4] + 0.25f * temp[1][4] + 0.13f * temp[2][4] + 0.12f * temp[3][4]
+                var alfa = 0.5f * temp[0][5] + 0.25f * temp[1][5] + 0.13f * temp[2][5] + 0.12f * temp[3][5]
                 rotatedBitmap.setPixel(x, y, Color.argb(alfa, red, green, blue))
 
                 x++
