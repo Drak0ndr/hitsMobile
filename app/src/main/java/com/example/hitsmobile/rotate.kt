@@ -26,7 +26,7 @@ class Rotate: AppCompatActivity() {
         var bitmap = (img.getDrawable() as BitmapDrawable).bitmap
         var test = bitmap.getPixel(0,0)
         var ans = rotateLeft(bitmap)
-        ans = rotatefloat(bitmap, 45)
+        ans = rotateAny(bitmap, 45)
         img.setImageBitmap(ans)
 //        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
 //            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -145,6 +145,110 @@ class Rotate: AppCompatActivity() {
         }
 
         return rotatedBitmap
+    }
+
+    fun rotateAny(bitmap: Bitmap, deg: Int): Bitmap {
+        var rotatedBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height,Bitmap.Config.ARGB_8888)
+        var arr = mutableListOf<MutableList<Float>>()
+        var y0 = bitmap.height /2
+        var x0 = bitmap.width /2
+        var angle = PI / 360 * deg
+        var y = 0
+        while (y < bitmap.height) {
+            var x = 0
+            while (x < bitmap.width) {
+                var colorPixel = bitmap.getColor(x,y).components
+                var red = colorPixel[0]
+                var green = colorPixel[1]
+                var blue = colorPixel[2]
+                var alfa = colorPixel[3]
+                var newX:Float = ((x0 - x) * cos(angle) - (y0- y) * sin(angle)).toFloat()
+                var newY:Float = ((x0 - x) * sin(angle) + (y0- y) * cos(angle)).toFloat()
+                var bestDist = Float.MAX_VALUE
+                var bestX = 0
+                var bestY = 0
+                var indX = newX.toInt()
+                var indY = newY.toInt()
+
+                var i = -1
+                while (i <= 1) {
+                    var j = -1
+                    while (j <= 1) {
+                        var dist = ((indX + i - newX).pow(2) + (indY + j - newY).pow(2)).pow(0.5f)
+                        if (dist < bestDist) {
+                            bestDist = dist
+                            bestX = indX + i
+                            bestY = indY + j
+                        }
+                        j++
+                    }
+                    i++
+                }
+                if ((x0 - bestX) < bitmap.width && (x0 - bestX) >= 0 && (y0 - bestY) < bitmap.height && (y0 - bestY) >= 0) {
+                    rotatedBitmap.setPixel(x0 - bestX, y0 -bestY, Color.argb(alfa, red, green, blue))
+                }
+
+                var data = mutableListOf(newX, newY, red, green, blue, alfa)
+                arr.add(data)
+                x++
+            }
+            y++
+        }
+        var ans = fillEmptyPixels(rotatedBitmap)
+        return ans
+    }
+
+    fun fillEmptyPixels(bitmap: Bitmap): Bitmap {
+        var newBitmap = bitmap.copy(bitmap.config, true)
+        var x = 0
+        var y = 0
+        while (x < bitmap.width) {
+            y = 0
+            while (y < bitmap.height) {
+                var colorPixel = bitmap.getColor(x,y).components
+                var neighboringPixels = mutableListOf<MutableList<Float>>()
+
+                if (colorPixel[3] <= 0) {
+                    var i = -1
+                    var j = -1
+                    while (i <= 1) {
+                        j = -1
+                        while (j <=1) {
+                            if ((x+i) >= 0 && (x+i) < bitmap.width && (y+j) >=0 && (y+j) < bitmap.height) {
+                                var tempColorPixel = bitmap.getColor(x + i,y + j).components
+                                var red = tempColorPixel[0]
+                                var green = tempColorPixel[1]
+                                var blue = tempColorPixel[2]
+                                var alfa = tempColorPixel[3]
+                                if (alfa > 0) {
+                                    var data = mutableListOf(red, green, blue, alfa)
+                                    neighboringPixels.add(data)
+                                }
+                            }
+                            j++
+                        }
+                        i++
+                    }
+                    var red = 0f
+                    var green = 0f
+                    var blue = 0f
+                    var alfa = 0f
+                    if (neighboringPixels.count() >= 5) {
+                        for (item in neighboringPixels) {
+                            red += item[0] / neighboringPixels.count()
+                            green += item[1] / neighboringPixels.count()
+                            blue += item[2] / neighboringPixels.count()
+                            alfa += item[3] / neighboringPixels.count()
+                        }
+                    }
+
+                    newBitmap.setPixel(x, y, Color.argb(alfa, red, green, blue))
+                }
+                y++
+            }
+            x++
+        }
+        return newBitmap
     }
 
 }
