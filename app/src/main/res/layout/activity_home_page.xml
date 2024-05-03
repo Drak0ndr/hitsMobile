@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomePageActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/main_bg">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="700dp"
+                    android:background="@drawable/gradient_bg">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="360dp"
+                        android:layout_height="360dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.16000003"
+                        app:srcCompat="@drawable/circle_gradient" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                        app:layout_constraintEnd_toEndOf="@+id/imageView"
+                        app:layout_constraintStart_toStartOf="@+id/imageView"
+                        app:layout_constraintTop_toTopOf="@+id/imageView"
+                        app:shapeAppearanceOverlay="@style/roundedImg"
+                        app:strokeWidth="1dp"
+                        tools:srcCompat="@tools:sample/avatars"></com.google.android.material.imageview.ShapeableImageView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

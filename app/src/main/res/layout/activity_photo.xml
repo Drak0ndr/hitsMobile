@@ -122,6 +122,90 @@
         app:layout_constraintBottom_toBottomOf="@+id/recyclerViewTools"
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/recyclerViewTools"
-        tools:listitem="@layout/row_filter_view" />
+        tools:listitem="@layout/recyclerview_filters" />
+
+    <RelativeLayout
+        android:id="@+id/rotateBlock"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/main_bg"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewTools"
+        app:layout_constraintStart_toStartOf="@+id/recyclerViewTools"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewTools">
+
+        <SeekBar
+            android:id="@+id/seekBarRotate"
+            android:layout_width="250dp"
+            android:layout_height="12dp"
+            android:layout_centerInParent="true"
+            android:max="90"
+            android:min="-90"
+            android:progress="0"
+            android:progressDrawable="@drawable/seekbar_style"
+            android:thumb="@drawable/seekbar_custom_thumb" />
+
+        <ImageView
+            android:id="@+id/imgRightRotate"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/seekBarRotate"
+            android:src="@drawable/right">
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/imgLeftRotate"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_toStartOf="@+id/seekBarRotate"
+            android:src="@drawable/left">
+        </ImageView>
+
+        <TextView
+            android:id="@+id/progressBarMin"
+            style="@style/TextAppearance.Material3.LabelLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/seekBarRotate"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="14dp"
+            android:orientation="vertical"
+            android:text="-45"
+            android:layout_marginLeft = "25dp"
+            android:textColor="?attr/colorOnPrimarySurface" />
+
+        <TextView
+            android:id="@+id/progressBarMax"
+            style="@style/TextAppearance.Material3.LabelLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/seekBarRotate"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="14dp"
+            android:orientation="vertical"
+            android:text="45"
+            android:layout_marginRight="25dp"
+            android:textColor="?attr/colorOnPrimarySurface" />
+
+        <TextView
+            android:id="@+id/progressBarCurr"
+            style="@style/TextAppearance.Material3.LabelLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/seekBarRotate"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="14dp"
+            android:layout_centerHorizontal="true"
+            android:text="0"
+            android:textColor="?attr/colorOnPrimarySurface" />
+
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

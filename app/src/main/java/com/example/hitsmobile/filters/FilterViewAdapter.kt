@@ -21,7 +21,7 @@ class FilterViewAdapter(private val filterListener: FilterListener) :
     RecyclerView.Adapter<FilterViewAdapter.ViewHolder>() {
     private val pairsList: MutableList<Pair<String, PhotoFilter>> = ArrayList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.row_filter_view, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_filters, parent, false)
         return ViewHolder(view)
     }
 

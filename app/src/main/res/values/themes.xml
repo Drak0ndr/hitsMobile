@@ -4,4 +4,8 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
     </style>
+    <style name="roundedImg">
+        <item name="cornerFamily">rounded</item>
+        <item name="collapsedSize">50dp</item>
+    </style>
 </resources>

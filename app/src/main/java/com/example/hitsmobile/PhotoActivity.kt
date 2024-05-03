@@ -10,6 +10,7 @@ import android.os.Looper
 import android.provider.MediaStore
 import android.view.animation.AnticipateOvershootInterpolator
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -143,6 +144,16 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
     private val mConstraintSet = ConstraintSet()
     private var mIsFilterVisible = false
 
+    /*Отслеживаем текущие выдвижные блоки*/
+    private var currNumberBlock: Int = 0
+    private var currBlock: Int = 0
+
+    /*Отслеживаем выдвижные блоки*/
+    private lateinit var closeButton: ImageView
+
+    /*Блок для поворота*/
+    private lateinit var rlRotate: RelativeLayout
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -185,6 +196,9 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
         rvFilters.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvFilters.adapter = filterAdapter
 
+        /*Блок для поворота*/
+        rlRotate = findViewById(R.id.rotateBlock)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -194,7 +208,7 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
         /*Работа с камерой*/
         cameraButton = findViewById(R.id.imgCamera)
         cameraButton.setOnClickListener(){
-            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            val cameraIntent = Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)
             startActivityForResult(cameraIntent, CAMERA_REQUEST)
         }
 
@@ -206,25 +220,40 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
             startActivityForResult(photoPickerIntent, GALLERY_REQUEST)
         }
 
+        /*Отслеживаем выдвижные блоки*/
+        closeButton = findViewById(R.id.imgClose)
+        closeButton.setOnClickListener{
+            onBackPressed()
+        }
     }
 
-    /*Загружаем фото из галереи*/
+    /*Загружаем фото из галереи или камеры*/
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         var bitmap: Bitmap? = null
         img = findViewById(R.id.photoEditorView)
 
-        when (requestCode) {
-            GALLERY_REQUEST -> if (resultCode == RESULT_OK) {
-                val selectedImage = data?.data
+        if(requestCode == GALLERY_REQUEST && resultCode == RESULT_OK){
+            val selectedImage = data?.data
 
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImage)
-                } catch (e: IOException) {
-                    e.printStackTrace()
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImage)
+
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+            img.setImageBitmap(bitmap)
+        }
+
+        else if(requestCode == CAMERA_REQUEST && resultCode == RESULT_OK){
+            try {
+                if (data != null) {
+                    img.setImageBitmap(data.extras?.get("data") as Bitmap)
                 }
 
-                img.setImageBitmap(bitmap)
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
         }
     }
@@ -233,32 +262,56 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
 
     }
 
-    /*Отображаем блок с фильтрами*/
+    /*Отслеживаем выдвижные блоки*/
+    override fun onBackPressed() {
+        if (mIsFilterVisible) {
+            showFilter(false)
+
+        } else if(!mIsFilterVisible){
+
+        }else{
+            super.onBackPressed()
+        }
+    }
+
+    /*Отображаем/убираем выдвижной блок*/
     private fun showFilter(isVisible: Boolean) {
         mIsFilterVisible = isVisible
         mConstraintSet.clone(mainView)
 
-        val rvFilterId: Int = rvFilters.id
+        if(currNumberBlock == 1){
+            currBlock = rlRotate.id
+        }
+
+        else if(currNumberBlock == 3){
+            currBlock = rvFilters.id
+        }
+
 
         if (isVisible) {
-            mConstraintSet.clear(rvFilterId, ConstraintSet.START)
+            mConstraintSet.clear(currBlock, ConstraintSet.START)
             mConstraintSet.connect(
-                rvFilterId, ConstraintSet.START,
+                currBlock, ConstraintSet.START,
                 ConstraintSet.PARENT_ID, ConstraintSet.START
             )
 
             mConstraintSet.connect(
-                rvFilterId, ConstraintSet.END,
+                currBlock, ConstraintSet.END,
                 ConstraintSet.PARENT_ID, ConstraintSet.END
             )
 
         } else {
             mConstraintSet.connect(
-                rvFilterId, ConstraintSet.START,
+                currBlock, ConstraintSet.START,
                 ConstraintSet.PARENT_ID, ConstraintSet.END
             )
 
-            mConstraintSet.clear(rvFilterId, ConstraintSet.END)
+            val changeBounds = ChangeBounds()
+            changeBounds.duration = 300 /*Анимация*/
+            changeBounds.interpolator = AnticipateOvershootInterpolator(1.0f) /*Анимация*/
+            TransitionManager.beginDelayedTransition(mainView, changeBounds)
+
+            mConstraintSet.clear(currBlock, ConstraintSet.END)
         }
 
         val changeBounds = ChangeBounds()
@@ -271,18 +324,28 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
 
     override fun onToolSelected(toolType: ToolsType) {
         when (toolType) {
-            ToolsType.ROTATE -> {}
-
-            ToolsType.RESIZE -> {}
-
-            /*Скролл для фильтров*/
-            ToolsType.FILTER -> {
+            ToolsType.ROTATE -> {
+                currNumberBlock = 1
                 showFilter(true)
             }
 
-            ToolsType.RETOUCH -> {}
+            ToolsType.RESIZE -> {
+                currNumberBlock = 2
+            }
 
-            ToolsType.MASKING-> {}
+            /*Скролл для фильтров*/
+            ToolsType.FILTER -> {
+                currNumberBlock = 3
+                showFilter(true)
+            }
+
+            ToolsType.RETOUCH -> {
+                currNumberBlock = 4
+            }
+
+            ToolsType.MASKING-> {
+                currNumberBlock = 5
+            }
         }
     }
 
