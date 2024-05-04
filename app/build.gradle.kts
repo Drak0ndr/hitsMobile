@@ -35,7 +35,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -52,4 +51,5 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation("com.google.android.material:material:1.3.0-alpha03")
     implementation("com.google.android.material:material:1.4.0")
+    implementation("com.google.android.material:material:1.2.0-alpha05")
 }

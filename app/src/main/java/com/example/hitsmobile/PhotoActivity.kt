@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
-import android.util.Log
 import android.view.animation.AnticipateOvershootInterpolator
 import android.widget.ImageView
 import android.widget.RelativeLayout
@@ -17,7 +16,6 @@ import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -63,9 +61,16 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
     /*Контейнер для поворота*/
     private lateinit var rlRotate: RelativeLayout
 
+    /*Контейнер для изменения размера*/
+    private lateinit var rlResize: RelativeLayout
+
     /*Ползунок для поворота*/
-    private lateinit var seekBar: SeekBar
+    private lateinit var seekBarRotate: SeekBar
     private lateinit var seekBarProgressRotate: TextView
+
+    /*Ползунок для изменения размера*/
+    private lateinit var seekBarResize: SeekBar
+    private lateinit var seekBarProgressResize: TextView
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,9 +117,16 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
         /*Контейнер для поворота*/
         rlRotate = findViewById(R.id.rotateBlock)
 
+        /*Контейнер для изменения размера*/
+        rlResize = findViewById(R.id.resizeBlock)
+
         /*Ползунок для поворота*/
-        seekBar = findViewById(R.id.seekBarRotate)
+        seekBarRotate = findViewById(R.id.seekBarRotate)
         seekBarProgressRotate = findViewById(R.id.progressBarCurr)
+
+        /*Ползунок для изменения размера*/
+        seekBarResize = findViewById(R.id.seekBarResize)
+        seekBarProgressResize = findViewById(R.id.progressBarCurrResize)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -154,9 +166,22 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
         }
 
         /*Отслеживаем изменения ползунка для поворота*/
-        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        seekBarRotate.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 seekBarProgressRotate.text = "$progress"
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+        })
+
+        /*Отслеживаем изменения ползунка для изменения размера*/
+        seekBarResize.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                val change: Double
+                change = progress.toDouble() / 100
+                seekBarProgressResize.text = "$change"
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
@@ -247,7 +272,9 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
         if(currNumberBlock == 1){
             currBlock = rlRotate.id
         }
-
+        else if(currNumberBlock == 2){
+            currBlock = rlResize.id
+        }
         else if(currNumberBlock == 3){
             currBlock = rvFilters.id
         }
@@ -296,6 +323,7 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
 
             ToolsType.RESIZE -> {
                 currNumberBlock = 2
+                showFilter(true)
             }
 
             /*Скролл для фильтров*/

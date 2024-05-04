@@ -50,8 +50,8 @@
 
                     <ImageView
                         android:id="@+id/imageView"
-                        android:layout_width="300dp"
-                        android:layout_height="300dp"
+                        android:layout_width="320dp"
+                        android:layout_height="320dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -60,15 +60,16 @@
                         app:srcCompat="@drawable/circle_gradient" />
 
                     <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
+                        android:layout_width="320dp"
+                        android:layout_height="320dp"
                         app:layout_constraintBottom_toBottomOf="@+id/imageView"
                         app:layout_constraintEnd_toEndOf="@+id/imageView"
                         app:layout_constraintStart_toStartOf="@+id/imageView"
                         app:layout_constraintTop_toTopOf="@+id/imageView"
                         app:shapeAppearanceOverlay="@style/roundedImg"
                         app:strokeWidth="1dp"
-                        tools:srcCompat="@drawable/woman"></com.google.android.material.imageview.ShapeableImageView>
+                        android:src="@drawable/woman">
+                    </com.google.android.material.imageview.ShapeableImageView>
 
                     <TextView
                         android:id="@+id/textView"
@@ -128,9 +129,8 @@
                             android:id="@+id/btn3D"
                             android:layout_width="140dp"
                             android:layout_height="60dp"
-                            android:text="3D куб"
-                            android:background="@drawable/btn_bg">
-                        </androidx.appcompat.widget.AppCompatButton>
+                            android:background="@drawable/btn_bg"
+                            android:text="3D куб"></androidx.appcompat.widget.AppCompatButton>
 
                     </LinearLayout>
 
