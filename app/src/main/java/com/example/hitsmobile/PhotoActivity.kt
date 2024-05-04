@@ -9,8 +9,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
+import android.view.View
 import android.view.animation.AnticipateOvershootInterpolator
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.SeekBar
 import android.widget.TextView
@@ -72,12 +74,19 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
     private lateinit var seekBarResize: SeekBar
     private lateinit var seekBarProgressResize: TextView
 
+    private lateinit var progressImg : ProgressBar
+
+    /*Кнопка домой*/
+    private lateinit var homeBtn : ImageView
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
         setContentView(R.layout.activity_photo)
+
+        progressImg = findViewById(R.id.progressImg)
 
         /*Динамическая загрузка изображения*/
         val imageView = findViewById<ImageView>(R.id.photoEditorView)
@@ -95,8 +104,8 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
                 handler.post {
                     imageView.setImageBitmap(image)
                 }
+                progressImg.visibility = View.GONE
             }
-
             catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -157,6 +166,13 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
                 photoPickerIntent.setType("image/*")
                 startActivityForResult(photoPickerIntent, GALLERY_REQUEST)
             }
+        }
+
+        /*Кнопка домой*/
+        homeBtn = findViewById(R.id.imgHome)
+        homeBtn.setOnClickListener{
+            val intent = Intent(this@PhotoActivity, HomePageActivity::class.java)
+            startActivity(intent)
         }
 
         /*Отслеживаем выдвижные блоки*/

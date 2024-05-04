@@ -20,6 +20,16 @@
         android:scaleType="centerInside"
         android:src="@drawable/white_background"/>
 
+    <ProgressBar
+        android:id="@+id/progressImg"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/photoEditorView"
+        app:layout_constraintEnd_toEndOf="@+id/photoEditorView"
+        app:layout_constraintStart_toStartOf="@+id/photoEditorView"
+        app:layout_constraintTop_toTopOf="@+id/photoEditorView">
+    </ProgressBar>
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"

@@ -73,7 +73,7 @@
 
                     <TextView
                         android:id="@+id/textView"
-                        android:layout_width="wrap_content"
+                        android:layout_width="350dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
                         android:text="Погрузись в удивительный мир пикселей!"
@@ -130,7 +130,8 @@
                             android:layout_width="140dp"
                             android:layout_height="60dp"
                             android:background="@drawable/btn_bg"
-                            android:text="3D куб"></androidx.appcompat.widget.AppCompatButton>
+                            android:text="3D куб">
+                        </androidx.appcompat.widget.AppCompatButton>
 
                     </LinearLayout>
 
