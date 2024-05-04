@@ -2,19 +2,27 @@ package com.example.hitsmobile
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
+import android.util.Log
 import android.view.animation.AnticipateOvershootInterpolator
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.SeekBar
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,103 +37,6 @@ import java.util.concurrent.Executors
 import com.example.hitsmobile.filters.FilterListener
 import com.example.hitsmobile.filters.FilterViewAdapter
 import com.example.hitsmobile.filters.PhotoFilter
-
-
-/*class PhotoActivity : AppCompatActivity() {
-    private lateinit var permissionLauncher: ActivityResultLauncher<String>
-
-    private lateinit var textArr: ArrayList<String>
-
-    @SuppressLint("MissingInflatedId", "WrongViewCast")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        registerPermission()
-        checkPermission()
-
-        setContentView(R.layout.activity_photo)
-
-        bottomNavigationView.background = null
-        bottomNavigationView.menu.getItem(2).isEnabled = false
-
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.adapter = CustomRecyclerAdapter(fillList())
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
-        photoView = findViewById(R.id.photo_container)
-        cameraOpenId = findViewById(R.id.it_camera)
-
-        imgGallery = findViewById(R.id.it_gallery)
-
-        cameraOpenId.setOnClickListener(){
-            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(cameraIntent, pic_id)
-        }
-
-        fun onOptionsItemSelected(item: MenuItem?): Boolean {
-            when (item!!.itemId) {
-                R.id.it_gallery -> pickImageFromGallery()
-            }
-
-            return true
-        }
-
-        /*imgGallery.setOnMenuItemClickListener(){
-            pickImageFromGallery()
-        }*/
-    }
-
-    private fun checkPermission(){
-        when{
-            ContextCompat.checkSelfPermission(this,android.Manifest.permission.CAMERA) ==
-                    PackageManager.PERMISSION_GRANTED->{
-            }
-            else ->{
-                permissionLauncher.launch(android.Manifest.permission.CAMERA)
-            }
-        }
-    }
-
-    private fun registerPermission(){
-        permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()){
-            if(it){
-                Toast.makeText(this,"Доступ к камере разрешен",Toast.LENGTH_LONG).show()
-            }else{
-                Toast.makeText(this,"Доступ к камере запрещен",Toast.LENGTH_LONG).show()
-            }
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == pic_id){
-            val photo = data!!.extras!!["data"] as Bitmap
-            photoView.setImageBitmap(photo)
-        }
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
-            data?.data?.let {
-                photoView.setImageURI(data?.data)
-            }
-        }
-    }
-
-    private fun pickImageFromGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, PICK_IMAGE_REQUEST)
-    }
-
-    companion object{
-        private const val pic_id = 123
-        private const val PICK_IMAGE_REQUEST = 1
-    }
-}*/
 
 class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
     /*Скролл для алгоритмов*/
@@ -147,12 +58,14 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
     /*Отслеживаем текущие выдвижные блоки*/
     private var currNumberBlock: Int = 0
     private var currBlock: Int = 0
-
-    /*Отслеживаем выдвижные блоки*/
     private lateinit var closeButton: ImageView
 
-    /*Блок для поворота*/
+    /*Контейнер для поворота*/
     private lateinit var rlRotate: RelativeLayout
+
+    /*Ползунок для поворота*/
+    private lateinit var seekBar: SeekBar
+    private lateinit var seekBarProgressRotate: TextView
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -196,8 +109,12 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
         rvFilters.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvFilters.adapter = filterAdapter
 
-        /*Блок для поворота*/
+        /*Контейнер для поворота*/
         rlRotate = findViewById(R.id.rotateBlock)
+
+        /*Ползунок для поворота*/
+        seekBar = findViewById(R.id.seekBarRotate)
+        seekBarProgressRotate = findViewById(R.id.progressBarCurr)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -208,22 +125,70 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
         /*Работа с камерой*/
         cameraButton = findViewById(R.id.imgCamera)
         cameraButton.setOnClickListener(){
-            val cameraIntent = Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(cameraIntent, CAMERA_REQUEST)
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), CAMERA_REQUEST)
+
+            } else {
+                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                startActivityForResult(cameraIntent, CAMERA_REQUEST)
+            }
         }
 
         /*Работа с галереей*/
         galleryButton = findViewById(R.id.imgGallery)
         galleryButton.setOnClickListener {
-            val photoPickerIntent = Intent(Intent.ACTION_PICK)
-            photoPickerIntent.setType("image/*")
-            startActivityForResult(photoPickerIntent, GALLERY_REQUEST)
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), GALLERY_REQUEST)
+
+            } else {
+                val photoPickerIntent = Intent(Intent.ACTION_PICK)
+                photoPickerIntent.setType("image/*")
+                startActivityForResult(photoPickerIntent, GALLERY_REQUEST)
+            }
         }
 
         /*Отслеживаем выдвижные блоки*/
         closeButton = findViewById(R.id.imgClose)
         closeButton.setOnClickListener{
             onBackPressed()
+        }
+
+        /*Отслеживаем изменения ползунка для поворота*/
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                seekBarProgressRotate.text = "$progress"
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+        })
+    }
+
+    /*Работа с разрешением для галереи и камеры*/
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            when (requestCode) {
+                CAMERA_REQUEST -> {
+                    val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                    startActivityForResult(cameraIntent, CAMERA_REQUEST)
+                }
+                GALLERY_REQUEST -> {
+                    val photoPickerIntent = Intent(Intent.ACTION_PICK)
+                    photoPickerIntent.setType("image/*")
+                    startActivityForResult(photoPickerIntent, GALLERY_REQUEST)
+                }
+            }
+        } else {
+            when (requestCode) {
+                CAMERA_REQUEST -> {
+                    Toast.makeText(this,"Доступ к камере запрещен",Toast.LENGTH_LONG).show()
+                }
+                GALLERY_REQUEST -> {
+                    Toast.makeText(this,"Доступ к галерее запрещен",Toast.LENGTH_LONG).show()
+                }
+            }
         }
     }
 
