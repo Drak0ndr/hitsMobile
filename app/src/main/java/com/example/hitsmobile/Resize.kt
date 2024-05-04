@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import android.graphics.Bitmap
 import android.graphics.Color
+import kotlin.math.pow
 
 class Resize: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,7 +17,7 @@ class Resize: AppCompatActivity() {
         var img = findViewById<ImageView>(R.id.imageView)
         var bitmap = (img.getDrawable() as BitmapDrawable).bitmap
         var test = bitmap.getPixel(0,0)
-        var ans = upScale(bitmap, 10.1f)
+        var ans = downScale(bitmap, 5f)
         img.setImageBitmap(ans)
 //        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
 //            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -144,5 +145,78 @@ class Resize: AppCompatActivity() {
        }
        return scaleBitmap
    }
+    fun downScale(bitmap: Bitmap, k: Float): Bitmap {
+        var width = (bitmap.width / k).toInt() + 1
+        var height = (bitmap.height / k).toInt() + 1
+        var scaleBitmap = Bitmap.createBitmap(width, height,Bitmap.Config.ARGB_8888)
+        var y = 0
+        var yfine = 0f
+        var scaleY = 0
+        var yDist = k
+        var xfine = 0f
+        while (y < bitmap.height) {
+            var x = 0
+            var scaleX = 0
+            var xDist = k - xfine
 
+            while (x < bitmap.width) {
+
+                var red = 0f
+                var green = 0f
+                var blue = 0f
+                var alfa = 0f
+                var i = 0
+                while (i <= xDist -1 && x+i < bitmap.width) {
+                    var j = 0
+                    while (j <= yDist -1 && y+j < bitmap.height) {
+                        var tempColor = bitmap.getColor(x+i, y+j).components
+                        red+= tempColor[0] / k.pow(2)
+                        green+= tempColor[1] / k.pow(2)
+                        blue+= tempColor[2] / k.pow(2)
+                        alfa+= tempColor[3] / k.pow(2)
+                        j++
+                    }
+                    i++
+                }
+                var j = 0
+                if (x+i < bitmap.width) {
+                    while (j <= yDist-1 && y+j < bitmap.height) {
+                        var tempColor = bitmap.getColor(x+i, y+j).components
+                        red+= tempColor[0] / k.pow(2) * (xDist%1)
+                        green+= tempColor[1] / k.pow(2) * (xDist%1)
+                        blue+= tempColor[2] / k.pow(2) * (xDist%1)
+                        alfa+= tempColor[3] / k.pow(2) * (xDist%1)
+                        j++
+                    }
+                }
+                j = yDist.toInt()
+                i = 0
+                if (y+j < bitmap.height) {
+                    while (i <= xDist-1 && x+i < bitmap.width) {
+                        var tempColor = bitmap.getColor(x+i, y+j).components
+                        red+= tempColor[0] / k.pow(2) * (yDist%1)
+                        green+= tempColor[1] / k.pow(2) * (yDist%1)
+                        blue+= tempColor[2] / k.pow(2) * (yDist%1)
+                        alfa+= tempColor[3] / k.pow(2) * (yDist%1)
+                        i++
+                    }
+                }
+
+                scaleBitmap.setPixel(scaleX, scaleY, Color.argb(alfa, red, green, blue))
+                scaleX+=1
+                if (xDist > xDist.toInt()) {
+                    x+= xDist.toInt()+1
+                } else {
+                    x+= xDist.toInt()
+                }
+            }
+            if (yDist > yDist.toInt()) {
+                y+= yDist.toInt()+1
+            } else {
+                y+= yDist.toInt()
+            }
+            scaleY+=1
+        }
+        return scaleBitmap
+    }
 }
