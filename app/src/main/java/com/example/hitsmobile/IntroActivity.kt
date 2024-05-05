@@ -25,6 +25,6 @@ class IntroActivity : AppCompatActivity() {
             startActivity(Intent(this, HomePageActivity::class.java))
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             finish()
-        }, 2000)
+        }, 3000)
     }
 }

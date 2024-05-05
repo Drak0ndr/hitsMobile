@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Camera
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -37,6 +39,9 @@ import java.util.concurrent.Executors
 import com.example.hitsmobile.filters.FilterListener
 import com.example.hitsmobile.filters.FilterViewAdapter
 import com.example.hitsmobile.filters.PhotoFilter
+import java.io.File
+import java.io.OutputStream
+import java.util.UUID
 
 class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
     /*Скролл для алгоритмов*/
@@ -74,10 +79,11 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
     private lateinit var seekBarResize: SeekBar
     private lateinit var seekBarProgressResize: TextView
 
-    private lateinit var progressImg : ProgressBar
-
     /*Кнопка домой*/
     private lateinit var homeBtn : ImageView
+
+    /*Сохранение фотографии в галерею*/
+    private lateinit var saveBtn : ImageView
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,8 +91,6 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
         enableEdgeToEdge()
 
         setContentView(R.layout.activity_photo)
-
-        progressImg = findViewById(R.id.progressImg)
 
         /*Динамическая загрузка изображения*/
         val imageView = findViewById<ImageView>(R.id.photoEditorView)
@@ -104,7 +108,6 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
                 handler.post {
                     imageView.setImageBitmap(image)
                 }
-                progressImg.visibility = View.GONE
             }
             catch (e: Exception) {
                 e.printStackTrace()
@@ -166,6 +169,17 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
                 photoPickerIntent.setType("image/*")
                 startActivityForResult(photoPickerIntent, GALLERY_REQUEST)
             }
+        }
+
+        /*Сохранение фотографии в галерею*/
+        saveBtn = findViewById(R.id.imgSave)
+        saveBtn.setOnClickListener{
+            val imageView = findViewById<ImageView>(R.id.photoEditorView)
+            val drawable = imageView.drawable as BitmapDrawable
+            val bitmap = drawable.bitmap
+            val title = "image_" + System.currentTimeMillis() + ".jpg"
+            MediaStore.Images.Media.insertImage(contentResolver, bitmap, title, "")
+            Toast.makeText(this,"Изображение сохранено",Toast.LENGTH_LONG).show()
         }
 
         /*Кнопка домой*/

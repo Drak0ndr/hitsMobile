@@ -34,18 +34,21 @@
                         tools:ignore="MissingConstraints">
 
                         <ImageView
-                            android:layout_width="45dp"
-                            android:layout_height="45dp"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
                             android:layout_margin="15dp"
-                            app:srcCompat="@drawable/filter"></ImageView>
+                            app:srcCompat="@drawable/pixel_logo">
+                        </ImageView>
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="45dp"
+                            android:layout_height="55dp"
                             android:layout_marginTop="15dp"
-                            android:text="Logo"
+                            android:text="Pixel Room"
+                            android:gravity="center"
                             android:textColor="@color/white"
-                            android:textSize="30sp"></TextView>
+                            android:textSize="30sp">
+                        </TextView>
                     </LinearLayout>
 
                     <ImageView
@@ -62,13 +65,13 @@
                     <com.google.android.material.imageview.ShapeableImageView
                         android:layout_width="320dp"
                         android:layout_height="320dp"
+                        android:src="@drawable/woman"
                         app:layout_constraintBottom_toBottomOf="@+id/imageView"
                         app:layout_constraintEnd_toEndOf="@+id/imageView"
                         app:layout_constraintStart_toStartOf="@+id/imageView"
                         app:layout_constraintTop_toTopOf="@+id/imageView"
                         app:shapeAppearanceOverlay="@style/roundedImg"
-                        app:strokeWidth="1dp"
-                        android:src="@drawable/woman">
+                        app:strokeWidth="1dp">
                     </com.google.android.material.imageview.ShapeableImageView>
 
                     <TextView
