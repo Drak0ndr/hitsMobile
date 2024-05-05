@@ -5,16 +5,14 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Camera
 import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
-import android.view.View
 import android.view.animation.AnticipateOvershootInterpolator
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.SeekBar
 import android.widget.TextView
@@ -31,17 +29,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
+import com.example.hitsmobile.filters.FilterListener
+import com.example.hitsmobile.filters.FilterViewAdapter
+import com.example.hitsmobile.filters.PhotoFilter
 import com.example.hitsmobile.tools.ToolsAdapter
 import com.example.hitsmobile.tools.ToolsAdapter.OnItemSelected
 import com.example.hitsmobile.tools.ToolsType
 import java.io.IOException
 import java.util.concurrent.Executors
-import com.example.hitsmobile.filters.FilterListener
-import com.example.hitsmobile.filters.FilterViewAdapter
-import com.example.hitsmobile.filters.PhotoFilter
-import java.io.File
-import java.io.OutputStream
-import java.util.UUID
+
 
 class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
     /*Скролл для алгоритмов*/
@@ -84,6 +80,9 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
 
     /*Сохранение фотографии в галерею*/
     private lateinit var saveBtn : ImageView
+
+    /*Отправка фото*/
+    private lateinit var shareBtn : ImageView
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -193,6 +192,23 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
         closeButton = findViewById(R.id.imgClose)
         closeButton.setOnClickListener{
             onBackPressed()
+        }
+
+        /*Отправка фото*/
+        shareBtn = findViewById(R.id.imgShare)
+        shareBtn.setOnClickListener(){
+
+            val wl = (imageView.getDrawable() as BitmapDrawable).bitmap
+            val intent = Intent()
+            intent.action = Intent.ACTION_SEND
+
+            val path = MediaStore.Images.Media.insertImage(contentResolver, wl, "newImg", null)
+
+            val uri = Uri.parse(path)
+
+            intent.putExtra(Intent.EXTRA_STREAM, uri)
+            intent.type = "image/*"
+            startActivity(Intent.createChooser(intent, "Share"))
         }
 
         /*Отслеживаем изменения ползунка для поворота*/
