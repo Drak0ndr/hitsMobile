@@ -3,6 +3,7 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
+        <item name="android:fontFamily">@font/my_fon</item>
     </style>
     <style name="roundedImg">
         <item name="cornerFamily">rounded</item>

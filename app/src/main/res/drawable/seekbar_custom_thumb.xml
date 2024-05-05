@@ -3,16 +3,11 @@
         <shape android:shape="rectangle">
             <size android:width="12dp"
                 android:height="12dp"/>
-            <solid android:color="@color/white"/>
-        </shape>
-    </item>
-    <item>
-        <shape android:shape="oval">
-            <size android:width="8dp"
-                android:height="8dp"/>
             <gradient android:startColor="@color/green"
                 android:endColor="@color/pink"
                 android:angle = "315" />
         </shape>
     </item>
 </layer-list>
+
+

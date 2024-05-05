@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hitsmobile.R
+import com.example.hitsmobile.tools.ToolsType
 
 
 import java.io.IOException
@@ -20,6 +21,7 @@ import java.util.ArrayList
 class FilterViewAdapter(private val filterListener: FilterListener) :
     RecyclerView.Adapter<FilterViewAdapter.ViewHolder>() {
     private val pairsList: MutableList<Pair<String, PhotoFilter>> = ArrayList()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_filters, parent, false)
         return ViewHolder(view)
@@ -63,6 +65,9 @@ class FilterViewAdapter(private val filterListener: FilterListener) :
     private fun setupFilters() {
         pairsList.add(Pair("filters/cat.jpg", PhotoFilter.NONE))
         pairsList.add(Pair("filters/cat.jpg", PhotoFilter.GREEN))
+        pairsList.add(Pair("filters/cat.jpg", PhotoFilter.BLUE))
+        pairsList.add(Pair("filters/cat.jpg", PhotoFilter.RED))
+        pairsList.add(Pair("filters/cat.jpg", PhotoFilter.YELLOW))
         pairsList.add(Pair("filters/cat.jpg", PhotoFilter.GRAYSCALE))
         pairsList.add(Pair("filters/cat.jpg", PhotoFilter.NEGATIVE))
     }

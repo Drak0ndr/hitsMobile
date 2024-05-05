@@ -79,14 +79,14 @@
                         android:layout_width="350dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
+                        android:lineSpacingExtra="8sp"
                         android:text="Погрузись в удивительный мир пикселей!"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="25sp"
+                        android:textSize="28sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/imageView">
-                    </TextView>
+                        app:layout_constraintTop_toBottomOf="@+id/imageView"></TextView>
 
                     <LinearLayout
                         android:id="@+id/linearLayout2"

@@ -13,6 +13,7 @@ import android.os.Looper
 import android.provider.MediaStore
 import android.view.animation.AnticipateOvershootInterpolator
 import android.widget.ImageView
+import android.widget.RadioGroup
 import android.widget.RelativeLayout
 import android.widget.SeekBar
 import android.widget.TextView
@@ -29,6 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
+import com.example.hitsmobile.filters.ColorFilters
 import com.example.hitsmobile.filters.FilterListener
 import com.example.hitsmobile.filters.FilterViewAdapter
 import com.example.hitsmobile.filters.PhotoFilter
@@ -39,7 +41,10 @@ import java.io.IOException
 import java.util.concurrent.Executors
 
 
-class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
+open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
+    /*Храним изображение, которое обрабатываем*/
+    private lateinit var currImg: Bitmap
+
     /*Скролл для алгоритмов*/
     private lateinit var rvTools: RecyclerView
     private val toolsAdapter = ToolsAdapter(this)
@@ -84,6 +89,9 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
     /*Отправка фото*/
     private lateinit var shareBtn : ImageView
 
+    /*Отслеживаем переключения для изменения размера фото*/
+    private lateinit var radio : RadioGroup
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,6 +114,7 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
 
                 handler.post {
                     imageView.setImageBitmap(image)
+                    currImg = (image as Bitmap?)!!
                 }
             }
             catch (e: Exception) {
@@ -211,6 +220,12 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
             startActivity(Intent.createChooser(intent, "Share"))
         }
 
+        /*Отслеживаем переключения для изменения размера фото*/
+        radio = findViewById(R.id.radio_group)
+        radio.setOnCheckedChangeListener{ _, checkedId ->
+            seekBarResize.setProgress(1)
+        }
+
         /*Отслеживаем изменения ползунка для поворота*/
         seekBarRotate.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
@@ -280,12 +295,17 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
             }
 
             img.setImageBitmap(bitmap)
+
+            if (bitmap != null) {
+                currImg = bitmap
+            }
         }
 
         else if(requestCode == CAMERA_REQUEST && resultCode == RESULT_OK){
             try {
                 if (data != null) {
                     img.setImageBitmap(data.extras?.get("data") as Bitmap)
+                    currImg = data.extras?.get("data") as Bitmap
                 }
 
             } catch (e: IOException) {
@@ -294,8 +314,34 @@ class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
         }
     }
 
+    /*Применяем фильтры*/
     override fun onFilterSelected(photoFilter: PhotoFilter) {
+        var newImg = findViewById<ImageView>(R.id.photoEditorView)
+        var filter = ColorFilters()
 
+        when (photoFilter) {
+            PhotoFilter.NONE -> {
+                newImg.setImageBitmap(currImg)
+            }
+            PhotoFilter.GREEN -> {
+                newImg.setImageBitmap(filter.toGreen(currImg))
+            }
+            PhotoFilter.BLUE -> {
+                newImg.setImageBitmap(filter.toBlue(currImg))
+            }
+            PhotoFilter.RED -> {
+                newImg.setImageBitmap(filter.toRed(currImg))
+            }
+            PhotoFilter.YELLOW -> {
+                newImg.setImageBitmap(filter.toYellow(currImg))
+            }
+            PhotoFilter.GRAYSCALE-> {
+                newImg.setImageBitmap(filter.toGray(currImg))
+            }
+            PhotoFilter.NEGATIVE -> {
+                newImg.setImageBitmap(filter.toNegative(currImg))
+            }
+        }
     }
 
     /*Отслеживаем выдвижные блоки*/
