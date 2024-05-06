@@ -31,7 +31,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import com.example.hitsmobile.filters.ColorFilters
-import com.example.hitsmobile.filters.FilterListener
 import com.example.hitsmobile.filters.FilterViewAdapter
 import com.example.hitsmobile.filters.PhotoFilter
 import com.example.hitsmobile.tools.ToolsAdapter
@@ -41,7 +40,7 @@ import java.io.IOException
 import java.util.concurrent.Executors
 
 
-open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterListener {
+open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter.FilterListener {
     /*Храним изображение, которое обрабатываем*/
     private lateinit var currImg: Bitmap
 

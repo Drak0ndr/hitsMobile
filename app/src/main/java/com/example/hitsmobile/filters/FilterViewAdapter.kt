@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hitsmobile.PhotoActivity
 import com.example.hitsmobile.R
 import com.example.hitsmobile.tools.ToolsType
 
@@ -18,9 +19,13 @@ import java.io.IOException
 import java.util.ArrayList
 
 
-class FilterViewAdapter(private val filterListener: FilterListener) :
+class FilterViewAdapter(private val filterListener: PhotoActivity) :
     RecyclerView.Adapter<FilterViewAdapter.ViewHolder>() {
     private val pairsList: MutableList<Pair<String, PhotoFilter>> = ArrayList()
+
+    interface FilterListener {
+        fun onFilterSelected(photoFilter: PhotoFilter)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_filters, parent, false)
@@ -31,7 +36,7 @@ class FilterViewAdapter(private val filterListener: FilterListener) :
         val filterPair = pairsList[position]
         val fromAsset = getBitmapFromAsset(holder.itemView.context, filterPair.first)
         holder.imageFilterView.setImageBitmap(fromAsset)
-        holder.txtFilterName.text = filterPair.second.name.replace("_", " ")
+        holder.txtFilterName.text = filterPair.second.name
     }
 
     override fun getItemCount(): Int {

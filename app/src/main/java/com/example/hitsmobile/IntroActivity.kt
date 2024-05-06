@@ -3,6 +3,8 @@ package com.example.hitsmobile
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionScene.Transition
