@@ -17,24 +17,7 @@ import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
 
-class Rotate: AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.test_rotate)
-        var img = findViewById<ImageView>(R.id.imageView)
-        var bitmap = (img.getDrawable() as BitmapDrawable).bitmap
-        var test = bitmap.getPixel(0,0)
-        var ans = rotateLeft(bitmap)
-        ans = rotateAny(bitmap, 45)
-        img.setImageBitmap(ans)
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-//            insets
-//        }
-
-    }
+class Rotate: PhotoActivity() {
     fun rotateRight(bitmap: Bitmap): Bitmap {
         var rotatedBitmap = Bitmap.createBitmap(bitmap.height, bitmap.width,Bitmap.Config.ARGB_8888)
         var width = bitmap.width
@@ -56,6 +39,7 @@ class Rotate: AppCompatActivity() {
         }
         return rotatedBitmap
     }
+
     fun rotateLeft(bitmap: Bitmap): Bitmap {
         var rotatedBitmap = Bitmap.createBitmap(bitmap.height, bitmap.width,Bitmap.Config.ARGB_8888)
         var width = bitmap.width
@@ -102,6 +86,7 @@ class Rotate: AppCompatActivity() {
 
         return ans
     }
+
     fun rotatefloat(bitmap: Bitmap, deg: Int): Bitmap {
         var rotatedBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height,Bitmap.Config.ARGB_8888)
         var arr = mutableListOf<MutableList<Float>>()
@@ -250,5 +235,4 @@ class Rotate: AppCompatActivity() {
         }
         return newBitmap
     }
-
 }

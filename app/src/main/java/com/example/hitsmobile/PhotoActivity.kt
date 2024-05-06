@@ -41,8 +41,9 @@ import java.util.concurrent.Executors
 
 
 open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter.FilterListener {
-    /*Храним изображение, которое обрабатываем*/
-    private lateinit var currImg: Bitmap
+    /*Кнопки для поворота*/
+    private lateinit var leftBtn: ImageView
+    private lateinit var rightBtn:ImageView
 
     /*Скролл для алгоритмов*/
     private lateinit var rvTools: RecyclerView
@@ -113,7 +114,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
                 handler.post {
                     imageView.setImageBitmap(image)
-                    currImg = (image as Bitmap?)!!
+                    MyVariables.currImg = (image as Bitmap?)!!
+                    MyVariables.rotateImg = (image as Bitmap?)!!
                 }
             }
             catch (e: Exception) {
@@ -219,6 +221,28 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             startActivity(Intent.createChooser(intent, "Share"))
         }
 
+        /*Поворот влево*/
+        leftBtn = findViewById(R.id.imgLeftRotate)
+        leftBtn.setOnClickListener(){
+            var newImg = findViewById<ImageView>(R.id.photoEditorView)
+            var rotate = Rotate()
+            var newRotate = rotate.rotateLeft(MyVariables.rotateImg)
+            newImg.setImageBitmap(newRotate)
+            MyVariables.rotateImg = rotate.rotateLeft(MyVariables.rotateImg)
+            MyVariables.currImg = rotate.rotateLeft(MyVariables.currImg)
+        }
+
+        /*Поворот вправо*/
+        rightBtn = findViewById(R.id.imgRightRotate)
+        rightBtn.setOnClickListener(){
+            var newImg = findViewById<ImageView>(R.id.photoEditorView)
+            var rotate = Rotate()
+            var newRotate = rotate.rotateRight(MyVariables.rotateImg)
+            newImg.setImageBitmap(newRotate)
+            MyVariables.rotateImg = rotate.rotateRight(MyVariables.rotateImg)
+            MyVariables.currImg = rotate.rotateRight(MyVariables.currImg)
+        }
+
         /*Отслеживаем переключения для изменения размера фото*/
         radio = findViewById(R.id.radio_group)
         radio.setOnCheckedChangeListener{ _, checkedId ->
@@ -233,7 +257,15 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
 
-            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                var newImg = findViewById<ImageView>(R.id.photoEditorView)
+                var rotate = Rotate()
+                var newRotate = rotate.rotateAny(MyVariables.rotateImg, seekBarRotate.progress)
+                newImg.setImageBitmap(newRotate)
+                MyVariables.rotateImg = rotate.rotateAny(MyVariables.rotateImg, seekBarRotate.progress)
+                MyVariables.currImg = rotate.rotateAny(MyVariables.currImg, seekBarRotate.progress)
+                seekBarRotate.progress = 0
+            }
         })
 
         /*Отслеживаем изменения ползунка для изменения размера*/
@@ -296,7 +328,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             img.setImageBitmap(bitmap)
 
             if (bitmap != null) {
-                currImg = bitmap
+                MyVariables.currImg = bitmap
+                MyVariables.rotateImg = bitmap
             }
         }
 
@@ -304,7 +337,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             try {
                 if (data != null) {
                     img.setImageBitmap(data.extras?.get("data") as Bitmap)
-                    currImg = data.extras?.get("data") as Bitmap
+                    MyVariables.currImg = data.extras?.get("data") as Bitmap
+                    MyVariables.rotateImg = data.extras?.get("data") as Bitmap
                 }
 
             } catch (e: IOException) {
@@ -320,25 +354,33 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
         when (photoFilter) {
             PhotoFilter.NONE -> {
-                newImg.setImageBitmap(currImg)
+                newImg.setImageBitmap(MyVariables.currImg)
+                MyVariables.rotateImg = MyVariables.currImg
             }
             PhotoFilter.GREEN -> {
-                newImg.setImageBitmap(filter.toGreen(currImg))
+                newImg.setImageBitmap(filter.toGreen(MyVariables.currImg))
+                MyVariables.rotateImg = filter.toGreen(MyVariables.currImg)
             }
             PhotoFilter.BLUE -> {
-                newImg.setImageBitmap(filter.toBlue(currImg))
+                newImg.setImageBitmap(filter.toBlue(MyVariables.currImg))
+                MyVariables.rotateImg = filter.toBlue(MyVariables.currImg)
             }
             PhotoFilter.RED -> {
-                newImg.setImageBitmap(filter.toRed(currImg))
+                newImg.setImageBitmap(filter.toRed(MyVariables.currImg))
+                MyVariables.rotateImg = filter.toRed(MyVariables.currImg)
             }
             PhotoFilter.YELLOW -> {
-                newImg.setImageBitmap(filter.toYellow(currImg))
+                newImg.setImageBitmap(filter.toYellow(MyVariables.currImg))
+                MyVariables.rotateImg = filter.toYellow(MyVariables.currImg)
             }
             PhotoFilter.GRAYSCALE-> {
-                newImg.setImageBitmap(filter.toGray(currImg))
+                newImg.setImageBitmap(filter.toGray(MyVariables.currImg))
+                MyVariables.rotateImg = filter.toGray(MyVariables.currImg)
             }
+
             PhotoFilter.NEGATIVE -> {
-                newImg.setImageBitmap(filter.toNegative(currImg))
+                newImg.setImageBitmap(filter.toNegative(MyVariables.currImg))
+                MyVariables.rotateImg = filter.toNegative(MyVariables.currImg)
             }
         }
     }
@@ -436,5 +478,11 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
     companion object{
         private const val GALLERY_REQUEST = 1
         private const val CAMERA_REQUEST = 2
+    }
+
+    object MyVariables {
+        /*Храним изображение, которое обрабатываем*/
+        lateinit var currImg: Bitmap
+        lateinit var rotateImg: Bitmap
     }
 }
