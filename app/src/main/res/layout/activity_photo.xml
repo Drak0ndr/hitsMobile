@@ -304,20 +304,6 @@
             android:textColor="@color/white"
             android:textSize="16sp"/>
 
-        <TextView
-            android:id="@+id/imgOK"
-            android:layout_width="40dp"
-            android:layout_height="25dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:background="@color/green"
-            android:text="OK"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="10dp">
-        </TextView>
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

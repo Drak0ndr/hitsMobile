@@ -92,6 +92,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
     /*Отслеживаем переключения для изменения размера фото*/
     private lateinit var radio : RadioGroup
+    private var currRadio : Int = 1
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -248,6 +249,13 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         /*Отслеживаем переключения для изменения размера фото*/
         radio = findViewById(R.id.radio_group)
         radio.setOnCheckedChangeListener{ _, checkedId ->
+            if(currRadio == 1){
+                currRadio = 2
+            }
+            else{
+                currRadio = 1
+            }
+
             seekBarResize.setProgress(1)
         }
 
@@ -280,7 +288,25 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
 
-            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                var newImg = findViewById<ImageView>(R.id.photoEditorView)
+                var resize = Resize()
+
+                if(currRadio == 1){
+                    var newResize = resize.upScale(MyVariables.rotateImg, (seekBarResize.progress / 100).toFloat())
+                    newImg.setImageBitmap(newResize)
+                    MyVariables.rotateImg = resize.upScale(MyVariables.rotateImg, (seekBarResize.progress / 100).toFloat())
+                    MyVariables.currImg = resize.upScale(MyVariables.currImg, (seekBarResize.progress / 100).toFloat())
+                    seekBarResize.progress = 0
+                }
+                else{
+                    var newResize = resize.downScale(MyVariables.rotateImg, (seekBarResize.progress / 100).toFloat())
+                    newImg.setImageBitmap(newResize)
+                    MyVariables.rotateImg = resize.downScale(MyVariables.rotateImg, (seekBarResize.progress / 100).toFloat())
+                    MyVariables.currImg = resize.downScale(MyVariables.currImg, (seekBarResize.progress / 100).toFloat())
+                    seekBarResize.progress = 0
+                }
+            }
         })
     }
 
@@ -389,8 +415,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             }
 
             PhotoFilter.BLUR -> {
-                newImg.setImageBitmap(filter.gausBlur(MyVariables.currImg, 20f))
-                MyVariables.rotateImg = filter.gausBlur(MyVariables.currImg, 20f)
+                newImg.setImageBitmap(filter.gausBlur(MyVariables.currImg, 5f))
+                MyVariables.rotateImg = filter.gausBlur(MyVariables.currImg, 5f)
             }
         }
     }
