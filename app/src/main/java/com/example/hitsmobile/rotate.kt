@@ -1,12 +1,23 @@
 package com.example.hitsmobile
 
+import android.graphics.drawable.BitmapDrawable
+import android.os.Bundle
+import android.widget.ImageView
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import java.io.ByteArrayOutputStream
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.util.Log
+import androidx.core.graphics.set
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
+import kotlin.math.tan
 
 class Rotate: PhotoActivity() {
     fun rotateRight(bitmap: Bitmap): Bitmap {
