@@ -180,13 +180,13 @@ class ColorFilters: PhotoActivity() {
                         kernelCoef+= kernel[y][x]
                         x++
                     }
-                    tempRed = (tempRed / kernelCoef).toFloat()
-                    tempGreen = (tempGreen / kernelCoef).toFloat()
-                    tempBlue = (tempBlue / kernelCoef).toFloat()
-                    tempAlpha = (tempAlpha / kernelCoef).toFloat()
-                    newBitmap.setPixel(j,i, Color.argb(tempAlpha, tempRed, tempGreen, tempBlue))
                     y++
                 }
+                tempRed = (tempRed / kernelCoef).toFloat()
+                tempGreen = (tempGreen / kernelCoef).toFloat()
+                tempBlue = (tempBlue / kernelCoef).toFloat()
+                tempAlpha = (tempAlpha / kernelCoef).toFloat()
+                newBitmap.setPixel(j,i, Color.argb(tempAlpha, tempRed, tempGreen, tempBlue))
                 j++
             }
             i++

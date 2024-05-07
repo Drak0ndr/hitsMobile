@@ -389,8 +389,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             }
 
             PhotoFilter.BLUR -> {
-                newImg.setImageBitmap(filter.gausBlur(MyVariables.currImg, toFloat(7)))
-                MyVariables.rotateImg = filter.gausBlur(MyVariables.currImg, toFloat(7))
+                newImg.setImageBitmap(filter.gausBlur(MyVariables.currImg, 20f))
+                MyVariables.rotateImg = filter.gausBlur(MyVariables.currImg, 20f)
             }
         }
     }
