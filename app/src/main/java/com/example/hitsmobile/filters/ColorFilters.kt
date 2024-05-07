@@ -2,7 +2,11 @@ package com.example.hitsmobile.filters
 
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
+import android.widget.ImageView
 import com.example.hitsmobile.PhotoActivity
+import com.example.hitsmobile.R
+import kotlin.math.exp
 import kotlin.math.pow
 
 class ColorFilters: PhotoActivity() {
@@ -139,7 +143,7 @@ class ColorFilters: PhotoActivity() {
         var ans = (1 / (3.14 * sigma.pow(2)) * 2.71.pow(temp))
         return ans
     }
-    fun gausBlur(bitmap: Bitmap, r: Float): Bitmap {
+    fun gausBlur(bitmap: Bitmap, r:Float): Bitmap {
         var width = bitmap.width
         var height = bitmap.height
         var newBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)

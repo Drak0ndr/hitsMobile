@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
-import android.util.Half.toFloat
 import android.view.animation.AnticipateOvershootInterpolator
 import android.widget.ImageView
 import android.widget.RadioGroup
@@ -352,7 +351,6 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
     }
 
     /*Применяем фильтры*/
-    @SuppressLint("HalfFloat")
     override fun onFilterSelected(photoFilter: PhotoFilter) {
         var newImg = findViewById<ImageView>(R.id.photoEditorView)
         var filter = ColorFilters()
@@ -386,11 +384,6 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             PhotoFilter.NEGATIVE -> {
                 newImg.setImageBitmap(filter.toNegative(MyVariables.currImg))
                 MyVariables.rotateImg = filter.toNegative(MyVariables.currImg)
-            }
-
-            PhotoFilter.BLUR -> {
-                newImg.setImageBitmap(filter.gausBlur(MyVariables.currImg, toFloat(7)))
-                MyVariables.rotateImg = filter.gausBlur(MyVariables.currImg, toFloat(7))
             }
         }
     }
