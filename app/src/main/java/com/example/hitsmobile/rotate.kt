@@ -13,9 +13,11 @@ import android.graphics.Color
 import android.util.Log
 import androidx.core.graphics.set
 import kotlin.math.PI
+import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
+import kotlin.math.tan
 
 class Rotate: PhotoActivity() {
     fun rotateRight(bitmap: Bitmap): Bitmap {
@@ -133,12 +135,17 @@ class Rotate: PhotoActivity() {
     }
 
     fun rotateAny(bitmap: Bitmap, deg: Int): Bitmap {
-        var rotatedBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height,Bitmap.Config.ARGB_8888)
+
         var arr = mutableListOf<MutableList<Float>>()
         var y0 = bitmap.height /2
         var x0 = bitmap.width /2
         var angle = PI / 180 * deg
+        var newWidth = (x0 * cos(angle) + y0 * abs(sin(angle))).toInt() * 2
+        var newHeight = (y0 / cos(angle)).toInt() * 2
+        var rotatedBitmap = Bitmap.createBitmap(newWidth, newHeight ,Bitmap.Config.ARGB_8888)
         var y = 0
+        var xCenter = rotatedBitmap.width / 2
+        var yCenter = rotatedBitmap.height / 2
         while (y < bitmap.height) {
             var x = 0
             while (x < bitmap.width) {
@@ -169,8 +176,8 @@ class Rotate: PhotoActivity() {
                     }
                     i++
                 }
-                if ((x0 - bestX) < bitmap.width && (x0 - bestX) >= 0 && (y0 - bestY) < bitmap.height && (y0 - bestY) >= 0) {
-                    rotatedBitmap.setPixel(x0 - bestX, y0 -bestY, Color.argb(alfa, red, green, blue))
+                if ((xCenter - bestX) < rotatedBitmap.width && (xCenter - bestX) >= 0 && (yCenter - bestY) < rotatedBitmap.height && (yCenter - bestY) >= 0) {
+                    rotatedBitmap.setPixel(xCenter - bestX, yCenter -bestY, Color.argb(alfa, red, green, blue))
                 }
 
                 var data = mutableListOf(newX, newY, red, green, blue, alfa)
