@@ -35,6 +35,7 @@ android {
 }
 
 dependencies {
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -45,11 +46,6 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.activity)
     testImplementation(libs.junit)
-    testImplementation("junit:junit:4.12")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation("androidx.recyclerview:recyclerview:1.2.1")
-    implementation("com.google.android.material:material:1.3.0-alpha03")
-    implementation("com.google.android.material:material:1.4.0")
-    implementation("com.google.android.material:material:1.2.0-alpha05")
 }
