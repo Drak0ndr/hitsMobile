@@ -159,10 +159,10 @@ class ColorFilters: PhotoActivity() {
             i++
         }
 
-        i = mid
-        while (i < bitmap.height - mid) {
-            var j = mid
-            while (j < bitmap.width - mid) {
+        i = 0
+        while (i < bitmap.height) {
+            var j = 0
+            while (j < bitmap.width) {
                 var tempRed = 0f
                 var tempGreen = 0f
                 var tempBlue = 0f
@@ -172,12 +172,15 @@ class ColorFilters: PhotoActivity() {
                 while (y < len) {
                     var x = 0
                     while (x < len) {
-                        var tempColors = bitmap.getColor(j - mid + x, i - mid + y).components
-                        tempRed+= (tempColors[0] * kernel[y][x]).toFloat()
-                        tempGreen+= (tempColors[1] * kernel[y][x]).toFloat()
-                        tempBlue+= (tempColors[2] * kernel[y][x]).toFloat()
-                        tempAlpha+= (tempColors[3] * kernel[y][x]).toFloat()
-                        kernelCoef+= kernel[y][x]
+                        if ((j - mid + x) >= 0 && (j - mid + x) < bitmap.width && (i - mid + y) >= 0 && (i - mid + y) < bitmap.height) {
+                            var tempColors = bitmap.getColor(j - mid + x, i - mid + y).components
+                            tempRed+= (tempColors[0] * kernel[y][x]).toFloat()
+                            tempGreen+= (tempColors[1] * kernel[y][x]).toFloat()
+                            tempBlue+= (tempColors[2] * kernel[y][x]).toFloat()
+                            tempAlpha+= (tempColors[3] * kernel[y][x]).toFloat()
+                            kernelCoef+= kernel[y][x]
+                        }
+
                         x++
                     }
                     y++
