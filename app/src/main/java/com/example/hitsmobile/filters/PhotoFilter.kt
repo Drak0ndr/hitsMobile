@@ -6,5 +6,6 @@ enum class PhotoFilter {
     RED,
     YELLOW,
     GRAYSCALE,
-    NEGATIVE
+    NEGATIVE,
+    BLUR
 }
