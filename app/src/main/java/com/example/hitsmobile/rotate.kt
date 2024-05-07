@@ -137,7 +137,7 @@ class Rotate: PhotoActivity() {
         var arr = mutableListOf<MutableList<Float>>()
         var y0 = bitmap.height /2
         var x0 = bitmap.width /2
-        var angle = PI / 360 * deg
+        var angle = PI / 180 * deg
         var y = 0
         while (y < bitmap.height) {
             var x = 0

@@ -6,6 +6,8 @@ import android.graphics.drawable.BitmapDrawable
 import android.widget.ImageView
 import com.example.hitsmobile.PhotoActivity
 import com.example.hitsmobile.R
+import kotlin.math.exp
+import kotlin.math.pow
 
 class ColorFilters: PhotoActivity() {
     fun toGreen(bitmap: Bitmap): Bitmap {

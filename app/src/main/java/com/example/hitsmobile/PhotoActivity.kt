@@ -116,6 +116,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                     imageView.setImageBitmap(image)
                     MyVariables.currImg = (image as Bitmap?)!!
                     MyVariables.rotateImg = (image as Bitmap?)!!
+                    MyVariables.firstImg = (image as Bitmap?)!!
                 }
             }
             catch (e: Exception) {
@@ -330,6 +331,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             if (bitmap != null) {
                 MyVariables.currImg = bitmap
                 MyVariables.rotateImg = bitmap
+                MyVariables.firstImg = bitmap
             }
         }
 
@@ -339,6 +341,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                     img.setImageBitmap(data.extras?.get("data") as Bitmap)
                     MyVariables.currImg = data.extras?.get("data") as Bitmap
                     MyVariables.rotateImg = data.extras?.get("data") as Bitmap
+                    MyVariables.firstImg = data.extras?.get("data") as Bitmap
                 }
 
             } catch (e: IOException) {
@@ -484,5 +487,6 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         /*Храним изображение, которое обрабатываем*/
         lateinit var currImg: Bitmap
         lateinit var rotateImg: Bitmap
+        lateinit var firstImg : Bitmap
     }
 }
