@@ -10,4 +10,5 @@
     <color name="main_bg">#19191b</color>
     <color name="pink">#e45eb0</color>
     <color name="green">#34e3c4</color>
+    <color name="semi_black_transparent">#99000000</color>
 </resources>
