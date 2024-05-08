@@ -1,13 +1,11 @@
-/build
-/.idea
-/caches
-/local.properties
+build/
+.idea/
+caches/
 .DS_Store
-/build
 /captures
 .externalNativeBuild
 .cxx
 .local.properties
 local.properties
-/.gradle
+.gradle/
 *.log

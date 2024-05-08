@@ -196,4 +196,74 @@ class ColorFilters: PhotoActivity() {
         }
         return newBitmap
     }
+
+    fun normalizeColor(color:Float):Float {
+        var newColor = color
+        if (newColor > 1) {
+            newColor = 1f
+        }
+        if (newColor < 0) {
+            newColor = 0f
+        }
+
+        return newColor
+    }
+    fun changeContrast(bitmap: Bitmap, k: Float): Bitmap {
+        var width = bitmap.width
+        var height = bitmap.height
+        var newBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+
+        var minBright = 1f
+        var maxBright = 0f
+
+        var i = 0
+        while (i < height) {
+            var j = 0
+            while (j < width) {
+                var colorPixel = bitmap.getColor(j, i).components
+                var red = colorPixel[0]
+                var green = colorPixel[1]
+                var blue = colorPixel[2]
+                var alfa = colorPixel[3]
+                var bright = 0.2126f * red + 0.7152f * green + 0.0722f * blue
+
+                if (bright > maxBright) {
+                    maxBright = bright
+                }
+                if (bright < minBright) {
+                    minBright = bright
+                }
+                j++
+            }
+            i++
+        }
+
+        var contrast = (maxBright - minBright) / (maxBright + minBright) * 255
+        var coef = (contrast + k) / contrast
+
+        i = 0
+        while (i < height) {
+            var j = 0
+            while (j < width) {
+                var colorPixel = bitmap.getColor(j, i).components
+                var red = colorPixel[0]
+                var green = colorPixel[1]
+                var blue = colorPixel[2]
+                var alfa = colorPixel[3]
+
+                red = (red - 0.5f) * coef + 0.5f
+                green = (green - 0.5f) * coef + 0.5f
+                blue = (blue - 0.5f) * coef + 0.5f
+
+                red = normalizeColor(red)
+                green = normalizeColor(green)
+                blue = normalizeColor(blue)
+
+                newBitmap.setPixel(j,i,Color.argb(alfa, red, green, blue))
+                j++
+            }
+            i++
+        }
+        return newBitmap
+    }
 }
