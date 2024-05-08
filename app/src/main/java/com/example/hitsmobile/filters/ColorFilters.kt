@@ -4,9 +4,10 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import com.example.hitsmobile.PhotoActivity
 import kotlin.math.pow
+import kotlinx.coroutines.*
 
 class ColorFilters: PhotoActivity() {
-    fun toGreen(bitmap: Bitmap): Bitmap {
+   suspend fun toGreen(bitmap: Bitmap): Bitmap {
         var width = bitmap.width
         var height = bitmap.height
         var newBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
@@ -27,7 +28,7 @@ class ColorFilters: PhotoActivity() {
         return newBitmap
     }
 
-    fun toBlue(bitmap: Bitmap): Bitmap {
+    suspend fun toBlue(bitmap: Bitmap): Bitmap {
         var width = bitmap.width
         var height = bitmap.height
         var newBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
@@ -48,7 +49,7 @@ class ColorFilters: PhotoActivity() {
         return newBitmap
     }
 
-    fun toRed(bitmap: Bitmap): Bitmap {
+    suspend fun toRed(bitmap: Bitmap): Bitmap {
         var width = bitmap.width
         var height = bitmap.height
         var newBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
@@ -69,7 +70,7 @@ class ColorFilters: PhotoActivity() {
         return newBitmap
     }
 
-    fun toYellow(bitmap: Bitmap): Bitmap {
+    suspend fun toYellow(bitmap: Bitmap): Bitmap {
         var width = bitmap.width
         var height = bitmap.height
         var newBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
@@ -90,7 +91,7 @@ class ColorFilters: PhotoActivity() {
         }
         return newBitmap
     }
-    fun toNegative(bitmap: Bitmap): Bitmap {
+    suspend fun toNegative(bitmap: Bitmap): Bitmap {
         var width = bitmap.width
         var height = bitmap.height
         var newBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
@@ -112,7 +113,7 @@ class ColorFilters: PhotoActivity() {
         }
         return newBitmap
     }
-    fun toGray(bitmap: Bitmap): Bitmap {
+    suspend fun toGray(bitmap: Bitmap): Bitmap {
         var width = bitmap.width
         var height = bitmap.height
         var newBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
@@ -134,12 +135,12 @@ class ColorFilters: PhotoActivity() {
         }
         return newBitmap
     }
-    fun gaussian(sigma: Float, y:Int,x:Int): Double {
+     fun gaussian(sigma: Float, y:Int,x:Int): Double {
         var temp =  (- (x*x + y*y) / (2 * sigma.pow(2))).toDouble()
         var ans = (1 / (3.14 * sigma.pow(2)) * 2.71.pow(temp))
         return ans
     }
-    fun gausBlur(bitmap: Bitmap, r: Float): Bitmap {
+    suspend fun gausBlur(bitmap: Bitmap, r: Float): Bitmap {
         var width = bitmap.width
         var height = bitmap.height
         var newBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
@@ -208,7 +209,7 @@ class ColorFilters: PhotoActivity() {
 
         return newColor
     }
-    fun changeContrast(bitmap: Bitmap, k: Float): Bitmap {
+    suspend fun changeContrast(bitmap: Bitmap, k: Float): Bitmap {
         var width = bitmap.width
         var height = bitmap.height
         var newBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
@@ -243,6 +244,7 @@ class ColorFilters: PhotoActivity() {
 
         i = 0
         while (i < height) {
+
             var j = 0
             while (j < width) {
                 var colorPixel = bitmap.getColor(j, i).components
@@ -262,8 +264,10 @@ class ColorFilters: PhotoActivity() {
                 newBitmap.setPixel(j,i,Color.argb(alfa, red, green, blue))
                 j++
             }
-            i++
+
+            i+=1
         }
         return newBitmap
     }
+
 }

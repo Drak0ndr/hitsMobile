@@ -52,4 +52,5 @@ dependencies {
     implementation("com.google.android.material:material:1.3.0-alpha03")
     implementation("com.google.android.material:material:1.4.0")
     implementation("com.google.android.material:material:1.2.0-alpha05")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4")
 }

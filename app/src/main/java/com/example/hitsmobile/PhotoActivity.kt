@@ -39,7 +39,7 @@ import com.example.hitsmobile.tools.ToolsAdapter.OnItemSelected
 import com.example.hitsmobile.tools.ToolsType
 import java.io.IOException
 import java.util.concurrent.Executors
-
+import kotlinx.coroutines.*
 
 open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter.FilterListener {
     /*Кнопки для поворота*/
@@ -385,47 +385,87 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 MyVariables.rotateImg = MyVariables.currImg
             }
             PhotoFilter.GREEN -> {
-                filterImg = filter.toGreen(MyVariables.currImg)
-                newImg.setImageBitmap(filterImg)
-                MyVariables.rotateImg = filterImg
+                runBlocking {
+                    launch(Dispatchers.Default) {
+                        filterImg = filter.toGreen(MyVariables.currImg)
+                        newImg.setImageBitmap(filterImg)
+                        MyVariables.rotateImg = filterImg
+                    }
+                }
+
             }
             PhotoFilter.BLUE -> {
-                filterImg = filter.toBlue(MyVariables.currImg)
-                newImg.setImageBitmap(filterImg)
-                MyVariables.rotateImg = filterImg
+                runBlocking {
+                    launch(Dispatchers.Default) {
+                        filterImg = filter.toBlue(MyVariables.currImg)
+                        newImg.setImageBitmap(filterImg)
+                        MyVariables.rotateImg = filterImg
+                    }
+                }
+
             }
             PhotoFilter.RED -> {
-                filterImg = filter.toRed(MyVariables.currImg)
-                newImg.setImageBitmap(filterImg)
-                MyVariables.rotateImg = filterImg
+                runBlocking {
+                    launch(Dispatchers.Default) {
+                        filterImg = filter.toRed(MyVariables.currImg)
+                        newImg.setImageBitmap(filterImg)
+                        MyVariables.rotateImg = filterImg
+                    }
+                }
+
             }
             PhotoFilter.YELLOW -> {
-                filterImg = filter.toYellow(MyVariables.currImg)
-                newImg.setImageBitmap(filterImg)
-                MyVariables.rotateImg = filterImg
+                runBlocking{
+                    launch(Dispatchers.Default) {
+                        filterImg = filter.toYellow(MyVariables.currImg)
+                        newImg.setImageBitmap(filterImg)
+                        MyVariables.rotateImg = filterImg
+                    }
+                }
+
             }
             PhotoFilter.GRAYSCALE-> {
-                filterImg = filter.toGray(MyVariables.currImg)
-                newImg.setImageBitmap(filterImg)
-                MyVariables.rotateImg = filterImg
+                runBlocking {
+                    launch(Dispatchers.Default) {
+                        filterImg = filter.toGray(MyVariables.currImg)
+                        newImg.setImageBitmap(filterImg)
+                        MyVariables.rotateImg = filterImg
+                    }
+                }
+
             }
 
             PhotoFilter.NEGATIVE -> {
-                filterImg = filter.toNegative(MyVariables.currImg)
-                newImg.setImageBitmap(filterImg)
-                MyVariables.rotateImg = filterImg
+                runBlocking {
+                    launch {
+                        filterImg = filter.toNegative(MyVariables.currImg)
+                        newImg.setImageBitmap(filterImg)
+                        MyVariables.rotateImg = filterImg
+                    }
+                }
+
             }
 
             PhotoFilter.BLUR -> {
-                filterImg = filter.gausBlur(MyVariables.currImg, 5f)
-                newImg.setImageBitmap(filterImg)
-                MyVariables.rotateImg = filterImg
+                runBlocking {
+                    launch(Dispatchers.Default) {
+                        filterImg = filter.gausBlur(MyVariables.currImg, 5f)
+                        newImg.setImageBitmap(filterImg)
+                        MyVariables.rotateImg = filterImg
+                    }
+                }
+
             }
 
             PhotoFilter.CONTRAST -> {
-                filterImg = filter.changeContrast(MyVariables.currImg, 100f)
-                newImg.setImageBitmap(filterImg)
-                MyVariables.rotateImg = filterImg
+                runBlocking {
+                    launch(Dispatchers.Default) {
+                        filterImg = filter.changeContrast(MyVariables.currImg, 100f)
+                        newImg.setImageBitmap(filterImg)
+                        MyVariables.rotateImg = filterImg
+                    }
+                }
+
             }
         }
     }
