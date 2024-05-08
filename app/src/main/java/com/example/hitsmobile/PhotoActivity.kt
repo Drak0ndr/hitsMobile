@@ -119,6 +119,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                     MyVariables.currImg = (image as Bitmap?)!!
                     MyVariables.rotateImg = (image as Bitmap?)!!
                     MyVariables.firstImg = (image as Bitmap?)!!
+                    imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
                 }
             }
             catch (e: Exception) {
@@ -354,6 +355,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             }
 
             img.setImageBitmap(bitmap)
+            img.scaleType = ImageView.ScaleType.CENTER_INSIDE
 
             if (bitmap != null) {
                 MyVariables.currImg = bitmap
@@ -369,6 +371,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                     MyVariables.currImg = data.extras?.get("data") as Bitmap
                     MyVariables.rotateImg = data.extras?.get("data") as Bitmap
                     MyVariables.firstImg = data.extras?.get("data") as Bitmap
+                    img.scaleType = ImageView.ScaleType.CENTER_CROP
                 }
 
             } catch (e: IOException) {
