@@ -117,8 +117,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 handler.post {
                     imageView.setImageBitmap(image)
                     MyVariables.currImg = (image as Bitmap?)!!
-                    MyVariables.rotateImg = (image as Bitmap?)!!
-                    MyVariables.firstImg = (image as Bitmap?)!!
+                    MyVariables.rotateImg = MyVariables.currImg
                     imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
                 }
             }
@@ -230,9 +229,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         leftBtn.setOnClickListener(){
             var newImg = findViewById<ImageView>(R.id.photoEditorView)
             var rotate = Rotate()
-            var newRotate = rotate.rotateLeft(MyVariables.rotateImg)
-            newImg.setImageBitmap(newRotate)
             MyVariables.rotateImg = rotate.rotateLeft(MyVariables.rotateImg)
+            newImg.setImageBitmap(MyVariables.rotateImg)
             MyVariables.currImg = rotate.rotateLeft(MyVariables.currImg)
         }
 
@@ -241,9 +239,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         rightBtn.setOnClickListener(){
             var newImg = findViewById<ImageView>(R.id.photoEditorView)
             var rotate = Rotate()
-            var newRotate = rotate.rotateRight(MyVariables.rotateImg)
-            newImg.setImageBitmap(newRotate)
             MyVariables.rotateImg = rotate.rotateRight(MyVariables.rotateImg)
+            newImg.setImageBitmap(MyVariables.rotateImg)
             MyVariables.currImg = rotate.rotateRight(MyVariables.currImg)
         }
 
@@ -271,9 +268,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             override fun onStopTrackingTouch(seekBar: SeekBar) {
                 var newImg = findViewById<ImageView>(R.id.photoEditorView)
                 var rotate = Rotate()
-                var newRotate = rotate.rotateAny(MyVariables.rotateImg, seekBarRotate.progress)
-                newImg.setImageBitmap(newRotate)
                 MyVariables.rotateImg = rotate.rotateAny(MyVariables.rotateImg, seekBarRotate.progress)
+                newImg.setImageBitmap(MyVariables.rotateImg)
                 MyVariables.currImg = rotate.rotateAny(MyVariables.currImg, seekBarRotate.progress)
                 seekBarRotate.progress = 0
             }
@@ -294,16 +290,14 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 var resize = Resize()
 
                 if(currRadio == 1){
-                    var newResize = resize.upScale(MyVariables.rotateImg, (seekBarResize.progress / 100).toFloat())
-                    newImg.setImageBitmap(newResize)
                     MyVariables.rotateImg = resize.upScale(MyVariables.rotateImg, (seekBarResize.progress / 100).toFloat())
+                    newImg.setImageBitmap(MyVariables.rotateImg)
                     MyVariables.currImg = resize.upScale(MyVariables.currImg, (seekBarResize.progress / 100).toFloat())
                     seekBarResize.progress = 0
                 }
                 else{
-                    var newResize = resize.downScale(MyVariables.rotateImg, (seekBarResize.progress / 100).toFloat())
-                    newImg.setImageBitmap(newResize)
                     MyVariables.rotateImg = resize.downScale(MyVariables.rotateImg, (seekBarResize.progress / 100).toFloat())
+                    newImg.setImageBitmap(MyVariables.rotateImg)
                     MyVariables.currImg = resize.downScale(MyVariables.currImg, (seekBarResize.progress / 100).toFloat())
                     seekBarResize.progress = 0
                 }
@@ -359,8 +353,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
             if (bitmap != null) {
                 MyVariables.currImg = bitmap
-                MyVariables.rotateImg = bitmap
-                MyVariables.firstImg = bitmap
+                MyVariables.rotateImg = MyVariables.currImg
             }
         }
 
@@ -369,9 +362,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 if (data != null) {
                     img.setImageBitmap(data.extras?.get("data") as Bitmap)
                     MyVariables.currImg = data.extras?.get("data") as Bitmap
-                    MyVariables.rotateImg = data.extras?.get("data") as Bitmap
-                    MyVariables.firstImg = data.extras?.get("data") as Bitmap
-                    img.scaleType = ImageView.ScaleType.CENTER_CROP
+                    MyVariables.rotateImg = MyVariables.currImg
+                    img.scaleType = ImageView.ScaleType.FIT_CENTER
                 }
 
             } catch (e: IOException) {
@@ -385,6 +377,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
     override fun onFilterSelected(photoFilter: PhotoFilter) {
         var newImg = findViewById<ImageView>(R.id.photoEditorView)
         var filter = ColorFilters()
+        var filterImg : Bitmap
 
         when (photoFilter) {
             PhotoFilter.NONE -> {
@@ -392,39 +385,47 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 MyVariables.rotateImg = MyVariables.currImg
             }
             PhotoFilter.GREEN -> {
-                newImg.setImageBitmap(filter.toGreen(MyVariables.currImg))
-                MyVariables.rotateImg = filter.toGreen(MyVariables.currImg)
+                filterImg = filter.toGreen(MyVariables.currImg)
+                newImg.setImageBitmap(filterImg)
+                MyVariables.rotateImg = filterImg
             }
             PhotoFilter.BLUE -> {
-                newImg.setImageBitmap(filter.toBlue(MyVariables.currImg))
-                MyVariables.rotateImg = filter.toBlue(MyVariables.currImg)
+                filterImg = filter.toBlue(MyVariables.currImg)
+                newImg.setImageBitmap(filterImg)
+                MyVariables.rotateImg = filterImg
             }
             PhotoFilter.RED -> {
-                newImg.setImageBitmap(filter.toRed(MyVariables.currImg))
-                MyVariables.rotateImg = filter.toRed(MyVariables.currImg)
+                filterImg = filter.toRed(MyVariables.currImg)
+                newImg.setImageBitmap(filterImg)
+                MyVariables.rotateImg = filterImg
             }
             PhotoFilter.YELLOW -> {
-                newImg.setImageBitmap(filter.toYellow(MyVariables.currImg))
-                MyVariables.rotateImg = filter.toYellow(MyVariables.currImg)
+                filterImg = filter.toYellow(MyVariables.currImg)
+                newImg.setImageBitmap(filterImg)
+                MyVariables.rotateImg = filterImg
             }
             PhotoFilter.GRAYSCALE-> {
-                newImg.setImageBitmap(filter.toGray(MyVariables.currImg))
-                MyVariables.rotateImg = filter.toGray(MyVariables.currImg)
+                filterImg = filter.toGray(MyVariables.currImg)
+                newImg.setImageBitmap(filterImg)
+                MyVariables.rotateImg = filterImg
             }
 
             PhotoFilter.NEGATIVE -> {
-                newImg.setImageBitmap(filter.toNegative(MyVariables.currImg))
-                MyVariables.rotateImg = filter.toNegative(MyVariables.currImg)
+                filterImg = filter.toNegative(MyVariables.currImg)
+                newImg.setImageBitmap(filterImg)
+                MyVariables.rotateImg = filterImg
             }
 
             PhotoFilter.BLUR -> {
-                newImg.setImageBitmap(filter.gausBlur(MyVariables.currImg, 5f))
-                MyVariables.rotateImg = filter.gausBlur(MyVariables.currImg, 5f)
+                filterImg = filter.gausBlur(MyVariables.currImg, 5f)
+                newImg.setImageBitmap(filterImg)
+                MyVariables.rotateImg = filterImg
             }
 
             PhotoFilter.CONTRAST -> {
-                newImg.setImageBitmap(filter.changeContrast(MyVariables.currImg, 100f))
-                MyVariables.rotateImg = filter.changeContrast(MyVariables.currImg, 100f)
+                filterImg = filter.changeContrast(MyVariables.currImg, 100f)
+                newImg.setImageBitmap(filterImg)
+                MyVariables.rotateImg = filterImg
             }
         }
     }
@@ -528,6 +529,5 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         /*Храним изображение, которое обрабатываем*/
         lateinit var currImg: Bitmap
         lateinit var rotateImg: Bitmap
-        lateinit var firstImg : Bitmap
     }
 }
