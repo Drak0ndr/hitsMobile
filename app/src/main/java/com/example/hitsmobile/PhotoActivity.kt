@@ -418,6 +418,11 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 newImg.setImageBitmap(filter.gausBlur(MyVariables.currImg, 5f))
                 MyVariables.rotateImg = filter.gausBlur(MyVariables.currImg, 5f)
             }
+
+            PhotoFilter.CONTRAST -> {
+                newImg.setImageBitmap(filter.changeContrast(MyVariables.currImg, 100f))
+                MyVariables.rotateImg = filter.changeContrast(MyVariables.currImg, 100f)
+            }
         }
     }
 
