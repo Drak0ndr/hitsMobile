@@ -48,12 +48,11 @@ class PhotoImageView(context: Context, attrs: AttributeSet) : androidx.appcompat
                 Log.d("jj", "$PictureWidth, $PictureHeight, $ViewWidth, $ViewHeight")
 
                 var k = PictureWidth.toDouble() / ViewWidth.toDouble()
-                var cX = PictureWidth.toDouble() / ViewWidth.toDouble() * x.toDouble()
-                var cY = PictureHeight.toDouble()/ ViewHeight.toDouble() * y.toDouble()
+                var cX = k * x.toDouble()
+                var cY = k * y.toDouble()
                 Log.d("нажатие", "X: $cX, Y: $cY")
-                var retouch = Retouch()
 
-                imageView.setImageBitmap(retouch.blur(PhotoActivity.MyVariables.currImg, 5f, 5f, cX.toInt(), cY.toInt()))
+
                 return true
             }
         }

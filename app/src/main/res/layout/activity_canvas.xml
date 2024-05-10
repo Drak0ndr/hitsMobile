@@ -176,38 +176,19 @@
             <LinearLayout
                 android:id="@+id/linearColors"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:visibility="gone">
 
-
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/pointsBtn"
-                        android:layout_width="140dp"
-                        android:layout_height="35dp"
-                        android:background="@drawable/btn_bg"
-                        android:text="Поставить точки"
-                        android:layout_marginLeft="40dp"
-                        android:textSize="11sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-                    </androidx.appcompat.widget.AppCompatButton>
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/startBtn"
-                        android:layout_width="140dp"
-                        android:layout_height="35dp"
-                        android:background="@drawable/btn_bg"
-                        android:layout_marginRight="40dp"
-                        android:text="Создать сплайны"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:textSize="11sp">
-                    </androidx.appcompat.widget.AppCompatButton>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewColors"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/main_bg"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:listitem="@layout/recyclerview_colors" />
 
             </LinearLayout>
 

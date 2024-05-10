@@ -4,23 +4,42 @@ import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.hitsmobile.canvas.Colors
+import com.example.hitsmobile.canvas.ColorsAdapter
 import com.example.hitsmobile.canvas.DrawView
+import com.example.hitsmobile.canvas.DrawView.Companion.isSpline
+import com.example.hitsmobile.filters.ColorFilters
+import com.example.hitsmobile.filters.PhotoFilter
+import com.example.hitsmobile.tools.ToolsAdapter
 import com.google.android.material.slider.RangeSlider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.io.OutputStream
 
 
-class CanvasActivity : AppCompatActivity() {
+class CanvasActivity : AppCompatActivity(), ColorsAdapter.OnItemSelected {
+    /*Скролл для выбора цвета*/
+    private lateinit var rvColors: RecyclerView
+    private val colorsAdapter = ColorsAdapter(this)
+
     /*Блок для рисования*/
     private lateinit var paint: DrawView
 
@@ -51,10 +70,24 @@ class CanvasActivity : AppCompatActivity() {
     /*Блок для сплайнов*/
     private lateinit var linearSpline: LinearLayout
 
+    /*Блок для выбора цвета*/
+    private lateinit var linearColors: LinearLayout
+
+    /*Кнопка для расставления точек*/
+    public lateinit var pointsBtn : AppCompatButton
+
+    /*Кнопка для алгоритма сплайна*/
+    public lateinit var startBtn : AppCompatButton
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_canvas)
+
+        /*Адаптер для выбора цвета*/
+        rvColors = findViewById(R.id.recyclerViewColors)
+        rvColors.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rvColors.adapter = colorsAdapter
 
         /*Блок для рисования*/
         paint = findViewById(R.id.draw_view)
@@ -97,6 +130,25 @@ class CanvasActivity : AppCompatActivity() {
             startActivity(Intent.createChooser(intent, "Share"))
         }
 
+        /*Кнопка для расставления точек*/
+        pointsBtn = findViewById(R.id.pointsBtn)
+        pointsBtn.setOnClickListener{
+            if(!isSpline){
+                pointsBtn.setBackground(ContextCompat.getDrawable(this, R.drawable.pressed_btn))
+                isSpline = true
+            }
+            else{
+                pointsBtn.setBackground(ContextCompat.getDrawable(this, R.drawable.btn_bg))
+                isSpline = false
+            }
+        }
+
+        /*Кнопка для алгоритма сплайна*/
+        startBtn = findViewById(R.id.startBtn)
+        startBtn.setOnClickListener{
+
+        }
+
         /*Кнопка для выбора размера кисти*/
         strokeBtn = findViewById(R.id.imgStroke)
         strokeBtn.setOnClickListener {
@@ -122,9 +174,12 @@ class CanvasActivity : AppCompatActivity() {
                 linearSpline.visibility = View.GONE else linearSpline.visibility = View.VISIBLE
         }
 
+        /*Кнопка и блок для выбора цвета*/
+        linearColors = findViewById(R.id.linearColors)
         colorBtn = findViewById(R.id.imgColor)
         colorBtn.setOnClickListener {
-
+            if (linearColors.visibility == View.VISIBLE)
+                linearColors.visibility = View.GONE else linearColors.visibility = View.VISIBLE
         }
 
         /*Устанавливаем размер холста*/
@@ -137,5 +192,33 @@ class CanvasActivity : AppCompatActivity() {
                 paint.init(height, width)
             }
         })
+    }
+
+    override fun onColorSelected(colors: Colors) {
+        when (colors) {
+            Colors.BLACK -> {paint.setColor(Color.BLACK);}
+
+            Colors.BLUE -> {paint.setColor(Color.parseColor("#0000FF"));}
+
+            Colors.RED -> {paint.setColor(Color.parseColor("#FF0000"));}
+
+            Colors.GRAY -> {paint.setColor(Color.parseColor("#808080"));}
+
+            Colors.GREEN -> {paint.setColor(Color.parseColor("#00FF00"));}
+
+            Colors.ORANGE -> {paint.setColor(Color.parseColor("#FFA500"));}
+
+            Colors.PINK -> {paint.setColor(Color.parseColor("#e45eb0"));}
+
+            Colors.YELLOW -> {paint.setColor(Color.parseColor("#FFFF00"));}
+
+            Colors.BROWN -> {paint.setColor(Color.parseColor("#4E3524"));}
+
+            Colors.PURPLE -> {paint.setColor(Color.parseColor("#8031A7"));}
+
+            Colors.AZURE-> {paint.setColor(Color.parseColor("#008AD8"));}
+
+            Colors.DARKGREEN -> {paint.setColor(Color.parseColor("#19543E"));}
+        }
     }
 }
