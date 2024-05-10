@@ -5,15 +5,20 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
-import android.util.Half.toFloat
+import android.view.MotionEvent
+import android.view.View.MeasureSpec
 import android.view.animation.AnticipateOvershootInterpolator
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RadioGroup
 import android.widget.RelativeLayout
 import android.widget.SeekBar
@@ -25,21 +30,27 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.MotionEventCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
+import com.example.hitsmobile.algorithms.Resize
+import com.example.hitsmobile.algorithms.Rotate
 import com.example.hitsmobile.filters.ColorFilters
 import com.example.hitsmobile.filters.FilterViewAdapter
 import com.example.hitsmobile.filters.PhotoFilter
 import com.example.hitsmobile.tools.ToolsAdapter
 import com.example.hitsmobile.tools.ToolsAdapter.OnItemSelected
 import com.example.hitsmobile.tools.ToolsType
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.io.IOException
 import java.util.concurrent.Executors
-import kotlinx.coroutines.*
+
 
 open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter.FilterListener {
     /*Кнопки для поворота*/
@@ -70,16 +81,27 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
     /*Контейнер для поворота*/
     private lateinit var rlRotate: RelativeLayout
 
-    /*Контейнер для изменения размера*/
+    /*Контейнер для изменения размера фото*/
     private lateinit var rlResize: RelativeLayout
+
+    /*Контейнер для изменения ретуши*/
+    private lateinit var rlRetouch: RelativeLayout
 
     /*Ползунок для поворота*/
     private lateinit var seekBarRotate: SeekBar
     private lateinit var seekBarProgressRotate: TextView
 
-    /*Ползунок для изменения размера*/
+    /*Ползунок для изменения размера фото*/
     private lateinit var seekBarResize: SeekBar
     private lateinit var seekBarProgressResize: TextView
+
+    /*Ползунок для резкости ретуши*/
+    private lateinit var seekBarRetouchSharpness: SeekBar
+    private lateinit var currSharpness: TextView
+
+    /*Ползунок для радиуса ретуши*/
+    private lateinit var seekBarRetouchRadius: SeekBar
+    private lateinit var currRadius: TextView
 
     /*Кнопка домой*/
     private lateinit var homeBtn : ImageView
@@ -94,7 +116,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
     private lateinit var radio : RadioGroup
     private var currRadio : Int = 1
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint("MissingInflatedId", "ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -144,11 +166,22 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         /*Контейнер для изменения размера*/
         rlResize = findViewById(R.id.resizeBlock)
 
+        /*Контейнер для изменения ретуши*/
+        rlRetouch = findViewById(R.id.retouchBlock)
+
         /*Ползунок для поворота*/
         seekBarRotate = findViewById(R.id.seekBarRotate)
         seekBarProgressRotate = findViewById(R.id.progressBarCurr)
 
-        /*Ползунок для изменения размера*/
+        /*Ползунок для резкости ретуши*/
+        seekBarRetouchSharpness = findViewById(R.id.seekBarRetouchSharpness)
+        currSharpness = findViewById(R.id.currSharpness)
+
+        /*Ползунок для радиуса ретуши*/
+        seekBarRetouchRadius = findViewById(R.id.seekBarRetouchRadius)
+        currRadius = findViewById(R.id.currRadius)
+
+        /*Ползунок для изменения размера фото*/
         seekBarResize = findViewById(R.id.seekBarResize)
         seekBarProgressResize = findViewById(R.id.progressBarCurrResize)
 
@@ -256,6 +289,30 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
             seekBarResize.setProgress(1)
         }
+
+        /*Отслеживаем изменения ползунка для радиуса ретуши*/
+        seekBarRetouchRadius.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                currRadius.text = "$progress"
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+            }
+        })
+
+        /*Отслеживаем изменения ползунка для резкости ретуши*/
+        seekBarRetouchSharpness.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                currSharpness.text = "$progress"
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+            }
+        })
 
         /*Отслеживаем изменения ползунка для поворота*/
         seekBarRotate.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -496,7 +553,9 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         else if(currNumberBlock == 3){
             currBlock = rvFilters.id
         }
-
+        else if(currNumberBlock == 4){
+            currBlock = rlRetouch.id
+        }
 
         if (isVisible) {
             mConstraintSet.clear(currBlock, ConstraintSet.START)
@@ -552,6 +611,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
             ToolsType.RETOUCH -> {
                 currNumberBlock = 4
+                showFilter(true)
             }
 
             ToolsType.MASKING-> {

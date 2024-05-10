@@ -11,6 +11,9 @@ import androidx.core.view.WindowInsetsCompat
 class HomePageActivity : AppCompatActivity() {
     /*Переход на страницу с фото*/
     public lateinit var algorithmsBtn : AppCompatButton
+
+    /*Переход на страницу с рисованием*/
+    public lateinit var drawingBtn : AppCompatButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -25,6 +28,13 @@ class HomePageActivity : AppCompatActivity() {
         algorithmsBtn = findViewById(R.id.algorithmsBtn)
         algorithmsBtn.setOnClickListener(){
             val intent = Intent(this@HomePageActivity, PhotoActivity::class.java)
+            startActivity(intent)
+        }
+
+        /*Переход на страницу с рисованием*/
+        drawingBtn = findViewById(R.id.drawingBtn)
+        drawingBtn.setOnClickListener(){
+            val intent = Intent(this@HomePageActivity, CanvasActivity::class.java)
             startActivity(intent)
         }
     }

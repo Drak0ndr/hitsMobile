@@ -18,7 +18,8 @@
         app:layout_constraintTop_toTopOf="parent"
         android:background="@color/main_bg"
         android:scaleType="centerInside"
-        android:src="@drawable/white_background"/>
+        android:src="@drawable/white_background">
+    </ImageView>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -168,46 +169,45 @@
         <TextView
             android:id="@+id/progressBarMin"
             style="@style/TextAppearance.Material3.LabelLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
             android:layout_alignStart="@+id/seekBarRotate"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="14dp"
-            android:layout_marginBottom="14dp"
+            android:layout_marginBottom="8dp"
             android:orientation="vertical"
             android:text="-45"
             android:layout_marginLeft = "25dp"
             android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:textSize="20sp"
+            android:textAlignment="center"/>
 
         <TextView
             android:id="@+id/progressBarMax"
             style="@style/TextAppearance.Material3.LabelLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
             android:layout_alignEnd="@+id/seekBarRotate"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="14dp"
-            android:layout_marginBottom="14dp"
+            android:layout_marginBottom="8dp"
             android:orientation="vertical"
             android:text="45"
             android:layout_marginRight="25dp"
             android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:textSize="20sp"
+            android:textAlignment="center"/>
 
         <TextView
             android:id="@+id/progressBarCurr"
             style="@style/TextAppearance.Material3.LabelLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/seekBarRotate"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="14dp"
-            android:layout_marginBottom="14dp"
+            android:layout_marginBottom="8dp"
             android:layout_centerHorizontal="true"
             android:text="0"
             android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:textSize="20sp"
+            android:textAlignment="center"/>
 
     </RelativeLayout>
 
@@ -221,88 +221,306 @@
         app:layout_constraintStart_toStartOf="@+id/recyclerViewTools"
         app:layout_constraintTop_toTopOf="@+id/recyclerViewTools">
 
-        <RadioGroup
-            android:id="@+id/radio_group"
-            android:layout_width="260dp"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="0dp"
-            android:orientation="horizontal">
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:orientation="vertical">
 
-            <RadioButton
-                android:id="@+id/radio1"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <RadioGroup
+                    android:id="@+id/radio_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center">
+
+                        <RadioButton
+                            android:id="@+id/radio1"
+                            android:layout_width="150dp"
+                            android:layout_height="match_parent"
+                            android:checked="true"
+                            android:text="Увеличение"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            app:buttonTint="@color/green" />
+
+                        <RadioButton
+                            android:id="@+id/radio2"
+                            android:layout_width="150dp"
+                            android:layout_height="match_parent"
+                            android:text="Уменьшение"
+                            app:buttonTint="@color/green"
+                            android:textColor="@color/white"
+                            android:textSize="20sp" />
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center">
+
+                <SeekBar
+                    android:id="@+id/seekBarResize"
+                    android:layout_width="300dp"
+                    android:layout_height="12dp"
+                    android:layout_below="@+id/radio_group"
+                    android:max="1000"
+                    android:min="100"
+                    android:progress="100"
+                    android:progressDrawable="@drawable/seekbar_style"
+                    android:thumb="@drawable/seekbar_custom_thumb" />
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/progressBarMinResize"
+                    style="@style/TextAppearance.Material3.LabelLarge"
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="1.0"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:textAlignment="center"
+                    android:layout_marginLeft="70dp"/>
+
+                <TextView
+                    android:id="@+id/progressBarMaxResize"
+                    style="@style/TextAppearance.Material3.LabelLarge"
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="10.0"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:textAlignment="center"
+                    android:layout_marginRight="70dp"/>
+
+                <TextView
+                    android:id="@+id/progressBarCurrResize"
+                    style="@style/TextAppearance.Material3.LabelLarge"
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="1.0"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textAlignment="center"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/retouchBlock"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/main_bg"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewTools"
+        app:layout_constraintStart_toStartOf="@+id/recyclerViewTools"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewTools">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:checked="true"
-                android:text="Увеличение"
-                app:buttonTint="@color/green"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:orientation="vertical">
 
-            <RadioButton
-                android:id="@+id/radio2"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:text="Radius"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+                    android:gravity="center">
+                </TextView>
+
+                <SeekBar
+                    android:id="@+id/seekBarRetouchRadius"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:max="10"
+                    android:min="1"
+                    android:progress="5"
+                    android:progressDrawable="@drawable/seekbar_style"
+                    android:thumb="@drawable/seekbar_custom_thumb" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:text="1"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="30dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:text="10"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:layout_marginRight="30dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/currRadius"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:text="5"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+                    </TextView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Уменьшение"
-                app:buttonTint="@color/green"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
-        </RadioGroup>
+                android:orientation="vertical">
 
-        <SeekBar
-            android:id="@+id/seekBarResize"
-            android:layout_width="250dp"
-            android:layout_height="12dp"
-            android:layout_below="@+id/radio_group"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:max="1000"
-            android:min="100"
-            android:progress="100"
-            android:progressDrawable="@drawable/seekbar_style"
-            android:thumb="@drawable/seekbar_custom_thumb" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:text="Sharpness"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+                    android:gravity="center">
+                </TextView>
 
-        <TextView
-            android:id="@+id/progressBarMinResize"
-            style="@style/TextAppearance.Material3.LabelLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/seekBarResize"
-            android:layout_marginTop="15dp"
-            android:layout_alignTop="@+id/seekBarResize"
-            android:layout_marginLeft="15dp"
-            android:text="1.0"
-            android:textSize="16sp"
-            android:textColor="@color/white" />
+                <SeekBar
+                    android:id="@+id/seekBarRetouchSharpness"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:max="10"
+                    android:min="1"
+                    android:progress="5"
+                    android:progressDrawable="@drawable/seekbar_style"
+                    android:thumb="@drawable/seekbar_custom_thumb"  />
 
-        <TextView
-            android:id="@+id/progressBarMaxResize"
-            style="@style/TextAppearance.Material3.LabelLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/seekBarResize"
-            android:layout_marginTop="15dp"
-            android:layout_alignTop="@+id/seekBarResize"
-            android:orientation="vertical"
-            android:text="10.0"
-            android:layout_marginRight="15dp"
-            android:textSize="16sp"
-            android:textColor="@color/white" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/progressBarCurrResize"
-            style="@style/TextAppearance.Material3.LabelLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_alignTop="@+id/seekBarResize"
-            android:layout_centerHorizontal="true"
-            android:text="1.0"
-            android:textColor="@color/white"
-            android:textSize="16sp"/>
+                    <TextView
+                        android:layout_marginLeft="30dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:text="1"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                    </TextView>
+
+                    <TextView
+                        android:layout_marginRight="30dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:text="10"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/currSharpness"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:text="5"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+                    </TextView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </RelativeLayout>
 
