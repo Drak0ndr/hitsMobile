@@ -127,7 +127,7 @@ class Resize: PhotoActivity() {
             }
             y++
         }
-        return scaleBitmap
+        return bilinearFilter(scaleBitmap)
     }
     fun downScale(bitmap: Bitmap, k: Float): Bitmap {
         var width = (bitmap.width / k).toInt() + 1
@@ -202,5 +202,52 @@ class Resize: PhotoActivity() {
             scaleY+=1
         }
         return scaleBitmap
+    }
+
+    fun bilinearFilter(bitmap: Bitmap):Bitmap {
+        var newBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height,Bitmap.Config.ARGB_8888)
+        var kernel = mutableListOf<MutableList<Int>>()
+        kernel.add(mutableListOf(0,1,0))
+        kernel.add(mutableListOf(1,1,1))
+        kernel.add(mutableListOf(0,1,0))
+
+        var len = 3
+        var mid = 1
+        var i = 0
+        while (i < bitmap.height) {
+            var j = 0
+            while (j < bitmap.width) {
+                var tempRed = 0f
+                var tempGreen = 0f
+                var tempBlue = 0f
+                var tempAlpha = 0f
+                var kernelCoef = 0.0
+                var y = 0
+                while (y < len) {
+                    var x = 0
+                    while (x < len) {
+                        if ((j - mid + x) >= 0 && (j - mid + x) < bitmap.width && (i - mid + y) >= 0 && (i - mid + y) < bitmap.height) {
+                            var tempColors = bitmap.getColor(j - mid + x, i - mid + y).components
+                            tempRed+= (tempColors[0] * kernel[y][x]).toFloat()
+                            tempGreen+= (tempColors[1] * kernel[y][x]).toFloat()
+                            tempBlue+= (tempColors[2] * kernel[y][x]).toFloat()
+                            tempAlpha+= (tempColors[3] * kernel[y][x]).toFloat()
+                            kernelCoef+= kernel[y][x]
+                        }
+
+                        x++
+                    }
+                    y++
+                }
+                tempRed = (tempRed / kernelCoef).toFloat()
+                tempGreen = (tempGreen / kernelCoef).toFloat()
+                tempBlue = (tempBlue / kernelCoef).toFloat()
+                tempAlpha = (tempAlpha / kernelCoef).toFloat()
+                newBitmap.setPixel(j,i, Color.argb(tempAlpha, tempRed, tempGreen, tempBlue))
+                j++
+            }
+            i++
+        }
+        return newBitmap
     }
 }
