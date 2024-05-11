@@ -123,7 +123,7 @@ class Resize: PhotoActivity() {
             }
             y++
         }
-        return bilinearFilter(scaleBitmap)
+        return scaleBitmap
     }
     fun downScale(bitmap: Bitmap, k: Float): Bitmap {
         var width = (bitmap.width / k).toInt() + 1
@@ -197,7 +197,7 @@ class Resize: PhotoActivity() {
             }
             scaleY+=1
         }
-        return trilinearFilter(scaleBitmap, bitmap)
+        return scaleBitmap
     }
 
     fun bilinearFilter(bitmap: Bitmap):Bitmap {
