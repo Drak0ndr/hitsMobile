@@ -1,13 +1,12 @@
 package com.example.hitsmobile.tools
 
-import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.hitsmobile.PhotoActivity
+import com.example.hitsmobile.activity.PhotoActivity
 import com.example.hitsmobile.R
 import java.util.ArrayList
 

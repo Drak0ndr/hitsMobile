@@ -2,24 +2,14 @@ package com.example.hitsmobile.canvas
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BlendMode
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.ColorFilter
 import android.graphics.Paint
 import android.graphics.Path
-import android.graphics.PathEffect
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import androidx.annotation.FloatRange
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.PointMode
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.DrawScope.Companion.DefaultBlendMode
 import kotlin.math.abs
-import kotlin.properties.Delegates
 
 
 class DrawView @JvmOverloads constructor(context: Context?, attrs: AttributeSet? = null) :
@@ -31,8 +21,6 @@ class DrawView @JvmOverloads constructor(context: Context?, attrs: AttributeSet?
     private val mPaint: Paint
 
     private val paths = ArrayList<Stroke>()
-    private val points = mutableListOf<Pair<Float, Float>>()
-    private var index : Int = -1
     private var currentColor = 0
     private var strokeWidth = 0
     private var mBitmap: Bitmap? = null
@@ -49,28 +37,26 @@ class DrawView @JvmOverloads constructor(context: Context?, attrs: AttributeSet?
         mPaint.strokeCap = Paint.Cap.ROUND
         mPaint.alpha = 0xff
     }
-    
+
     fun init(height: Int, width: Int) {
         mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         mCanvas = Canvas(mBitmap!!)
-        
+
         currentColor = Color.BLACK
         strokeWidth = 20
     }
-    
+
     fun setColor(color: Int) {
         currentColor = color
     }
-    
+
     fun setStrokeWidth(width: Int) {
         strokeWidth = width
     }
 
     fun back() {
-        if (paths.size != 0) {
-            paths.removeAt(paths.size - 1)
-            invalidate()
-        }
+        paths.removeAt(paths.size - 1)
+        invalidate()
     }
 
     fun save(): Bitmap? {
@@ -92,40 +78,24 @@ class DrawView @JvmOverloads constructor(context: Context?, attrs: AttributeSet?
         canvas.restore()
     }
 
-    private fun checkPoints(points: MutableList<Pair<Float, Float>>, x : Float, y : Float):Boolean{
-        for(i in 0..points.size - 1){
-            if(points[i].first <= x + 50 && points[i].first >= x - 50
-                && points[i].second <= y + 50 && points[i].second >= y - 50){
-                return false
-            }
-        }
-        return true
-    }
+
 
     private fun touchPoint(x: Float, y: Float) {
         mPath = Path()
         val stroke = Stroke(
-            currentColor, 40,
+            currentColor, 10,
             mPath!!
         )
 
-        if(checkPoints(points, x, y)){
-            paths.add(stroke)
+        paths.add(stroke)
 
-            points.add(x to y)
-            val nx = points[index + 1].first
-            val ny = points[index + 1].second
-            Log.d("coord", "$nx, $ny")
+        mPath!!.reset()
 
-            mPath!!.reset()
+        mPath!!.moveTo(x, y)
 
-            mPath!!.moveTo(x, y)
+        mX = x
+        mY = y
 
-            index += 1
-
-            mX = x
-            mY = y
-        }
     }
 
     private fun touchStart(x: Float, y: Float) {
@@ -161,21 +131,13 @@ class DrawView @JvmOverloads constructor(context: Context?, attrs: AttributeSet?
         val y = event.y
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                if(!isSpline){
-                    touchStart(x, y)
-                    invalidate()
-                }
-                else{
-                    touchPoint(x, y)
-                    invalidate()
-                }
+                touchStart(x, y)
+                invalidate()
             }
 
             MotionEvent.ACTION_MOVE -> {
-                if(!isSpline) {
-                    touchMove(x, y)
-                    invalidate()
-                }
+                touchMove(x, y)
+                invalidate()
             }
 
             MotionEvent.ACTION_UP -> {
@@ -188,7 +150,6 @@ class DrawView @JvmOverloads constructor(context: Context?, attrs: AttributeSet?
 
     companion object {
         private const val TOUCH_TOLERANCE = 4f
-        var isSpline : Boolean = false
     }
 }
 

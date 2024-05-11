@@ -7,9 +7,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
-import com.example.hitsmobile.PhotoActivity
 import com.example.hitsmobile.R
-import com.example.hitsmobile.algorithms.Retouch
 
 
 class PhotoImageView(context: Context, attrs: AttributeSet) : androidx.appcompat.widget.AppCompatImageView(context, attrs) {

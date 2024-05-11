@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".CanvasActivity">
+    tools:context=".activity.CanvasActivity">
 
     <com.example.hitsmobile.canvas.DrawView
         android:id="@+id/draw_view"
@@ -78,18 +78,6 @@
             </ImageView>
 
             <ImageView
-                android:id="@+id/imgSpline"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:src="@drawable/circle_spline"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="@+id/imgHome"
-                app:layout_constraintRight_toRightOf="@+id/imgCamera">
-            </ImageView>
-
-            <ImageView
                 android:id="@+id/imgSave"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
@@ -130,48 +118,6 @@
                 app:thumbColor="@color/pink"
                 app:trackColor="#0f8a75"
                 app:trackHeight="12dp" />
-
-            <LinearLayout
-                android:id="@+id/linearSpline"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp">
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/pointsBtn"
-                        android:layout_width="140dp"
-                        android:layout_height="35dp"
-                        android:background="@drawable/btn_bg"
-                        android:text="Поставить точки"
-                        android:layout_marginLeft="40dp"
-                        android:textSize="11sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-                    </androidx.appcompat.widget.AppCompatButton>
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/startBtn"
-                        android:layout_width="140dp"
-                        android:layout_height="35dp"
-                        android:background="@drawable/btn_bg"
-                        android:layout_marginRight="40dp"
-                        android:text="Создать сплайны"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:textSize="11sp">
-                    </androidx.appcompat.widget.AppCompatButton>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linearColors"

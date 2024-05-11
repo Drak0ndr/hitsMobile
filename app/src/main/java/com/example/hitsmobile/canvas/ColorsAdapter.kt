@@ -1,17 +1,12 @@
 package com.example.hitsmobile.canvas
 
-import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.hitsmobile.CanvasActivity
-import com.example.hitsmobile.PhotoActivity
+import com.example.hitsmobile.activity.CanvasActivity
 import com.example.hitsmobile.R
-import com.example.hitsmobile.canvas.Colors
-import com.example.hitsmobile.tools.ToolsType
 import java.util.ArrayList
 
 class ColorsAdapter(private val mOnItemSelected: CanvasActivity) :

@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomePageActivity">
+    tools:context=".activity.HomePageActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -120,11 +120,11 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/linearLayout3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
-                        android:layout_marginTop="35dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
@@ -132,8 +132,20 @@
                             android:id="@+id/btn3D"
                             android:layout_width="140dp"
                             android:layout_height="60dp"
-                            android:background="@drawable/btn_bg"
-                            android:text="3D куб">
+                            android:layout_marginTop="35dp"
+                            android:layout_marginRight="20dp"
+                            android:text="3D куб"
+                            android:background="@drawable/btn_bg">
+                        </androidx.appcompat.widget.AppCompatButton>
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/splineBtn"
+                            android:layout_width="140dp"
+                            android:layout_height="60dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="35dp"
+                            android:text="Сплайны"
+                            android:background="@drawable/btn_bg">
                         </androidx.appcompat.widget.AppCompatButton>
 
                     </LinearLayout>

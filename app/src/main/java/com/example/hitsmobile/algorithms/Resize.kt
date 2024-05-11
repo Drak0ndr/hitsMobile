@@ -2,7 +2,7 @@ package com.example.hitsmobile.algorithms
 
 import android.graphics.Bitmap
 import android.graphics.Color
-import com.example.hitsmobile.PhotoActivity
+import com.example.hitsmobile.activity.PhotoActivity
 import kotlin.math.pow
 
 class Resize: PhotoActivity() {

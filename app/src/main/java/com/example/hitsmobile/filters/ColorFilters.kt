@@ -2,9 +2,8 @@ package com.example.hitsmobile.filters
 
 import android.graphics.Bitmap
 import android.graphics.Color
-import com.example.hitsmobile.PhotoActivity
+import com.example.hitsmobile.activity.PhotoActivity
 import kotlin.math.pow
-import kotlinx.coroutines.*
 
 class ColorFilters: PhotoActivity() {
    suspend fun toGreen(bitmap: Bitmap): Bitmap {

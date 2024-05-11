@@ -10,9 +10,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.hitsmobile.PhotoActivity
+import com.example.hitsmobile.activity.PhotoActivity
 import com.example.hitsmobile.R
-import com.example.hitsmobile.tools.ToolsType
 
 
 import java.io.IOException

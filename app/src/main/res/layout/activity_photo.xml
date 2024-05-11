@@ -213,13 +213,20 @@
 
     <RelativeLayout
         android:id="@+id/resizeBlock"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/main_bg"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@+id/recyclerViewTools"
         app:layout_constraintStart_toStartOf="@+id/recyclerViewTools"
         app:layout_constraintTop_toTopOf="@+id/recyclerViewTools">
+
+        <Spinner
+            android:id="@+id/mySpinner"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"/>
 
         <LinearLayout
             android:layout_width="match_parent"

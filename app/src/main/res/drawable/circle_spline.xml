@@ -14,7 +14,7 @@
 
         </shape>
     </item>
-    <item android:drawable="@drawable/baseline_auto_graph_24"
+    <item android:drawable="@drawable/baseline_design_services_24"
         android:top = "15dp" android:bottom="15dp"
         android:left = "15dp" android:right="15dp"/>
 </layer-list>
