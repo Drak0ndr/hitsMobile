@@ -131,7 +131,7 @@ class Rotate: PhotoActivity() {
         var x0 = bitmap.width /2
         var angle = PI / 180 * deg
         var newWidth = (x0 * cos(angle) + y0 * abs(sin(angle))).toInt() * 2
-        var newHeight = (y0 / cos(angle)).toInt() * 2
+        var newHeight = (x0 * abs(sin(angle)) + y0 * cos(angle)).toInt() * 2
         var rotatedBitmap = Bitmap.createBitmap(newWidth, newHeight ,Bitmap.Config.ARGB_8888)
         var y = 0
         var xCenter = rotatedBitmap.width / 2
