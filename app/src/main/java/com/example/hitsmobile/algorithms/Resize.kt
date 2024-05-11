@@ -197,7 +197,7 @@ class Resize: PhotoActivity() {
             }
             scaleY+=1
         }
-        return scaleBitmap
+        return trilinearFilter(scaleBitmap, bitmap)
     }
 
     fun bilinearFilter(bitmap: Bitmap):Bitmap {
@@ -245,5 +245,28 @@ class Resize: PhotoActivity() {
             i++
         }
         return newBitmap
+    }
+
+    fun trilinearFilter(minBitmap: Bitmap, nextBitmap: Bitmap):Bitmap {
+        var ansBitmap = Bitmap.createBitmap(minBitmap.width, minBitmap.height,Bitmap.Config.ARGB_8888)
+        var k = nextBitmap.width.toFloat() / minBitmap.width.toFloat()
+        var blurMinBitmap = bilinearFilter(minBitmap)
+        var blurNextBitmap = bilinearFilter(nextBitmap)
+        var x = 0
+        while (x < ansBitmap.width) {
+            var y = 0
+            while (y < ansBitmap.height) {
+                var colorMin = blurMinBitmap.getColor(x,y).components
+                var colorMax = blurNextBitmap.getColor((x*k).toInt(), (y*k).toInt()).components
+                var red = (colorMin[0] + colorMax[0]) * 0.5f
+                var green = (colorMin[1] + colorMax[1]) * 0.5f
+                var blue = (colorMin[2] + colorMax[2]) * 0.5f
+                var alpha = (colorMin[3] + colorMax[3]) * 0.5f
+                ansBitmap.setPixel(x,y,Color.argb(alpha, red, green, blue))
+                y++
+            }
+            x++
+        }
+        return ansBitmap
     }
 }
