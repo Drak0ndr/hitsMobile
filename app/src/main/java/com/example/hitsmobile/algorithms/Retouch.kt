@@ -56,6 +56,21 @@ class Retouch {
         return ans
     }
     fun blur(bitmap: Bitmap, r:Float, intensive:Float, x0:Int, y0:Int):Bitmap {
+        var testBitmap = bitmap.copy(bitmap.config, true)
+//        var i = 0
+//        while (i < bitmap.width) {
+//            var j = 0
+//            while (j < bitmap.height) {
+//                var tempColor = bitmap.getColor(i,j).components
+//                var red = tempColor[0]
+//                var green = tempColor[1]
+//                var blue = tempColor[2]
+//                var alpha = tempColor[3]
+//                testBitmap.setPixel(i,j,Color.argb(alpha, red, green, blue))
+//                j++
+//            }
+//            i++
+//        }
         val startX = x0 - r.toInt() -1
         val endX = x0 + r.toInt() + 1
         val startY = y0 - r.toInt() - 1
@@ -65,15 +80,15 @@ class Retouch {
             var x = startX
             while (x <= endX && x < bitmap.width) {
                 var dist = ((x-x0) * (x-x0) + (y-y0) * (y-y0)).toFloat().pow(0.5f)
-                if (dist <= r) {
-                    var delta = (r - dist).toInt()
+                if (dist < r) {
+                    var delta = (dist).toInt()
                     var data = blurPixel(bitmap, x,y, intensive - delta)
-                    bitmap.setPixel(x, y, Color.argb(data[0], data[1], data[2], data[3]))
+                    testBitmap.setPixel(x, y, Color.argb(data[0], data[1], data[2], data[3]))
                 }
                 x++
             }
             y++
         }
-        return bitmap
+        return testBitmap
     }
 }
