@@ -267,6 +267,9 @@ class Resize: PhotoActivity() {
                 y+= yDist.toInt()
             }
             scaleY+=1
+            if (scaleY >= scaleBitmap.height) {
+                scaleY = scaleBitmap.height-1
+            }
         }
         return scaleBitmap
     }
@@ -328,7 +331,15 @@ class Resize: PhotoActivity() {
             var y = 0
             while (y < ansBitmap.height) {
                 var colorMin = blurMinBitmap.getColor(x,y).components
-                var colorMax = blurNextBitmap.getColor((x*k).toInt(), (y*k).toInt()).components
+                var nextX = (x*k).toInt()
+                var nextY = (y*k).toInt()
+                if (nextX >= blurNextBitmap.width) {
+                    nextX = blurNextBitmap.width-1
+                }
+                if (nextY >= blurNextBitmap.height) {
+                    nextY = blurNextBitmap.height-1
+                }
+                var colorMax = blurNextBitmap.getColor(nextX, nextY).components
                 var red = (colorMin[0] + colorMax[0]) * 0.5f
                 var green = (colorMin[1] + colorMax[1]) * 0.5f
                 var blue = (colorMin[2] + colorMax[2]) * 0.5f
