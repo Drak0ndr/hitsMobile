@@ -17,7 +17,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:background="@color/main_bg"
-        android:scaleType="centerInside"
+        android:scaleType="fitCenter"
         android:src="@drawable/white_background">
     </ImageView>
 
@@ -528,6 +528,126 @@
             </LinearLayout>
 
         </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/maskingBlock"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/main_bg"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewTools"
+        app:layout_constraintStart_toStartOf="@+id/recyclerViewTools"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewTools">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:padding="4dp"
+                    android:text="Intensity indicator"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="22sp">
+                </TextView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:foregroundGravity="center_vertical">
+
+                    <SeekBar
+                        android:id="@+id/seekBarMasking"
+                        android:layout_width="250dp"
+                        android:layout_height="12dp"
+                        android:foregroundGravity="center_vertical"
+                        android:layout_gravity="center_vertical"
+                        android:max="0"
+                        android:min="10"
+                        android:progress="5"
+                        android:progressDrawable="@drawable/seekbar_style"/>
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp">
+                </ImageView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+
+        <TextView
+            android:id="@+id/progressBarMin2"
+            style="@style/TextAppearance.Material3.LabelLarge"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:orientation="vertical"
+            android:text="0"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/progressBarMax2"
+            style="@style/TextAppearance.Material3.LabelLarge"
+            android:layout_width="40dp"
+            android:layout_height="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
+            android:text="45"
+            android:layout_marginRight="25dp"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/progressBarCurr2"
+            style="@style/TextAppearance.Material3.LabelLarge"
+            android:layout_width="40dp"
+            android:layout_height="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="8dp"
+            android:layout_centerHorizontal="true"
+            android:text="0"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textAlignment="center"/>
 
     </RelativeLayout>
 

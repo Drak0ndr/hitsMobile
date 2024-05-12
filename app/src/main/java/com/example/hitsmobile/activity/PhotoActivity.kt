@@ -37,6 +37,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import com.example.hitsmobile.R
+import com.example.hitsmobile.algorithms.Mask
 import com.example.hitsmobile.algorithms.Resize
 import com.example.hitsmobile.algorithms.Rotate
 import com.example.hitsmobile.filters.ColorFilters
@@ -143,7 +144,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                     imageView.setImageBitmap(image)
                     MyVariables.currImg = (image as Bitmap?)!!
                     MyVariables.rotateImg = MyVariables.currImg
-                    imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE
+                    /*imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE*/
                 }
             }
             catch (e: Exception) {
@@ -437,7 +438,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         var bitmap: Bitmap? = null
         img = findViewById(R.id.photoEditorView)
 
-        if(requestCode == GALLERY_REQUEST && resultCode == RESULT_OK){
+        if((requestCode == GALLERY_REQUEST || requestCode == GALLERY_REQUEST2)  && resultCode == RESULT_OK){
             val selectedImage = data?.data
 
             try {
@@ -448,7 +449,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             }
 
             img.setImageBitmap(bitmap)
-            img.scaleType = ImageView.ScaleType.CENTER_INSIDE
+            /*img.scaleType = ImageView.ScaleType.CENTER_INSIDE*/
 
             if (bitmap != null) {
                 MyVariables.currImg = bitmap
@@ -462,7 +463,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                     img.setImageBitmap(data.extras?.get("data") as Bitmap)
                     MyVariables.currImg = data.extras?.get("data") as Bitmap
                     MyVariables.rotateImg = MyVariables.currImg
-                    img.scaleType = ImageView.ScaleType.FIT_CENTER
+                    /*img.scaleType = ImageView.ScaleType.FIT_CENTER*/
                 }
 
             } catch (e: IOException) {
@@ -665,6 +666,10 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
             ToolsType.MASKING-> {
                 currNumberBlock = 5
+                var newImg = findViewById<ImageView>(R.id.photoEditorView)
+                var mask = Mask()
+                var newMask = mask.UnsharpMask(MyVariables.currImg, 5f)
+                newImg.setImageBitmap(newMask)
             }
         }
     }
