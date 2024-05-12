@@ -8,7 +8,7 @@
     android:background="@color/main_bg"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <ImageView
+    <com.example.hitsmobile.canvas.PhotoImageView
         android:id="@+id/photoEditorView"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -19,7 +19,7 @@
         android:background="@color/main_bg"
         android:scaleType="fitCenter"
         android:src="@drawable/white_background">
-    </ImageView>
+    </com.example.hitsmobile.canvas.PhotoImageView>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

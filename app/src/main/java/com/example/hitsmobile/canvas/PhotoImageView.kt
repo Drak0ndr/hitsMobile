@@ -8,6 +8,8 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
 import com.example.hitsmobile.R
+import com.example.hitsmobile.activity.PhotoActivity
+import com.example.hitsmobile.algorithms.Retouch
 
 
 class PhotoImageView(context: Context, attrs: AttributeSet) : androidx.appcompat.widget.AppCompatImageView(context, attrs) {
@@ -38,6 +40,8 @@ class PhotoImageView(context: Context, attrs: AttributeSet) : androidx.appcompat
         var ViewHeight = imageView.height
 
 
+
+
         when (event.action) {
             MotionEvent.ACTION_MOVE -> {
                 var x = event.x
@@ -50,6 +54,10 @@ class PhotoImageView(context: Context, attrs: AttributeSet) : androidx.appcompat
                 var cY = k * y.toDouble()
                 Log.d("нажатие", "X: $cX, Y: $cY")
 
+                var retoush = Retouch()
+
+                var r = retoush.blur(PhotoActivity.MyVariables.currImg,2f, 2f, x.toInt(), y.toInt())
+                imageView.setImageBitmap(r)
 
                 return true
             }
