@@ -44,8 +44,14 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
     }
 
     fun back() {
-        paths.removeAt(paths.size - 1)
-        invalidate()
+        if(paths.size != 0){
+            if(paths.size > 1){
+                paths.removeAt(paths.size - 1)
+            }
+            paths.removeAt(paths.size - 1)
+            points.removeAt(points.size - 1)
+            invalidate()
+        }
     }
 
     fun save(): Bitmap? {

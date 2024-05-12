@@ -55,8 +55,10 @@ class DrawView @JvmOverloads constructor(context: Context?, attrs: AttributeSet?
     }
 
     fun back() {
-        paths.removeAt(paths.size - 1)
-        invalidate()
+        if(paths.size != 0) {
+            paths.removeAt(paths.size - 1)
+            invalidate()
+        }
     }
 
     fun save(): Bitmap? {

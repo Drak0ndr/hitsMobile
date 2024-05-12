@@ -116,6 +116,7 @@ class CanvasActivity : AppCompatActivity(), ColorsAdapter.OnItemSelected {
         /*Ползунок для выбора размера кисти*/
         rangeSlider = findViewById(R.id.rangebar)
         rangeSlider.valueFrom = 0.0f
+        rangeSlider.setValues(20.0f)
         rangeSlider.valueTo = 100.0f
         rangeSlider.addOnChangeListener(RangeSlider.OnChangeListener { slider, value, fromUser ->
             paint.setStrokeWidth(
