@@ -132,20 +132,66 @@ class Resize: PhotoActivity() {
         var y = 0
         var yfine = 0f
         var scaleY = 0
-        var yDist = k
-        var xfine = 0f
+
+
         while (y < bitmap.height) {
             var x = 0
             var scaleX = 0
-            var xDist = k - xfine
-
+            var yDist = k - yfine
+            var xfine = 0f
             while (x < bitmap.width) {
-
                 var red = 0f
                 var green = 0f
                 var blue = 0f
                 var alfa = 0f
+                var square = 0f
+                var xDist = k - xfine
                 var i = 0
+                if (yfine > 0) {
+                    var i = 0
+                    while (i <= xDist -1 && x + i < bitmap.width) {
+                        var tempColor = bitmap.getColor(x+i, y-1).components
+                        red+= tempColor[0] / k.pow(2) * yfine
+                        green+= tempColor[1] / k.pow(2) * yfine
+                        blue+= tempColor[2] / k.pow(2) * yfine
+                        alfa+= tempColor[3] / k.pow(2) * yfine
+                        square+= 1f/ k.pow(2) * yfine
+                        i++
+                    }
+                    if (x+i < bitmap.width) {
+                        var tempColor = bitmap.getColor(x+i, y-1).components
+                        red+= tempColor[0] / k.pow(2) * yfine * (xDist%1)
+                        green+= tempColor[1] / k.pow(2) * yfine * (xDist%1)
+                        blue+= tempColor[2] / k.pow(2) * yfine * (xDist%1)
+                        alfa+= tempColor[3] / k.pow(2) * yfine * (xDist%1)
+                        square += 1f/k.pow(2) * yfine * (xDist%1)
+                    }
+
+
+
+                }
+                if (xfine > 0) {
+                    var j = 0
+                    while (j <= yDist-1 && y+j < bitmap.height) {
+                        var tempColor = bitmap.getColor(x-1, y+j).components
+                        red+= tempColor[0] / k.pow(2) * xfine
+                        green+= tempColor[1] / k.pow(2) * xfine
+                        blue+= tempColor[2] / k.pow(2) * xfine
+                        alfa+= tempColor[3] / k.pow(2) * xfine
+                        square+= 1f/k.pow(2) * xfine
+                        j++
+                    }
+                    if (y+j < bitmap.height) {
+                        var tempColor = bitmap.getColor(x-1, y+j).components
+                        red+= tempColor[0] / k.pow(2) * xfine * (yDist%1)
+                        green+= tempColor[1] / k.pow(2) * xfine * (yDist%1)
+                        blue+= tempColor[2] / k.pow(2) * xfine * (yDist%1)
+                        alfa+= tempColor[3] / k.pow(2) * xfine * (yDist%1)
+                        square+= 1f/k.pow(2) * xfine * (yDist%1)
+                    }
+
+
+                }
                 while (i <= xDist -1 && x+i < bitmap.width) {
                     var j = 0
                     while (j <= yDist -1 && y+j < bitmap.height) {
@@ -154,6 +200,7 @@ class Resize: PhotoActivity() {
                         green+= tempColor[1] / k.pow(2)
                         blue+= tempColor[2] / k.pow(2)
                         alfa+= tempColor[3] / k.pow(2)
+                        square+= 1f/k.pow(2)
                         j++
                     }
                     i++
@@ -166,7 +213,16 @@ class Resize: PhotoActivity() {
                         green+= tempColor[1] / k.pow(2) * (xDist%1)
                         blue+= tempColor[2] / k.pow(2) * (xDist%1)
                         alfa+= tempColor[3] / k.pow(2) * (xDist%1)
+                        square+= 1f/k.pow(2) * (xDist%1)
                         j++
+                    }
+                    if (y+j < bitmap.height) {
+                        var tempColor = bitmap.getColor(x+i, y+j).components
+                        red+= tempColor[0] / k.pow(2) * (xDist%1) * (yDist%1)
+                        green+= tempColor[1] / k.pow(2) * (xDist%1) * (yDist%1)
+                        blue+= tempColor[2] / k.pow(2) * (xDist%1) * (yDist%1)
+                        alfa+= tempColor[3] / k.pow(2) * (xDist%1) * (yDist%1)
+                        square+= 1f/k.pow(2) * (xDist%1) * (yDist%1)
                     }
                 }
                 j = yDist.toInt()
@@ -178,20 +234,35 @@ class Resize: PhotoActivity() {
                         green+= tempColor[1] / k.pow(2) * (yDist%1)
                         blue+= tempColor[2] / k.pow(2) * (yDist%1)
                         alfa+= tempColor[3] / k.pow(2) * (yDist%1)
+                        square+=1f/k.pow(2) * (yDist%1)
                         i++
                     }
+                    if (x+i < bitmap.width && xDist < 1) {
+                        var tempColor = bitmap.getColor(x+i, y+j).components
+                        red+= tempColor[0] / k.pow(2) * (yDist%1) * (xDist%1)
+                        green+= tempColor[1] / k.pow(2) * (yDist%1) * (xDist%1)
+                        blue+= tempColor[2] / k.pow(2) * (yDist%1) * (xDist%1)
+                        alfa+= tempColor[3] / k.pow(2) * (yDist%1) * (xDist%1)
+                        square+= 1f/k.pow(2) * (yDist%1) * (xDist%1)
+                    }
                 }
-
+                red = red / square
+                green = green/ square
+                blue = blue/square
+                alfa = alfa/square
                 scaleBitmap.setPixel(scaleX, scaleY, Color.argb(alfa, red, green, blue))
                 scaleX+=1
                 if (xDist > xDist.toInt()) {
                     x+= xDist.toInt()+1
+                    xfine = 1 - xDist%1
                 } else {
                     x+= xDist.toInt()
                 }
+
             }
             if (yDist > yDist.toInt()) {
                 y+= yDist.toInt()+1
+                yfine = 1 - yDist%1
             } else {
                 y+= yDist.toInt()
             }
