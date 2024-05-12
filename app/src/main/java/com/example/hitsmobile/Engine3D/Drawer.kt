@@ -6,8 +6,8 @@ import kotlin.math.pow
 
 
 class Drawer {
-    var width = 0
-    var height = 0
+    var width = 1
+    var height = 1
     var bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
     constructor(_width:Int, _height:Int) {
         width = _width

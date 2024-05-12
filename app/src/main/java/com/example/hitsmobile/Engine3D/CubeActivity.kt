@@ -36,7 +36,10 @@ class CubeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_cube)
-
+        var img = findViewById<ImageView>(R.id.draw_view)
+        var drawer = Drawer(10,10)
+        drawer.drawLine(0,0,2,9,0f,0f,0f)
+        img.setImageBitmap(drawer.bitmap)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.cube_bg)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
