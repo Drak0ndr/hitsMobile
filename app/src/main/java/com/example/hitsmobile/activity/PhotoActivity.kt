@@ -26,6 +26,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.app.ActivityCompat
@@ -91,6 +92,9 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
     /*Контейнер для изменения ретуши*/
     private lateinit var rlRetouch: RelativeLayout
 
+    /*Контейнер для маскирования*/
+    private lateinit var maskingBlock: RelativeLayout
+
     /*Ползунок для поворота*/
     private lateinit var seekBarRotate: SeekBar
     private lateinit var seekBarProgressRotate: TextView
@@ -107,8 +111,15 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
     private lateinit var seekBarRetouchRadius: SeekBar
     private lateinit var currRadius: TextView
 
+    /*Ползунок для интенсивности маскирования*/
+    private lateinit var seekBarMasking: SeekBar
+    private lateinit var progressBarCurr2: TextView
+
     /*Кнопка домой*/
     private lateinit var homeBtn : ImageView
+
+    /*Кнопка для алгоритма маскирования*/
+    private lateinit var maskingStartBtn : AppCompatButton
 
     /*Сохранение фотографии в галерею*/
     private lateinit var saveBtn : ImageView
@@ -120,7 +131,9 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
     private lateinit var radio : RadioGroup
     private var currRadio : Int = 1
 
-    @SuppressLint("MissingInflatedId", "ClickableViewAccessibility", "ResourceType")
+    @SuppressLint("MissingInflatedId", "ClickableViewAccessibility", "ResourceType",
+        "UseCompatLoadingForDrawables"
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -190,6 +203,9 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         /*Контейнер для изменения ретуши*/
         rlRetouch = findViewById(R.id.retouchBlock)
 
+        /*Контейнер для маскирования*/
+        maskingBlock = findViewById(R.id.maskingBlock)
+
         /*Ползунок для поворота*/
         seekBarRotate = findViewById(R.id.seekBarRotate)
         seekBarProgressRotate = findViewById(R.id.progressBarCurr)
@@ -197,6 +213,10 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         /*Ползунок для резкости ретуши*/
         seekBarRetouchSharpness = findViewById(R.id.seekBarRetouchSharpness)
         currSharpness = findViewById(R.id.currSharpness)
+
+        /*Ползунок для интенсивности маскирования*/
+        seekBarMasking = findViewById(R.id.seekBarMasking)
+        progressBarCurr2 = findViewById(R.id.progressBarCurr2)
 
         /*Ползунок для радиуса ретуши*/
         seekBarRetouchRadius = findViewById(R.id.seekBarRetouchRadius)
@@ -310,6 +330,15 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             MyVariables.currImg = rotate.rotateRight(MyVariables.currImg)
         }
 
+        /*Кнопка для алгоритма маскирования*/
+        maskingStartBtn = findViewById(R.id.maskingStartBtn)
+        maskingStartBtn.setOnClickListener(){
+            var mask = Mask()
+            var newMask = mask.UnsharpMask(MyVariables.currImg, (seekBarMasking.progress).toFloat())
+            imageView.setImageBitmap(newMask)
+            MyVariables.rotateImg = newMask
+        }
+
         /*Отслеживаем переключения для изменения размера фото*/
         radio = findViewById(R.id.radio_group)
         radio.setOnCheckedChangeListener{ _, checkedId ->
@@ -333,6 +362,17 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {
             }
+        })
+
+        /*Отслеживаем изменения ползунка для интенсивности маскирования*/
+        seekBarMasking.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                progressBarCurr2.text = "$progress"
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
         })
 
         /*Отслеживаем изменения ползунка для резкости ретуши*/
@@ -606,6 +646,9 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         else if(currNumberBlock == 4){
             currBlock = rlRetouch.id
         }
+        else if(currNumberBlock == 5){
+            currBlock = maskingBlock.id
+        }
 
         if (isVisible) {
             mConstraintSet.clear(currBlock, ConstraintSet.START)
@@ -666,10 +709,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
             ToolsType.MASKING-> {
                 currNumberBlock = 5
-                var newImg = findViewById<ImageView>(R.id.photoEditorView)
-                var mask = Mask()
-                var newMask = mask.UnsharpMask(MyVariables.currImg, 5f)
-                newImg.setImageBitmap(newMask)
+                showFilter(true)
             }
         }
     }
