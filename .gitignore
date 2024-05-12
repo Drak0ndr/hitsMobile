@@ -1,11 +1,13 @@
+.gradle/
+/.gradle
 build/
+local.properties
+*.log
+*.iml
 .idea/
 caches/
 .DS_Store
 /captures
 .externalNativeBuild
 .cxx
-.local.properties
-local.properties
-.gradle/
-*.log
+
