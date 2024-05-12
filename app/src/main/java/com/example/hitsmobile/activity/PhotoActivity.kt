@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
+import android.view.KeyEvent
 import android.view.View
 import android.view.animation.AnticipateOvershootInterpolator
 import android.widget.AdapterView
@@ -636,6 +637,12 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 currNumberBlock = 5
             }
         }
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        return if (keyCode == KeyEvent.KEYCODE_BACK) {
+            true
+        } else super.onKeyDown(keyCode, event)
     }
 
     companion object{

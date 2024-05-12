@@ -67,15 +67,15 @@ class FilterViewAdapter(private val filterListener: PhotoActivity) :
     }
 
     private fun setupFilters() {
-        pairsList.add(Pair("filters/cat.jpg", PhotoFilter.NONE))
-        pairsList.add(Pair("filters/cat.jpg", PhotoFilter.GREEN))
-        pairsList.add(Pair("filters/cat.jpg", PhotoFilter.BLUE))
-        pairsList.add(Pair("filters/cat.jpg", PhotoFilter.RED))
-        pairsList.add(Pair("filters/cat.jpg", PhotoFilter.YELLOW))
-        pairsList.add(Pair("filters/cat.jpg", PhotoFilter.GRAYSCALE))
-        pairsList.add(Pair("filters/cat.jpg", PhotoFilter.NEGATIVE))
-        pairsList.add(Pair("filters/cat.jpg", PhotoFilter.BLUR))
-        pairsList.add(Pair("filters/cat.jpg", PhotoFilter.CONTRAST))
+        pairsList.add(Pair("filters/cat_none.jpg", PhotoFilter.NONE))
+        pairsList.add(Pair("filters/green_cat.jpg", PhotoFilter.GREEN))
+        pairsList.add(Pair("filters/cat_blue.jpg", PhotoFilter.BLUE))
+        pairsList.add(Pair("filters/red_cat.jpg", PhotoFilter.RED))
+        pairsList.add(Pair("filters/yellow_cat.jpg", PhotoFilter.YELLOW))
+        pairsList.add(Pair("filters/gray_cat.jpg", PhotoFilter.GRAYSCALE))
+        pairsList.add(Pair("filters/negative_cat.jpg", PhotoFilter.NEGATIVE))
+        pairsList.add(Pair("filters/gauss_cat.jpg", PhotoFilter.BLUR))
+        pairsList.add(Pair("filters/contrast_cat.jpg", PhotoFilter.CONTRAST))
     }
 
     init {

@@ -16,9 +16,7 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
     private var mX = 0f
     private var mY = 0f
     private var mPath: Path? = null
-
-    private val mPaint: Paint
-
+    private val mPaint: Paint = Paint()
     private val paths = ArrayList<Stroke>()
     private val points = mutableListOf<Pair<Float, Float>>()
     private var currentColor = 0
@@ -28,7 +26,6 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
     private val mBitmapPaint = Paint(Paint.DITHER_FLAG)
 
     init {
-        mPaint = Paint()
         mPaint.isAntiAlias = true
         mPaint.isDither = true
         mPaint.color = Color.BLACK
@@ -44,14 +41,6 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
 
         currentColor = Color.BLACK
         strokeWidth = 25
-    }
-
-    fun setColor(color: Int) {
-        currentColor = color
-    }
-
-    fun setStrokeWidth(width: Int) {
-        strokeWidth = width
     }
 
     fun back() {
@@ -78,27 +67,6 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
         canvas.restore()
     }
 
-    fun alg(){
-        mPath = Path()
-        val stroke = Stroke(
-            currentColor, 10,
-            mPath!!
-        )
-        paths.add(stroke)
-
-        mPath!!.reset()
-
-        mPath!!.moveTo(points[0].first, points[0].second)
-
-        for(i in 1..points.size - 1) {
-            var mx = (points[i].first + points[i - 1].first) / 2
-            var my = (points[i].second + points[i - 1].second) / 2
-
-            mPath!!.quadTo(mx - 100, my + 410,points[i].first, points[i].second)
-        }
-        invalidate()
-    }
-
     private fun touchStart(x: Float, y: Float) {
         mPath = Path()
         val stroke = Stroke(
@@ -122,7 +90,7 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
 
     private fun touchUp() {
         mPath!!.lineTo(mX, mY)
-        neig()
+        connection()
     }
 
     private fun checkPoints(points: MutableList<Pair<Float, Float>>, x : Float, y : Float):Boolean{
@@ -134,7 +102,7 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
         }
         return true
     }
-    fun neig(){
+    fun connection(){
         if(points.size > 1){
             mPath = Path()
             val stroke = Stroke(
@@ -147,7 +115,6 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
 
             mPath!!.moveTo(points[points.size - 2].first, points[points.size - 2].second)
             mPath!!.lineTo(points[points.size - 1].first, points[points.size - 1].second)
-
 
             invalidate()
         }
@@ -168,11 +135,6 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
             }
         }
         return true
-    }
-
-    companion object {
-        private const val TOUCH_TOLERANCE = 4f
-        var isSpline : Boolean = false
     }
 }
 

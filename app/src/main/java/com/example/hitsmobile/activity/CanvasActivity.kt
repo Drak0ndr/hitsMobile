@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.KeyEvent
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.ImageView
@@ -168,5 +169,11 @@ class CanvasActivity : AppCompatActivity(), ColorsAdapter.OnItemSelected {
 
             Colors.DARKGREEN -> {paint.setColor(Color.parseColor("#19543E"));}
         }
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        return if (keyCode == KeyEvent.KEYCODE_BACK) {
+            true
+        } else super.onKeyDown(keyCode, event)
     }
 }
