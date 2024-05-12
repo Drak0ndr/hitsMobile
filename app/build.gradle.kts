@@ -54,4 +54,6 @@ dependencies {
     implementation("com.google.android.material:material:1.4.0")
     implementation("com.google.android.material:material:1.2.0-alpha05")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:x.x.x")
 }

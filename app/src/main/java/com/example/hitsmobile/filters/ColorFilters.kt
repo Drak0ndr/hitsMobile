@@ -269,4 +269,36 @@ class ColorFilters: PhotoActivity() {
         return newBitmap
     }
 
+    fun erosionFilter(bitmap: Bitmap): Bitmap {
+        val width = bitmap.width
+        val height = bitmap.height
+        val resultBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+
+        val radius = 4
+
+        for (x in radius until width - radius) {
+            for (y in radius until height - radius) {
+                var minR = 255
+                var minG = 255
+                var minB = 255
+
+                for (i in -radius..radius) {
+                    for (j in -radius..radius) {
+                        val pixel = bitmap.getPixel(x + i, y + j)
+                        val r = Color.red(pixel)
+                        val g = Color.green(pixel)
+                        val b = Color.blue(pixel)
+
+                        if (r < minR) minR = r
+                        if (g < minG) minG = g
+                        if (b < minB) minB = b
+                    }
+                }
+
+                resultBitmap.setPixel(x, y, Color.rgb(minR, minG, minB))
+            }
+        }
+        return resultBitmap
+    }
+
 }

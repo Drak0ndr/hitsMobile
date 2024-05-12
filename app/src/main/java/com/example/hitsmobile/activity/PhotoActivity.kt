@@ -366,15 +366,17 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 var resize = Resize()
 
                 if(currRadio == 1){
-                    MyVariables.rotateImg = resize.upScale(MyVariables.rotateImg, (seekBarResize.progress).toFloat() / 100)
+                    MyVariables.rotateImg = resize.bilinearFilter(resize.upScale(MyVariables.rotateImg, (seekBarResize.progress).toFloat() / 100))
                     newImg.setImageBitmap(MyVariables.rotateImg)
-                    MyVariables.currImg = resize.upScale(MyVariables.currImg, (seekBarResize.progress).toFloat() / 100)
+                    MyVariables.currImg = resize.bilinearFilter(resize.upScale(MyVariables.currImg, (seekBarResize.progress).toFloat() / 100))
                     seekBarResize.progress = 0
                 }
                 else{
-                    MyVariables.rotateImg = resize.downScale(MyVariables.rotateImg, (seekBarResize.progress).toFloat() / 100)
+                    MyVariables.rotateImg = resize.trilinearFilter(resize.downScale(MyVariables.rotateImg, (seekBarResize.progress).toFloat() / 100),
+                        resize.downScale(MyVariables.rotateImg, (seekBarResize.progress).toFloat() / 50))
                     newImg.setImageBitmap(MyVariables.rotateImg)
-                    MyVariables.currImg = resize.downScale(MyVariables.currImg, (seekBarResize.progress).toFloat() / 100)
+                    MyVariables.currImg = resize.trilinearFilter(resize.downScale(MyVariables.currImg, (seekBarResize.progress).toFloat() / 100),
+                        resize.downScale(MyVariables.currImg, (seekBarResize.progress).toFloat() / 50))
                     seekBarResize.progress = 0
                 }
             }
@@ -460,6 +462,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 newImg.setImageBitmap(MyVariables.currImg)
                 MyVariables.rotateImg = MyVariables.currImg
             }
+
             PhotoFilter.GREEN -> {
                 runBlocking {
                     launch(Dispatchers.Default) {
@@ -468,8 +471,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                         MyVariables.rotateImg = filterImg
                     }
                 }
-
             }
+
             PhotoFilter.BLUE -> {
                 runBlocking {
                     launch(Dispatchers.Default) {
@@ -478,8 +481,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                         MyVariables.rotateImg = filterImg
                     }
                 }
-
             }
+
             PhotoFilter.RED -> {
                 runBlocking {
                     launch(Dispatchers.Default) {
@@ -488,8 +491,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                         MyVariables.rotateImg = filterImg
                     }
                 }
-
             }
+
             PhotoFilter.YELLOW -> {
                 runBlocking{
                     launch(Dispatchers.Default) {
@@ -498,8 +501,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                         MyVariables.rotateImg = filterImg
                     }
                 }
-
             }
+
             PhotoFilter.GRAYSCALE-> {
                 runBlocking {
                     launch(Dispatchers.Default) {
@@ -508,7 +511,6 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                         MyVariables.rotateImg = filterImg
                     }
                 }
-
             }
 
             PhotoFilter.NEGATIVE -> {
@@ -519,7 +521,6 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                         MyVariables.rotateImg = filterImg
                     }
                 }
-
             }
 
             PhotoFilter.BLUR -> {
@@ -530,7 +531,6 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                         MyVariables.rotateImg = filterImg
                     }
                 }
-
             }
 
             PhotoFilter.CONTRAST -> {
@@ -541,7 +541,16 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                         MyVariables.rotateImg = filterImg
                     }
                 }
+            }
 
+            PhotoFilter.EROSION -> {
+                runBlocking {
+                    launch(Dispatchers.Default) {
+                        filterImg = filter.erosionFilter(MyVariables.currImg)
+                        newImg.setImageBitmap(filterImg)
+                        MyVariables.rotateImg = filterImg
+                    }
+                }
             }
         }
     }

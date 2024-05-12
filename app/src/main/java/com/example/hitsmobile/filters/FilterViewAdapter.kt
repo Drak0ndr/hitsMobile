@@ -76,6 +76,7 @@ class FilterViewAdapter(private val filterListener: PhotoActivity) :
         pairsList.add(Pair("filters/negative_cat.jpg", PhotoFilter.NEGATIVE))
         pairsList.add(Pair("filters/gauss_cat.jpg", PhotoFilter.BLUR))
         pairsList.add(Pair("filters/contrast_cat.jpg", PhotoFilter.CONTRAST))
+        pairsList.add(Pair("filters/erosion_cat.jpg", PhotoFilter.EROSION))
     }
 
     init {

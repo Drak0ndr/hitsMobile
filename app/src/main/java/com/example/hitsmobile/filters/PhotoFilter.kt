@@ -8,5 +8,6 @@ enum class PhotoFilter {
     GRAYSCALE,
     NEGATIVE,
     BLUR,
-    CONTRAST
+    CONTRAST,
+    EROSION
 }
