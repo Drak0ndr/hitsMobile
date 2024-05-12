@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -225,13 +226,25 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         /*Работа с галереей*/
         galleryButton = findViewById(R.id.imgGallery)
         galleryButton.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), GALLERY_REQUEST)
+            if(Build.VERSION.SDK_INT < 33){
+                if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), GALLERY_REQUEST)
 
-            } else {
-                val photoPickerIntent = Intent(Intent.ACTION_PICK)
-                photoPickerIntent.setType("image/*")
-                startActivityForResult(photoPickerIntent, GALLERY_REQUEST)
+                } else {
+                    val photoPickerIntent = Intent(Intent.ACTION_PICK)
+                    photoPickerIntent.setType("image/*")
+                    startActivityForResult(photoPickerIntent, GALLERY_REQUEST)
+                }
+            }
+            else{
+                if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_MEDIA_IMAGES), GALLERY_REQUEST2)
+
+                } else {
+                    val photoPickerIntent = Intent(Intent.ACTION_PICK)
+                    photoPickerIntent.setType("image/*")
+                    startActivityForResult(photoPickerIntent, GALLERY_REQUEST2)
+                }
             }
         }
 
@@ -397,6 +410,11 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                     photoPickerIntent.setType("image/*")
                     startActivityForResult(photoPickerIntent, GALLERY_REQUEST)
                 }
+                GALLERY_REQUEST2 -> {
+                    val photoPickerIntent = Intent(Intent.ACTION_PICK)
+                    photoPickerIntent.setType("image/*")
+                    startActivityForResult(photoPickerIntent, GALLERY_REQUEST2)
+                }
             }
         } else {
             when (requestCode) {
@@ -404,6 +422,9 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                     Toast.makeText(this,"Доступ к камере запрещен",Toast.LENGTH_LONG).show()
                 }
                 GALLERY_REQUEST -> {
+                    Toast.makeText(this,"Доступ к галерее запрещен",Toast.LENGTH_LONG).show()
+                }
+                GALLERY_REQUEST2 -> {
                     Toast.makeText(this,"Доступ к галерее запрещен",Toast.LENGTH_LONG).show()
                 }
             }
@@ -657,6 +678,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
     companion object{
         private const val GALLERY_REQUEST = 1
         private const val CAMERA_REQUEST = 2
+        private const val GALLERY_REQUEST2 = 3
     }
 
     object MyVariables {
