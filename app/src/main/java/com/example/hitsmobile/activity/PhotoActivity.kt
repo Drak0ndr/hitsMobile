@@ -1,10 +1,12 @@
 package com.example.hitsmobile.activity
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
@@ -12,7 +14,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
+import android.util.Log
 import android.view.KeyEvent
+import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AnticipateOvershootInterpolator
 import android.widget.AdapterView
@@ -40,6 +44,7 @@ import androidx.transition.TransitionManager
 import com.example.hitsmobile.R
 import com.example.hitsmobile.algorithms.Mask
 import com.example.hitsmobile.algorithms.Resize
+import com.example.hitsmobile.algorithms.Retouch
 import com.example.hitsmobile.algorithms.Rotate
 import com.example.hitsmobile.filters.ColorFilters
 import com.example.hitsmobile.filters.FilterViewAdapter
@@ -51,7 +56,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.io.IOException
+import java.lang.Math.pow
 import java.util.concurrent.Executors
+import kotlin.math.floor
 
 
 open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter.FilterListener {
@@ -131,6 +138,11 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
     private lateinit var radio : RadioGroup
     private var currRadio : Int = 1
 
+    var retouch = Retouch()
+    lateinit var retouchImg : Bitmap
+    private var pX = 0f
+    private var pY = 0f
+
     @SuppressLint("MissingInflatedId", "ClickableViewAccessibility", "ResourceType",
         "UseCompatLoadingForDrawables"
     )
@@ -142,6 +154,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
         /*Динамическая загрузка изображения*/
         val imageView = findViewById<ImageView>(R.id.photoEditorView)
+        var PictureWidth = imageView.drawable.intrinsicWidth
+        var PictureHeight = imageView.drawable.intrinsicHeight
         val executor = Executors.newSingleThreadExecutor()
         val handler = Handler(Looper.getMainLooper())
         var image: Bitmap? = null
@@ -157,7 +171,6 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                     imageView.setImageBitmap(image)
                     MyVariables.currImg = (image as Bitmap?)!!
                     MyVariables.rotateImg = MyVariables.currImg
-                    /*imageView.scaleType = ImageView.ScaleType.CENTER_INSIDE*/
                 }
             }
             catch (e: Exception) {
@@ -337,6 +350,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             var newMask = mask.UnsharpMask(MyVariables.currImg, (seekBarMasking.progress).toFloat())
             imageView.setImageBitmap(newMask)
             MyVariables.rotateImg = newMask
+            seekBarMasking.progress = 5
         }
 
         /*Отслеживаем переключения для изменения размера фото*/
@@ -435,6 +449,47 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 }
             }
         })
+
+        /*Алгоритм ретуши*/
+        val otl: View.OnTouchListener = object : View.OnTouchListener {
+            var inverse = Matrix()
+
+            override fun onTouch(v: View, event: MotionEvent): Boolean {
+                if(MyVariables.isRetouch) {
+                    imageView.imageMatrix.invert(inverse)
+
+                    val pts = floatArrayOf(event.x, event.y)
+
+                    inverse.mapPoints(pts)
+
+                    if (pX != floor(pts[0]) && pY != floor(pts[1]) &&
+                        floor(pts[0]) > 0 && floor(pts[1]) > 0 &&
+                        floor(pts[0]) < PictureWidth && floor(pts[1]) < PictureHeight
+                    ) {
+
+                        Log.d(
+                            ContentValues.TAG,
+                            "onTouch x: " + floor(pts[0].toDouble()) + ", y: " + floor(pts[1].toDouble())
+                        )
+
+                        retouchImg = retouch.blur(
+                            MyVariables.currImg, (seekBarRetouchRadius.progress).toFloat(),
+                            (seekBarRetouchSharpness.progress).toFloat(), floor(pts[0]).toInt(), floor(pts[1]).toInt()
+                        )
+
+                        imageView.setImageBitmap(retouchImg)
+                        MyVariables.rotateImg = retouchImg
+
+                        pX = floor(pts[0])
+                        pY = floor(pts[1])
+                    }
+                }
+
+                return false
+            }
+        }
+
+        imageView.setOnTouchListener(otl)
     }
 
     /*Работа с разрешением для галереи и камеры*/
@@ -489,7 +544,6 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             }
 
             img.setImageBitmap(bitmap)
-            /*img.scaleType = ImageView.ScaleType.CENTER_INSIDE*/
 
             if (bitmap != null) {
                 MyVariables.currImg = bitmap
@@ -503,7 +557,6 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                     img.setImageBitmap(data.extras?.get("data") as Bitmap)
                     MyVariables.currImg = data.extras?.get("data") as Bitmap
                     MyVariables.rotateImg = MyVariables.currImg
-                    /*img.scaleType = ImageView.ScaleType.FIT_CENTER*/
                 }
 
             } catch (e: IOException) {
@@ -621,6 +674,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
     override fun onBackPressed() {
         if (mIsFilterVisible) {
             showFilter(false)
+            MyVariables.isRetouch = false
 
         } else if(!mIsFilterVisible){
 
@@ -705,6 +759,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             ToolsType.RETOUCH -> {
                 currNumberBlock = 4
                 showFilter(true)
+                MyVariables.isRetouch = true
             }
 
             ToolsType.MASKING-> {
@@ -730,5 +785,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         /*Храним изображение, которое обрабатываем*/
         lateinit var currImg: Bitmap
         lateinit var rotateImg: Bitmap
+
+        var isRetouch : Boolean = false
     }
 }

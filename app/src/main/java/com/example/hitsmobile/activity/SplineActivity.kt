@@ -35,7 +35,7 @@ class SplineActivity : AppCompatActivity() {
     private lateinit var backBtn: ImageView
 
     /*Кнопка для алгоритма сплайна*/
-    public lateinit var startBtn2: ImageView
+    private lateinit var startBtn: ImageView
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +46,12 @@ class SplineActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+
+        /*Кнопка для алгоритма сплайна*/
+        startBtn = findViewById(R.id.imgSpline)
+        startBtn.setOnClickListener(){
+
         }
 
         /*Блок для рисования*/
