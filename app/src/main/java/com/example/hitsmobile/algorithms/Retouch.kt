@@ -71,10 +71,23 @@ class Retouch {
 //            }
 //            i++
 //        }
-        val startX = x0 - r.toInt() -1
-        val endX = x0 + r.toInt() + 1
-        val startY = y0 - r.toInt() - 1
-        val endY = y0 + r.toInt() + 1
+        var startX = x0 - r.toInt() -1
+        var endX = x0 + r.toInt() + 1
+        var startY = y0 - r.toInt() - 1
+        var endY = y0 + r.toInt() + 1
+
+        if (startX < 0) {
+            startX = 0
+        }
+        if (endX >= bitmap.width) {
+            endX = bitmap.width-1
+        }
+        if (startY < 0) {
+            startY = 0
+        }
+        if (endY >= bitmap.height) {
+            endY = bitmap.height-1
+        }
         var y = startY
         while (y <= endY && y < bitmap.height) {
             var x = startX
