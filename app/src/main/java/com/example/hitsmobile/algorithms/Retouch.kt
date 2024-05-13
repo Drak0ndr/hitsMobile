@@ -81,7 +81,7 @@ class Retouch {
             while (x <= endX && x < bitmap.width) {
                 var dist = ((x-x0) * (x-x0) + (y-y0) * (y-y0)).toFloat().pow(0.5f)
                 if (dist < r) {
-                    var delta = (dist).toInt()
+                    var delta = (dist).toInt() * intensive/r
                     var data = blurPixel(bitmap, x,y, intensive - delta)
                     testBitmap.setPixel(x, y, Color.argb(data[0], data[1], data[2], data[3]))
                 }
