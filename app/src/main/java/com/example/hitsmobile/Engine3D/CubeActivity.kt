@@ -31,6 +31,11 @@ class CubeActivity : AppCompatActivity() {
     /*Ползунок для изменения дистанции*/
     private lateinit var seekBarDist: SeekBar
 
+    private var currX : Int = 0
+    private var currY : Int = 0
+    private var currZ : Int = 0
+    private  var currDistance: Int = 50
+
     @SuppressLint("MissingInflatedId", "ClickableViewAccessibility", "ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,7 +112,9 @@ class CubeActivity : AppCompatActivity() {
         /*Ползунок для поворота X*/
         seekBarX = findViewById(R.id.rotationX)
         seekBarX.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {}
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                currX = seekBarX.progress
+            }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
 
@@ -117,7 +124,9 @@ class CubeActivity : AppCompatActivity() {
         /*Ползунок для поворота Y*/
         seekBarY = findViewById(R.id.rotationY)
         seekBarY.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {}
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                currY = seekBarY.progress
+            }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
 
@@ -127,7 +136,9 @@ class CubeActivity : AppCompatActivity() {
         /*Ползунок для поворота Z*/
         seekBarZ = findViewById(R.id.rotationZ)
         seekBarZ.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {}
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                currZ = seekBarZ.progress
+            }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
 
@@ -137,7 +148,9 @@ class CubeActivity : AppCompatActivity() {
         /*Ползунок для изменения дистанции*/
         seekBarDist = findViewById(R.id.distance)
         seekBarDist.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {}
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                currDistance = seekBarDist.progress
+            }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
 

@@ -56,4 +56,5 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4")
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:x.x.x")
+    implementation("com.quickbirdstudios:opencv:3.4.15")
 }

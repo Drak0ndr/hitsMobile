@@ -4,6 +4,7 @@ import android.R.attr.x
 import android.R.attr.y
 import android.annotation.SuppressLint
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -58,6 +59,17 @@ import com.example.hitsmobile.tools.ToolsType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.opencv.android.OpenCVLoader
+import org.opencv.android.Utils
+import org.opencv.core.CvType
+import org.opencv.core.Mat
+import org.opencv.core.MatOfRect
+import org.opencv.core.Scalar
+import org.opencv.imgcodecs.Imgcodecs
+import org.opencv.imgproc.Imgproc
+import org.opencv.objdetect.CascadeClassifier
+import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 import java.util.concurrent.Executors
 import kotlin.math.floor
@@ -153,6 +165,11 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         enableEdgeToEdge()
 
         setContentView(R.layout.activity_photo)
+
+        if (!OpenCVLoader.initDebug())
+            Log.e("OpenCV", "Unable to load OpenCV!");
+        else
+            Log.d("OpenCV", "OpenCV loaded Successfully!");
 
         /*Динамическая загрузка изображения*/
         val imageView = findViewById<ImageView>(R.id.photoEditorView)
