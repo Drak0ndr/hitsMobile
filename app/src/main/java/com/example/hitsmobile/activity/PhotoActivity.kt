@@ -478,6 +478,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                         )
 
                         imageView.setImageBitmap(retouchImg)
+                        MyVariables.currImg = retouchImg
                         MyVariables.rotateImg = retouchImg
 
                         pX = floor(pts[0])
@@ -675,6 +676,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         if (mIsFilterVisible) {
             showFilter(false)
             MyVariables.isRetouch = false
+            seekBarRetouchRadius.progress = 5
+            seekBarRetouchSharpness.progress = 5
 
         } else if(!mIsFilterVisible){
 
