@@ -16,14 +16,17 @@ class Drawer {
     }
 
     fun drawPixel(x:Int, y:Int, r:Float, g:Float, b:Float) {
-        bitmap.setPixel(x,y, Color.argb(1f, r, g, b))
+        var y = -y
+        if (x >= 0 && x < bitmap.width && y > 0 && y < bitmap.height) {
+            bitmap.setPixel(x,y, Color.argb(1f, r, g, b))
+        }
     }
 
     fun clearSurface() {
         bitmap.eraseColor(Color.argb(0, 0, 0 ,0))
     }
 
-    fun drawLine(x1:Int, y1:Int, x2:Int, y2:Int, r:Float, g:Float, b:Float) {
+    fun drawLine(x1:Float, y1:Float, x2:Float, y2:Float, r:Float, g:Float, b:Float) {
         val c1 = y2 - y1
         val c2 = x2 - x1
 

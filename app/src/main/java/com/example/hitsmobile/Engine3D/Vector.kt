@@ -6,11 +6,13 @@ class Vector {
     var x = 0f
     var y = 0f
     var z = 0f
+    var w = 0f
 
-    constructor(_x:Float,_y:Float,_z:Float) {
+    constructor(_x:Float,_y:Float,_z:Float, _w: Float = 1f) {
         x = _x
         y = _y
         z = _z
+        w = _w
     }
 
     fun add(v1:Vector, v2:Vector):Vector {
