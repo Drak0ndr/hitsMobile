@@ -3,6 +3,9 @@ package com.example.hitsmobile.filters
 import android.graphics.Bitmap
 import android.graphics.Color
 import com.example.hitsmobile.activity.PhotoActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlin.math.pow
 
 class ColorFilters: PhotoActivity() {
@@ -158,42 +161,83 @@ class ColorFilters: PhotoActivity() {
             kernel.add(temp)
             i++
         }
+        runBlocking {
+            launch(Dispatchers.Default) {
+                var i = 0
+                while (i < bitmap.height/2) {
+                    var j = 0
+                    while (j < bitmap.width) {
+                        var tempRed = 0f
+                        var tempGreen = 0f
+                        var tempBlue = 0f
+                        var tempAlpha = 0f
+                        var kernelCoef = 0.0
+                        var y = 0
+                        while (y < len) {
+                            var x = 0
+                            while (x < len) {
+                                if ((j - mid + x) >= 0 && (j - mid + x) < bitmap.width && (i - mid + y) >= 0 && (i - mid + y) < bitmap.height) {
+                                    var tempColors = bitmap.getColor(j - mid + x, i - mid + y).components
+                                    tempRed+= (tempColors[0] * kernel[y][x]).toFloat()
+                                    tempGreen+= (tempColors[1] * kernel[y][x]).toFloat()
+                                    tempBlue+= (tempColors[2] * kernel[y][x]).toFloat()
+                                    tempAlpha+= (tempColors[3] * kernel[y][x]).toFloat()
+                                    kernelCoef+= kernel[y][x]
+                                }
 
-        i = 0
-        while (i < bitmap.height) {
-            var j = 0
-            while (j < bitmap.width) {
-                var tempRed = 0f
-                var tempGreen = 0f
-                var tempBlue = 0f
-                var tempAlpha = 0f
-                var kernelCoef = 0.0
-                var y = 0
-                while (y < len) {
-                    var x = 0
-                    while (x < len) {
-                        if ((j - mid + x) >= 0 && (j - mid + x) < bitmap.width && (i - mid + y) >= 0 && (i - mid + y) < bitmap.height) {
-                            var tempColors = bitmap.getColor(j - mid + x, i - mid + y).components
-                            tempRed+= (tempColors[0] * kernel[y][x]).toFloat()
-                            tempGreen+= (tempColors[1] * kernel[y][x]).toFloat()
-                            tempBlue+= (tempColors[2] * kernel[y][x]).toFloat()
-                            tempAlpha+= (tempColors[3] * kernel[y][x]).toFloat()
-                            kernelCoef+= kernel[y][x]
+                                x++
+                            }
+                            y++
                         }
-
-                        x++
+                        tempRed = (tempRed / kernelCoef).toFloat()
+                        tempGreen = (tempGreen / kernelCoef).toFloat()
+                        tempBlue = (tempBlue / kernelCoef).toFloat()
+                        tempAlpha = (tempAlpha / kernelCoef).toFloat()
+                        newBitmap.setPixel(j,i, Color.argb(tempAlpha, tempRed, tempGreen, tempBlue))
+                        j++
                     }
-                    y++
+                    i++
                 }
-                tempRed = (tempRed / kernelCoef).toFloat()
-                tempGreen = (tempGreen / kernelCoef).toFloat()
-                tempBlue = (tempBlue / kernelCoef).toFloat()
-                tempAlpha = (tempAlpha / kernelCoef).toFloat()
-                newBitmap.setPixel(j,i, Color.argb(tempAlpha, tempRed, tempGreen, tempBlue))
-                j++
             }
-            i++
+            launch(Dispatchers.Default) {
+                var i = (bitmap.height/2).toInt()
+                while (i < bitmap.height) {
+                    var j = 0
+                    while (j < bitmap.width) {
+                        var tempRed = 0f
+                        var tempGreen = 0f
+                        var tempBlue = 0f
+                        var tempAlpha = 0f
+                        var kernelCoef = 0.0
+                        var y = 0
+                        while (y < len) {
+                            var x = 0
+                            while (x < len) {
+                                if ((j - mid + x) >= 0 && (j - mid + x) < bitmap.width && (i - mid + y) >= 0 && (i - mid + y) < bitmap.height) {
+                                    var tempColors = bitmap.getColor(j - mid + x, i - mid + y).components
+                                    tempRed+= (tempColors[0] * kernel[y][x]).toFloat()
+                                    tempGreen+= (tempColors[1] * kernel[y][x]).toFloat()
+                                    tempBlue+= (tempColors[2] * kernel[y][x]).toFloat()
+                                    tempAlpha+= (tempColors[3] * kernel[y][x]).toFloat()
+                                    kernelCoef+= kernel[y][x]
+                                }
+
+                                x++
+                            }
+                            y++
+                        }
+                        tempRed = (tempRed / kernelCoef).toFloat()
+                        tempGreen = (tempGreen / kernelCoef).toFloat()
+                        tempBlue = (tempBlue / kernelCoef).toFloat()
+                        tempAlpha = (tempAlpha / kernelCoef).toFloat()
+                        newBitmap.setPixel(j,i, Color.argb(tempAlpha, tempRed, tempGreen, tempBlue))
+                        j++
+                    }
+                    i++
+                }
+            }
         }
+
         return newBitmap
     }
 
