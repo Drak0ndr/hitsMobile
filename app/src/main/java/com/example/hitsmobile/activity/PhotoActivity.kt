@@ -1,5 +1,7 @@
 package com.example.hitsmobile.activity
 
+import android.R.attr.x
+import android.R.attr.y
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Intent
@@ -17,6 +19,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
+import android.view.MotionEvent.ACTION_MOVE
 import android.view.View
 import android.view.animation.AnticipateOvershootInterpolator
 import android.widget.AdapterView
@@ -56,7 +59,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.io.IOException
-import java.lang.Math.pow
 import java.util.concurrent.Executors
 import kotlin.math.floor
 
@@ -347,8 +349,9 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         maskingStartBtn = findViewById(R.id.maskingStartBtn)
         maskingStartBtn.setOnClickListener(){
             var mask = Mask()
-            var newMask = mask.UnsharpMask(MyVariables.currImg, (seekBarMasking.progress).toFloat())
+            var newMask = mask.UnsharpMask(MyVariables.rotateImg, (seekBarMasking.progress).toFloat())
             imageView.setImageBitmap(newMask)
+            MyVariables.currImg = newMask
             MyVariables.rotateImg = newMask
             seekBarMasking.progress = 5
         }
@@ -455,41 +458,47 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             var inverse = Matrix()
 
             override fun onTouch(v: View, event: MotionEvent): Boolean {
-                if(MyVariables.isRetouch) {
-                    imageView.imageMatrix.invert(inverse)
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {}
 
-                    val pts = floatArrayOf(event.x, event.y)
+                    ACTION_MOVE -> {
+                        if(MyVariables.isRetouch) {
+                            imageView.imageMatrix.invert(inverse)
 
-                    inverse.mapPoints(pts)
+                            val pts = floatArrayOf(event.x, event.y)
 
-                    if (pX != floor(pts[0]) && pY != floor(pts[1]) &&
-                        floor(pts[0]) > 0 && floor(pts[1]) > 0 &&
-                        floor(pts[0]) < PictureWidth && floor(pts[1]) < PictureHeight
-                    ) {
+                            inverse.mapPoints(pts)
 
-                        Log.d(
-                            ContentValues.TAG,
-                            "onTouch x: " + floor(pts[0].toDouble()) + ", y: " + floor(pts[1].toDouble())
-                        )
+                            if (pX != floor(pts[0]) && pY != floor(pts[1]) &&
+                                floor(pts[0]) > 0 && floor(pts[1]) > 0 &&
+                                floor(pts[0]) < PictureWidth && floor(pts[1]) < PictureHeight
+                            ) {
 
-                        retouchImg = retouch.blur(
-                            MyVariables.currImg, (seekBarRetouchRadius.progress).toFloat(),
-                            (seekBarRetouchSharpness.progress).toFloat(), floor(pts[0]).toInt(), floor(pts[1]).toInt()
-                        )
+                                Log.d(
+                                    ContentValues.TAG,
+                                    "onTouch x: " + floor(pts[0].toDouble()) + ", y: " + floor(pts[1].toDouble())
+                                )
 
-                        imageView.setImageBitmap(retouchImg)
-                        MyVariables.currImg = retouchImg
-                        MyVariables.rotateImg = retouchImg
+                                retouchImg = retouch.blur(
+                                    MyVariables.rotateImg, (seekBarRetouchRadius.progress).toFloat(),
+                                    (seekBarRetouchSharpness.progress).toFloat(), floor(pts[0]).toInt(), floor(pts[1]).toInt()
+                                )
 
-                        pX = floor(pts[0])
-                        pY = floor(pts[1])
+                                imageView.setImageBitmap(retouchImg)
+                                MyVariables.currImg = retouchImg
+                                MyVariables.rotateImg = retouchImg
+
+                                pX = floor(pts[0])
+                                pY = floor(pts[1])
+                            }
+                        }
+                        return false
                     }
+                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {}
                 }
-
-                return false
+                return true
             }
         }
-
         imageView.setOnTouchListener(otl)
     }
 
