@@ -68,13 +68,14 @@ class CubeActivity : AppCompatActivity() {
         cubeEdges.add(mutableListOf(7,4))
 
         var sceneVertices = mutableListOf<Vector>()
-
+        var matrix = Matrix.getRotationX(20f)
+        matrix = Matrix.multiply(Matrix.getRotationY(20f), matrix)
+        matrix = Matrix.multiply(Matrix.getScale(200f,200f,200f), matrix)
+        matrix = Matrix.multiply(Matrix.getTranslation(400f,-300f,0f), matrix)
         var i = 0
         while (i < cubeVertices.size) {
-            var vertex = Matrix.multiplyVector(Matrix.getRotationX(20f), cubeVertices[i])
-            vertex = Matrix.multiplyVector(Matrix.getRotationY(20f), vertex)
-            vertex = Matrix.multiplyVector(Matrix.getScale(100f,100f,100f), vertex)
-            vertex = Matrix.multiplyVector(Matrix.getTranslation(400f, -300f,0f), vertex)
+            var vertex = Matrix.multiplyVector(matrix, cubeVertices[i])
+
             sceneVertices.add(vertex)
             i++
         }
