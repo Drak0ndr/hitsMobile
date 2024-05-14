@@ -1,10 +1,7 @@
 package com.example.hitsmobile.activity
 
-import android.R.attr.x
-import android.R.attr.y
 import android.annotation.SuppressLint
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -22,6 +19,7 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.MotionEvent.ACTION_MOVE
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnticipateOvershootInterpolator
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -47,6 +45,7 @@ import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import com.example.hitsmobile.R
 import com.example.hitsmobile.algorithms.Mask
+import com.example.hitsmobile.algorithms.MyDialogFragment
 import com.example.hitsmobile.algorithms.Resize
 import com.example.hitsmobile.algorithms.Retouch
 import com.example.hitsmobile.algorithms.Rotate
@@ -59,17 +58,6 @@ import com.example.hitsmobile.tools.ToolsType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.opencv.android.OpenCVLoader
-import org.opencv.android.Utils
-import org.opencv.core.CvType
-import org.opencv.core.Mat
-import org.opencv.core.MatOfRect
-import org.opencv.core.Scalar
-import org.opencv.imgcodecs.Imgcodecs
-import org.opencv.imgproc.Imgproc
-import org.opencv.objdetect.CascadeClassifier
-import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
 import java.util.concurrent.Executors
 import kotlin.math.floor
@@ -78,6 +66,9 @@ import kotlin.math.floor
 open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter.FilterListener {
     /*Выпадающий блок*/
     private lateinit var spinner : Spinner
+
+    /*Контейнер для аффинных преобразований*/
+    private lateinit var transformBlock :RelativeLayout
 
     /*Кнопки для поворота*/
     private lateinit var leftBtn: ImageView
@@ -152,10 +143,26 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
     private lateinit var radio : RadioGroup
     private var currRadio : Int = 1
 
+    /*Кнопка для диалога*/
+    private lateinit var helpImg : ImageView
+
     var retouch = Retouch()
     lateinit var retouchImg : Bitmap
     private var pX = 0f
     private var pY = 0f
+
+    /*Точки для аффинных преобразований*/
+    private lateinit var redImg : ImageView
+    private lateinit var blueImg : ImageView
+    private lateinit var greenImg : ImageView
+
+    /*Кнопки для аффинных преобразований*/
+    private lateinit var firstPointsBtn : AppCompatButton
+    private lateinit var secondPointsBtn : AppCompatButton
+    private lateinit var startTransformBtn : AppCompatButton
+
+    var listFirstPoints = mutableListOf<Pair<Float, Float>>()
+    var listSecondPoints = mutableListOf<Pair<Float, Float>>()
 
     @SuppressLint("MissingInflatedId", "ClickableViewAccessibility", "ResourceType",
         "UseCompatLoadingForDrawables"
@@ -166,10 +173,15 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
         setContentView(R.layout.activity_photo)
 
-        if (!OpenCVLoader.initDebug())
-            Log.e("OpenCV", "Unable to load OpenCV!");
+        /*Точки для аффинных преобразований*/
+        redImg = findViewById(R.id.redImg)
+        blueImg = findViewById(R.id.blueImg)
+        greenImg = findViewById(R.id.greenImg)
+
+        /*if (!OpenCVLoader.initDebug())
+            Log.e("OpenCV", "Unable to load OpenCV!")
         else
-            Log.d("OpenCV", "OpenCV loaded Successfully!");
+            Log.d("OpenCV", "OpenCV loaded Successfully!")*/
 
         /*Динамическая загрузка изображения*/
         val imageView = findViewById<ImageView>(R.id.photoEditorView)
@@ -194,6 +206,53 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             }
             catch (e: Exception) {
                 e.printStackTrace()
+            }
+        }
+
+        /*Кнопки для аффинных преобразований*/
+        firstPointsBtn = findViewById(R.id.pointsBtn1)
+        firstPointsBtn.setOnClickListener(){
+            if(listFirstPoints.size < 3){
+                MyVariables.isFirstPoints = true
+                MyVariables.isSecondPoints = false
+                firstPointsBtn = findViewById(R.id.pointsBtn1)
+                firstPointsBtn.background = this.getResources().getDrawable(R.drawable.pressed_btn)
+            }
+        }
+
+        secondPointsBtn = findViewById(R.id.pointsBtn2)
+        secondPointsBtn.setOnClickListener(){
+            if(listSecondPoints.size < 3) {
+                if (MyVariables.isFirstPoints || listFirstPoints.size < 3) {
+                    Toast.makeText(this, "Сначала расставьте начальные точки!", Toast.LENGTH_LONG)
+                        .show()
+                } else {
+                    MyVariables.isSecondPoints = true
+                    MyVariables.isFirstPoints = false
+                    secondPointsBtn.background =
+                        this.getResources().getDrawable(R.drawable.pressed_btn)
+                    redImg.visibility = View.GONE
+                    blueImg.visibility = View.GONE
+                    greenImg.visibility = View.GONE
+                }
+            }
+        }
+
+        startTransformBtn = findViewById(R.id.transformStartBtn)
+        startTransformBtn.setOnClickListener(){
+            if(listSecondPoints.size < 3 || listFirstPoints.size < 3){
+                Toast.makeText(this,"Сначала расставьте все точки!",Toast.LENGTH_LONG).show()
+            }
+            else{
+                MyVariables.isFirstPoints = false
+                MyVariables.isSecondPoints = false
+                redImg.visibility = View.GONE
+                blueImg.visibility = View.GONE
+                greenImg.visibility = View.GONE
+
+
+                listSecondPoints.clear()
+                listFirstPoints.clear()
             }
         }
 
@@ -225,6 +284,9 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         rvFilters = findViewById(R.id.recyclerViewFilter)
         rvFilters.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvFilters.adapter = filterAdapter
+
+        /*Контейнер для аффинных преобразований*/
+        transformBlock = findViewById(R.id.transformBlock)
 
         /*Контейнер для поворота*/
         rlRotate = findViewById(R.id.rotateBlock)
@@ -319,6 +381,14 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             startActivity(intent)
         }
 
+        /*Кнопка для диалога*/
+        helpImg = findViewById(R.id.helpImg)
+        helpImg.setOnClickListener(){
+            val myDialogFragment = MyDialogFragment()
+            val manager = supportFragmentManager
+            myDialogFragment.show(manager, "myDialog")
+        }
+
         /*Отслеживаем выдвижные блоки*/
         closeButton = findViewById(R.id.imgClose)
         closeButton.setOnClickListener{
@@ -394,8 +464,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
 
-            override fun onStopTrackingTouch(seekBar: SeekBar) {
-            }
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
         })
 
         /*Отслеживаем изменения ползунка для интенсивности маскирования*/
@@ -476,7 +545,55 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
             override fun onTouch(v: View, event: MotionEvent): Boolean {
                 when (event.action) {
-                    MotionEvent.ACTION_DOWN -> {}
+                    MotionEvent.ACTION_DOWN -> {
+                        val  x = event.x
+                        val y = event.y
+
+                        if(MyVariables.isFirstPoints && x > 0 && y > 0 && x < PictureWidth && y < PictureHeight){
+                            if(listFirstPoints.size == 0){
+                                val param = redImg.layoutParams as ViewGroup.MarginLayoutParams
+                                param.setMargins(x.toInt() - 40 ,y.toInt() - 40,0,0)
+                                redImg.visibility = View.VISIBLE
+                                listFirstPoints.add(x to y)
+                            }
+                            else if(listFirstPoints.size == 1){
+                                val param = blueImg.layoutParams as ViewGroup.MarginLayoutParams
+                                param.setMargins(x.toInt() - 40 ,y.toInt() - 40,0,0)
+                                blueImg.visibility = View.VISIBLE
+                                listFirstPoints.add(x to y)
+                            }
+                            else if(listFirstPoints.size == 2){
+                                val param = greenImg.layoutParams as ViewGroup.MarginLayoutParams
+                                param.setMargins(x.toInt() - 40,y.toInt() - 40,0,0)
+                                greenImg.visibility = View.VISIBLE
+                                listFirstPoints.add(x to y)
+                                firstPointsBtn.background = this@PhotoActivity.getResources().getDrawable(R.drawable.btn_bg)
+                                MyVariables.isFirstPoints = false
+                            }
+                        }
+                        else if(MyVariables.isSecondPoints && x > 0 && y > 0 && x < PictureWidth && y < PictureHeight){
+                            if(listSecondPoints.size == 0){
+                                val param = redImg.layoutParams as ViewGroup.MarginLayoutParams
+                                param.setMargins(x.toInt() - 40 ,y.toInt() - 40,0,0)
+                                redImg.visibility = View.VISIBLE
+                                listSecondPoints.add(x to y)
+                            }
+                            else if(listSecondPoints.size == 1){
+                                val param = blueImg.layoutParams as ViewGroup.MarginLayoutParams
+                                param.setMargins(x.toInt() - 40 ,y.toInt() - 40,0,0)
+                                blueImg.visibility = View.VISIBLE
+                                listSecondPoints.add(x to y)
+                            }
+                            else if(listSecondPoints.size == 2){
+                                val param = greenImg.layoutParams as ViewGroup.MarginLayoutParams
+                                param.setMargins(x.toInt() - 40,y.toInt() - 40,0,0)
+                                greenImg.visibility = View.VISIBLE
+                                listSecondPoints.add(x to y)
+                                secondPointsBtn.background = this@PhotoActivity.getResources().getDrawable(R.drawable.btn_bg)
+                                MyVariables.isSecondPoints = false
+                            }
+                        }
+                    }
 
                     ACTION_MOVE -> {
                         if(MyVariables.isRetouch) {
@@ -732,6 +849,9 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         else if(currNumberBlock == 5){
             currBlock = maskingBlock.id
         }
+        else if(currNumberBlock == 6){
+            currBlock = transformBlock.id
+        }
 
         if (isVisible) {
             mConstraintSet.clear(currBlock, ConstraintSet.START)
@@ -795,6 +915,11 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 currNumberBlock = 5
                 showFilter(true)
             }
+
+            ToolsType.AFFINE-> {
+                currNumberBlock = 6
+                showFilter(true)
+            }
         }
     }
 
@@ -816,5 +941,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         lateinit var rotateImg: Bitmap
 
         var isRetouch : Boolean = false
+
+        var isFirstPoints : Boolean = false
+        var isSecondPoints : Boolean = false
     }
 }

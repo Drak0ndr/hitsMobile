@@ -12,13 +12,45 @@
         android:id="@+id/photoEditorView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@color/main_bg"
+        android:scaleType="fitCenter"
+        android:src="@drawable/white_background"
         app:layout_constraintBottom_toTopOf="@+id/recyclerViewTools"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/main_bg"
-        android:scaleType="fitCenter"
-        android:src="@drawable/white_background">
+        app:layout_constraintVertical_bias="1.0">
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/redImg"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/color_red"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/blueImg"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/blue_color"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/greenImg"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/green_color"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
     </ImageView>
 
     <androidx.constraintlayout.widget.Guideline
@@ -531,7 +563,6 @@
 
     </RelativeLayout>
 
-
     <RelativeLayout
         android:id="@+id/maskingBlock"
         android:layout_width="0dp"
@@ -653,6 +684,112 @@
                     android:background="@drawable/btn_bg"
                     android:text="Start">
                 </androidx.appcompat.widget.AppCompatButton>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/transformBlock"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/main_bg"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewTools"
+        app:layout_constraintStart_toStartOf="@+id/recyclerViewTools"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewTools">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/pointsBtn1"
+                        android:layout_width="120dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/btn_bg"
+                        android:text="First points"
+                        android:layout_marginRight="10dp"
+                        android:textColor="@color/white"
+                        android:textSize="12sp">
+                    </androidx.appcompat.widget.AppCompatButton>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/pointsBtn2"
+                        android:layout_width="120dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/btn_bg"
+                        android:text="Second points"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/white"
+                        android:textSize="12sp">
+                    </androidx.appcompat.widget.AppCompatButton>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/transformStartBtn"
+                        android:layout_width="120dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/btn_bg"
+                        android:foregroundGravity="center"
+                        android:gravity="center"
+                        android:text="Start"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="14sp">
+                    </androidx.appcompat.widget.AppCompatButton>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/helpImg"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/search2"
+                    android:foregroundGravity="center">
+
+                </ImageView>
 
             </LinearLayout>
 

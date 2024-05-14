@@ -143,39 +143,5 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
         return true
     }
 
-    fun alg(){
-
-    }
-
-    fun approximation(x: Double): Double{
-        val apoints = listOf(Pair(1.0f, 2.0f), Pair(3.0f, 1.0f), Pair(5.0f, 3.0f),
-            Pair(6.0f, 4.0f), Pair(8.0, 2.0f))
-        val newpoints = mutableListOf<Pair<Double, Double>>()
-
-        for(i in 0..apoints.size - 1){
-            var p = Pair((apoints[i].first).toDouble(), (apoints[i].second).toDouble())
-            newpoints.add(p)
-        }
-
-
-        // Решаем систему уравнений для линейной функции y = ax + b
-        val sumX = newpoints.sumByDouble { it.first }
-        val sumY = newpoints.sumByDouble { it.second }
-        val sumXY = newpoints.sumByDouble { it.first * it.second }
-        val sumXSquare = newpoints.sumByDouble { it.first * it.first }
-
-        val n = newpoints.size.toDouble()
-
-        val a = (n * sumXY - sumX * sumY) / (n * sumXSquare - sumX * sumX)
-        val b = (sumY - a * sumX) / n
-
-        // Функция аппроксимации
-        fun linearFunction(x: Double): Double {
-            return a * x + b
-        }
-
-
-        return linearFunction(x)
-    }
 }
 

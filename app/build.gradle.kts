@@ -45,6 +45,7 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.ui.graphics.android)
+    implementation(libs.androidx.emoji2.emojipicker)
     testImplementation(libs.junit)
     testImplementation("junit:junit:4.12")
     androidTestImplementation(libs.androidx.junit)
@@ -57,4 +58,5 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:x.x.x")
     implementation("com.quickbirdstudios:opencv:3.4.15")
+    implementation("androidx.multidex:multidex:2.0.1")
 }

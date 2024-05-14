@@ -69,9 +69,9 @@ class PhotoImageView(context: Context, attrs: AttributeSet) : androidx.appcompat
                         floor(pts[0]) > 0 && floor(pts[1]) > 0 &&
                         floor(pts[0]) < PictureWidth && floor(pts[1]) < PictureHeight){
 
-                        Log.d(TAG, "onTouch x: " + floor(pts[0].toDouble()) + ", y: " + floor(pts[1].toDouble()))
+                        Log.d(TAG, "on x: " + floor(pts[0].toDouble()) + ", y: " + floor(pts[1].toDouble()))
 
-                        retouchImg = retouch.blur(PhotoActivity.MyVariables.currImg, firstProgress,
+                        retouchImg = retouch.blur(PhotoActivity.MyVariables.currImg, 5f,
                             5f, floor(pts[0]).toInt(), floor(pts[1]).toInt())
 
                         imageView.setImageBitmap(retouchImg)

@@ -58,5 +58,6 @@ class ToolsAdapter(private val mOnItemSelected: PhotoActivity) :
         mToolList.add(ToolModel("Filter", R.drawable.filter, ToolsType.FILTER))
         mToolList.add(ToolModel("Retouch", R.drawable.retouch, ToolsType.RETOUCH))
         mToolList.add(ToolModel("Masking", R.drawable.masking, ToolsType.MASKING))
+        mToolList.add(ToolModel("Transform", R.drawable.affine_transformations, ToolsType.AFFINE))
     }
 }
