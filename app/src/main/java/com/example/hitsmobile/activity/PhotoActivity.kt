@@ -552,19 +552,19 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                         if(MyVariables.isFirstPoints && x > 0 && y > 0 && x < PictureWidth && y < PictureHeight){
                             if(listFirstPoints.size == 0){
                                 val param = redImg.layoutParams as ViewGroup.MarginLayoutParams
-                                param.setMargins(x.toInt() - 40 ,y.toInt() - 40,0,0)
+                                param.setMargins(x.toInt() - 30 ,y.toInt() - 30,0,0)
                                 redImg.visibility = View.VISIBLE
                                 listFirstPoints.add(x to y)
                             }
                             else if(listFirstPoints.size == 1){
                                 val param = blueImg.layoutParams as ViewGroup.MarginLayoutParams
-                                param.setMargins(x.toInt() - 40 ,y.toInt() - 40,0,0)
+                                param.setMargins(x.toInt() - 30 ,y.toInt() - 30,0,0)
                                 blueImg.visibility = View.VISIBLE
                                 listFirstPoints.add(x to y)
                             }
                             else if(listFirstPoints.size == 2){
                                 val param = greenImg.layoutParams as ViewGroup.MarginLayoutParams
-                                param.setMargins(x.toInt() - 40,y.toInt() - 40,0,0)
+                                param.setMargins(x.toInt() - 30,y.toInt() - 30,0,0)
                                 greenImg.visibility = View.VISIBLE
                                 listFirstPoints.add(x to y)
                                 firstPointsBtn.background = this@PhotoActivity.getResources().getDrawable(R.drawable.btn_bg)
@@ -574,19 +574,19 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                         else if(MyVariables.isSecondPoints && x > 0 && y > 0 && x < PictureWidth && y < PictureHeight){
                             if(listSecondPoints.size == 0){
                                 val param = redImg.layoutParams as ViewGroup.MarginLayoutParams
-                                param.setMargins(x.toInt() - 40 ,y.toInt() - 40,0,0)
+                                param.setMargins(x.toInt() - 30 ,y.toInt() - 30,0,0)
                                 redImg.visibility = View.VISIBLE
                                 listSecondPoints.add(x to y)
                             }
                             else if(listSecondPoints.size == 1){
                                 val param = blueImg.layoutParams as ViewGroup.MarginLayoutParams
-                                param.setMargins(x.toInt() - 40 ,y.toInt() - 40,0,0)
+                                param.setMargins(x.toInt() - 30 ,y.toInt() - 30,0,0)
                                 blueImg.visibility = View.VISIBLE
                                 listSecondPoints.add(x to y)
                             }
                             else if(listSecondPoints.size == 2){
                                 val param = greenImg.layoutParams as ViewGroup.MarginLayoutParams
-                                param.setMargins(x.toInt() - 40,y.toInt() - 40,0,0)
+                                param.setMargins(x.toInt() - 30,y.toInt() - 30,0,0)
                                 greenImg.visibility = View.VISIBLE
                                 listSecondPoints.add(x to y)
                                 secondPointsBtn.background = this@PhotoActivity.getResources().getDrawable(R.drawable.btn_bg)

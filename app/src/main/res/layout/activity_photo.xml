@@ -25,9 +25,9 @@
 
     <ImageView
         android:id="@+id/redImg"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/color_red"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/red"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -35,9 +35,9 @@
 
     <ImageView
         android:id="@+id/blueImg"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/blue_color"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/blue"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -45,9 +45,9 @@
 
     <ImageView
         android:id="@+id/greenImg"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/green_color"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/green"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
