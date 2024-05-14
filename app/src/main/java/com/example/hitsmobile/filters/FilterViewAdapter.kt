@@ -1,5 +1,7 @@
 package com.example.hitsmobile.filters
 
+
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -10,17 +12,15 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.hitsmobile.activity.PhotoActivity
 import com.example.hitsmobile.R
-
-
+import com.example.hitsmobile.activity.PhotoActivity
 import java.io.IOException
-import java.util.ArrayList
 
 
 class FilterViewAdapter(private val filterListener: PhotoActivity) :
     RecyclerView.Adapter<FilterViewAdapter.ViewHolder>() {
     private val pairsList: MutableList<Pair<String, PhotoFilter>> = ArrayList()
+    private var newPairsList: MutableList<kotlin.Pair<Bitmap, PhotoFilter>> = ArrayList()
 
     interface FilterListener {
         fun onFilterSelected(photoFilter: PhotoFilter)
@@ -32,14 +32,27 @@ class FilterViewAdapter(private val filterListener: PhotoActivity) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val filterPair = pairsList[position]
-        val fromAsset = getBitmapFromAsset(holder.itemView.context, filterPair.first)
-        holder.imageFilterView.setImageBitmap(fromAsset)
-        holder.txtFilterName.text = filterPair.second.name
+        if(newPairsList.size == 0){
+            val filterPair = pairsList[position]
+            val fromAsset = getBitmapFromAsset(holder.itemView.context, filterPair.first)
+            holder.imageFilterView.setImageBitmap(fromAsset)
+            holder.txtFilterName.text = filterPair.second.name
+        }
+        else{
+            val filterPair = newPairsList[position]
+            holder.imageFilterView.setImageBitmap(filterPair.first)
+            holder.txtFilterName.text = filterPair.second.name
+        }
     }
 
     override fun getItemCount(): Int {
         return pairsList.size
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateAdapter(pairsList2: MutableList<kotlin.Pair<Bitmap, PhotoFilter>> = ArrayList()){
+        newPairsList = pairsList2
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

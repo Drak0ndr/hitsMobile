@@ -161,8 +161,11 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
     private lateinit var secondPointsBtn : AppCompatButton
     private lateinit var startTransformBtn : AppCompatButton
 
+    /*Сохраняем точки для аффинных преобразований*/
     var listFirstPoints = mutableListOf<Pair<Float, Float>>()
     var listSecondPoints = mutableListOf<Pair<Float, Float>>()
+
+    private var pairsList2: MutableList<Pair<Bitmap, PhotoFilter>> = ArrayList()
 
     @SuppressLint("MissingInflatedId", "ClickableViewAccessibility", "ResourceType",
         "UseCompatLoadingForDrawables"
@@ -692,6 +695,11 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             if (bitmap != null) {
                 MyVariables.currImg = bitmap
                 MyVariables.rotateImg = MyVariables.currImg
+
+                var resize = Resize()
+                var newImage = resize.downScale(bitmap, 8f)
+                fillList(newImage)
+                filterAdapter.updateAdapter(pairsList2)
             }
         }
 
@@ -701,12 +709,32 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                     img.setImageBitmap(data.extras?.get("data") as Bitmap)
                     MyVariables.currImg = data.extras?.get("data") as Bitmap
                     MyVariables.rotateImg = MyVariables.currImg
+
+                    var resize = Resize()
+                    var newImage = resize.downScale(MyVariables.currImg, 8f)
+                    fillList(newImage)
+                    filterAdapter.updateAdapter(pairsList2)
                 }
 
             } catch (e: IOException) {
                 e.printStackTrace()
             }
         }
+    }
+
+    fun fillList(image: Bitmap){
+        pairsList2.clear()
+        var filter = ColorFilters()
+        pairsList2.add(Pair(image, PhotoFilter.NONE))
+        pairsList2.add(Pair(filter.toGreenBasic(image), PhotoFilter.GREEN))
+        pairsList2.add(Pair(filter.toBlueBasic(image), PhotoFilter.BLUE))
+        pairsList2.add(Pair(filter.toRedBasic(image), PhotoFilter.RED))
+        pairsList2.add(Pair(filter.toYellowBasic(image), PhotoFilter.YELLOW))
+        pairsList2.add(Pair(filter.toGrayBasic(image), PhotoFilter.GRAYSCALE))
+        pairsList2.add(Pair(filter.toNegativeBasic(image), PhotoFilter.NEGATIVE))
+        pairsList2.add(Pair(filter.gausBlurBasic(image, 5f), PhotoFilter.BLUR))
+        pairsList2.add(Pair(filter.changeContrastBasic(image, 100f), PhotoFilter.CONTRAST))
+        pairsList2.add(Pair(filter.erosionFilter(image), PhotoFilter.EROSION))
     }
 
     /*Применяем фильтры*/
