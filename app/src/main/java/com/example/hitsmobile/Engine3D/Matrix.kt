@@ -89,6 +89,20 @@ class Matrix {
 
             return matrix
         }
+
+        fun getLookAt(eye:Vector, target: Vector, up:Vector): MutableList<MutableList<Float>> {
+            var vz = Vector.substruct(eye, target).normalize()
+            var vx = Vector.crossProduct(up, vz).normalize()
+            var vy = Vector.crossProduct(vz, vx).normalize()
+
+            var matrix = mutableListOf<MutableList<Float>>()
+            matrix.add(mutableListOf(vx.x, vx.y, vx.z, 0f))
+            matrix.add(mutableListOf(vy.x, vy.y, vy.z, 0f))
+            matrix.add(mutableListOf(vz.x, vz.y, vz.z, 0f))
+            matrix.add(mutableListOf(0f, 0f, 0f, 1f))
+
+            return Matrix.multiply(Matrix.getTranslation(-eye.x, -eye.y, -eye.z), matrix)
+        }
     }
 
 }

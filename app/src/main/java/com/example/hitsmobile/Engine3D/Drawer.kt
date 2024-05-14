@@ -16,9 +16,10 @@ class Drawer {
     }
 
     fun drawPixel(x:Int, y:Int, r:Float, g:Float, b:Float) {
-        var y = -y
+        var x = x + width/2
+        var y = -(y - height/2 * 1.01)
         if (x >= 0 && x < bitmap.width && y > 0 && y < bitmap.height) {
-            bitmap.setPixel(x,y, Color.argb(1f, r, g, b))
+            bitmap.setPixel(x.toInt(),y.toInt(), Color.argb(1f, r, g, b))
         }
     }
 

@@ -44,10 +44,10 @@ class CubeActivity : AppCompatActivity() {
         var img = findViewById<ImageView>(R.id.draw_view)
 
         val cubeVertices = mutableListOf<Vector>()
-        cubeVertices.add(Vector(-1f,1f,1f))
-        cubeVertices.add(Vector(-1f,1f,-1f))
-        cubeVertices.add(Vector(1f,1f,-1f))
-        cubeVertices.add(Vector(1f,1f,1f))
+        cubeVertices.add(Vector(-0.5f,1f,0.5f))
+        cubeVertices.add(Vector(-0.5f,1f,-0.5f))
+        cubeVertices.add(Vector(0.5f,1f,-0.5f))
+        cubeVertices.add(Vector(0.5f,1f,0.5f))
         cubeVertices.add(Vector(-1f,-1f,1f))
         cubeVertices.add(Vector(-1f,-1f,-1f))
         cubeVertices.add(Vector(1f,-1f,-1f))
@@ -68,14 +68,22 @@ class CubeActivity : AppCompatActivity() {
         cubeEdges.add(mutableListOf(7,4))
 
         var sceneVertices = mutableListOf<Vector>()
-        var matrix = Matrix.getRotationX(20f)
-        matrix = Matrix.multiply(Matrix.getRotationY(20f), matrix)
-        matrix = Matrix.multiply(Matrix.getScale(200f,200f,200f), matrix)
-        matrix = Matrix.multiply(Matrix.getTranslation(400f,-300f,0f), matrix)
+        var matrix = Matrix.getRotationX(0f)
+//        matrix = Matrix.multiply(Matrix.getRotationY(20f), matrix)
+        matrix = Matrix.multiply(Matrix.getScale(151f,151f,151f), matrix)
+        matrix = Matrix.multiply(Matrix.getTranslation(0f,0f,-200f), matrix)
+        matrix = Matrix.multiply(
+            Matrix.getLookAt(
+                Vector(0f,0f,0f),
+                Vector(0f,0f,-1f),
+                Vector(0f,1f,0f)
+            ), matrix
+        )
         var i = 0
         while (i < cubeVertices.size) {
             var vertex = Matrix.multiplyVector(matrix, cubeVertices[i])
-
+            vertex.x = vertex.x / -vertex.z * 100
+            vertex.y = vertex.y / -vertex.z * 100
             sceneVertices.add(vertex)
             i++
         }
