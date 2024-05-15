@@ -126,6 +126,7 @@ class CubeActivity : AppCompatActivity() {
         seekBarDist.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 currDistance = seekBarDist.progress
+                render()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
@@ -141,7 +142,7 @@ class CubeActivity : AppCompatActivity() {
         } else super.onKeyDown(keyCode, event)
     }
 
-    fun genMatrix(angleX:Float, angleY:Float, angleZ:Float): MutableList<MutableList<Float>> {
+    fun genMatrix(angleX:Float, angleY:Float, angleZ:Float, camZ:Float): MutableList<MutableList<Float>> {
         var matrix = Matrix.getRotationX(angleX)
         matrix = Matrix.multiply(Matrix.getRotationY(angleY), matrix)
         matrix = Matrix.multiply(Matrix.getRotationZ(angleZ), matrix)
@@ -149,7 +150,7 @@ class CubeActivity : AppCompatActivity() {
         matrix = Matrix.multiply(Matrix.getTranslation(0f,0f,-300f), matrix)
         matrix = Matrix.multiply(
             Matrix.getLookAt(
-                Vector(0f,0f,0f),
+                Vector(0f,0f,camZ),
                 Vector(0f,0f,-1f),
                 Vector(0f,1f,0f)
             ), matrix
@@ -165,7 +166,7 @@ class CubeActivity : AppCompatActivity() {
         var img = findViewById<ImageView>(R.id.draw_view)
 
         var sceneVertices = mutableListOf<Vector>()
-        var matrix = genMatrix(currX.toFloat(),currY.toFloat(),currZ.toFloat())
+        var matrix = genMatrix(currX.toFloat(),currY.toFloat(),currZ.toFloat(), currDistance.toFloat())
         var i = 0
         while (i < cubeVertices.size) {
             var vertex = Matrix.multiplyVector(matrix, cubeVertices[i])
