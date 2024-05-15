@@ -3,6 +3,7 @@ package com.example.hitsmobile.Engine3D
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
+import kotlin.math.tan
 
 class Matrix {
     companion object {
@@ -102,6 +103,24 @@ class Matrix {
             matrix.add(mutableListOf(0f, 0f, 0f, 1f))
 
             return Matrix.multiply(Matrix.getTranslation(-eye.x, -eye.y, -eye.z), matrix)
+        }
+
+        fun getPerspectiveProjection(fov:Float, aspect:Float, n:Float, f:Float): MutableList<MutableList<Float>> {
+            var rad = PI / 180 * fov
+
+            var sx = ((1/ tan(rad / 2)) / aspect).toFloat()
+            var sy = (1 / tan(rad / 2)).toFloat()
+            var sz = (f + n) / (f - n)
+            var dz = (-2 * f * n) / (f - n)
+
+            var matrix = mutableListOf<MutableList<Float>>()
+            matrix.add(mutableListOf(sx, 0f, 0f, 0f))
+            matrix.add(mutableListOf(0f, sy, 0f, 0f))
+            matrix.add(mutableListOf(0f, 0f, sz, dz))
+            matrix.add(mutableListOf(0f, 0f, -1f, 0f))
+
+            return matrix
+
         }
     }
 
