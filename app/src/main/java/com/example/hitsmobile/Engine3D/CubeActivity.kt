@@ -33,7 +33,7 @@ class CubeActivity : AppCompatActivity() {
     private var currX : Int = 0
     private var currY : Int = 0
     private var currZ : Int = 0
-    private  var currDistance: Int = 0
+    private  var currDistance: Int = 300
 
     var cubeVertices = mutableListOf<Vector>()
     var cubeEdges = mutableListOf<MutableList<Int>>()
@@ -147,7 +147,7 @@ class CubeActivity : AppCompatActivity() {
         matrix = Matrix.multiply(Matrix.getRotationY(angleY), matrix)
         matrix = Matrix.multiply(Matrix.getRotationZ(angleZ), matrix)
         matrix = Matrix.multiply(Matrix.getScale(120f,120f,120f), matrix)
-        matrix = Matrix.multiply(Matrix.getTranslation(0f,0f,-300f), matrix)
+        matrix = Matrix.multiply(Matrix.getTranslation(0f,0f,0f), matrix)
         matrix = Matrix.multiply(
             Matrix.getLookAt(
                 Vector(0f,0f,camZ),
