@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.widget.ImageView
 import android.widget.SeekBar
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -34,7 +33,7 @@ class CubeActivity : AppCompatActivity() {
     private var currX : Int = 0
     private var currY : Int = 0
     private var currZ : Int = 0
-    private  var currDistance: Int = 50
+    private  var currDistance: Int = 0
 
     var cubeVertices = mutableListOf<Vector>()
     var cubeEdges = mutableListOf<MutableList<Int>>()

@@ -203,8 +203,8 @@
                     android:maxHeight="3dp"
                     android:progressDrawable="@drawable/seekbar_style"
                     android:max="100"
-                    android:min="10"
-                    android:progress="50">
+                    android:min="0"
+                    android:progress="0">
                 </SeekBar>
 
             </LinearLayout>

@@ -711,7 +711,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                     MyVariables.rotateImg = MyVariables.currImg
 
                     var resize = Resize()
-                    var newImage = resize.downScale(MyVariables.currImg, 8f)
+                    var newImage = resize.downScale(MyVariables.currImg, 4f)
                     fillList(newImage)
                     filterAdapter.updateAdapter(pairsList2)
                 }
