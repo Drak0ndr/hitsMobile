@@ -162,75 +162,53 @@ class ColorFilters: PhotoActivity() {
             i++
         }
         runBlocking {
-            launch(Dispatchers.Default) {
+            launch(Dispatchers.IO) {
                 var i = 0
-                while (i < bitmap.height/2) {
+                while (i < bitmap.height * 0.25f) {
                     var j = 0
                     while (j < bitmap.width) {
-                        var tempRed = 0f
-                        var tempGreen = 0f
-                        var tempBlue = 0f
-                        var tempAlpha = 0f
-                        var kernelCoef = 0.0
-                        var y = 0
-                        while (y < len) {
-                            var x = 0
-                            while (x < len) {
-                                if ((j - mid + x) >= 0 && (j - mid + x) < bitmap.width && (i - mid + y) >= 0 && (i - mid + y) < bitmap.height) {
-                                    var tempColors = bitmap.getColor(j - mid + x, i - mid + y).components
-                                    tempRed+= (tempColors[0] * kernel[y][x]).toFloat()
-                                    tempGreen+= (tempColors[1] * kernel[y][x]).toFloat()
-                                    tempBlue+= (tempColors[2] * kernel[y][x]).toFloat()
-                                    tempAlpha+= (tempColors[3] * kernel[y][x]).toFloat()
-                                    kernelCoef+= kernel[y][x]
-                                }
+                        var data = blurPixel(bitmap, kernel, len, mid, j, i)
 
-                                x++
-                            }
-                            y++
-                        }
-                        tempRed = (tempRed / kernelCoef).toFloat()
-                        tempGreen = (tempGreen / kernelCoef).toFloat()
-                        tempBlue = (tempBlue / kernelCoef).toFloat()
-                        tempAlpha = (tempAlpha / kernelCoef).toFloat()
-                        newBitmap.setPixel(j,i, Color.argb(tempAlpha, tempRed, tempGreen, tempBlue))
+                        newBitmap.setPixel(j,i, Color.argb(data[0], data[1], data[2], data[3]))
                         j++
                     }
                     i++
                 }
             }
-            launch(Dispatchers.Default) {
-                var i = (bitmap.height/2).toInt()
+            launch(Dispatchers.IO) {
+                var i = (bitmap.height * 0.25f).toInt()
+                while (i < bitmap.height * 0.5f) {
+                    var j = 0
+                    while (j < bitmap.width) {
+                        var data = blurPixel(bitmap, kernel, len, mid, j, i)
+
+                        newBitmap.setPixel(j,i, Color.argb(data[0], data[1], data[2], data[3]))
+                        j++
+                    }
+                    i++
+                }
+            }
+            launch(Dispatchers.IO) {
+                var i = (bitmap.height * 0.5f).toInt()
+                while (i < bitmap.height * 0.75f) {
+                    var j = 0
+                    while (j < bitmap.width) {
+                        var data = blurPixel(bitmap, kernel, len, mid, j, i)
+
+                        newBitmap.setPixel(j,i, Color.argb(data[0], data[1], data[2], data[3]))
+                        j++
+                    }
+                    i++
+                }
+            }
+            launch(Dispatchers.IO) {
+                var i = (bitmap.height * 0.75f).toInt()
                 while (i < bitmap.height) {
                     var j = 0
                     while (j < bitmap.width) {
-                        var tempRed = 0f
-                        var tempGreen = 0f
-                        var tempBlue = 0f
-                        var tempAlpha = 0f
-                        var kernelCoef = 0.0
-                        var y = 0
-                        while (y < len) {
-                            var x = 0
-                            while (x < len) {
-                                if ((j - mid + x) >= 0 && (j - mid + x) < bitmap.width && (i - mid + y) >= 0 && (i - mid + y) < bitmap.height) {
-                                    var tempColors = bitmap.getColor(j - mid + x, i - mid + y).components
-                                    tempRed+= (tempColors[0] * kernel[y][x]).toFloat()
-                                    tempGreen+= (tempColors[1] * kernel[y][x]).toFloat()
-                                    tempBlue+= (tempColors[2] * kernel[y][x]).toFloat()
-                                    tempAlpha+= (tempColors[3] * kernel[y][x]).toFloat()
-                                    kernelCoef+= kernel[y][x]
-                                }
+                        var data = blurPixel(bitmap, kernel, len, mid, j, i)
 
-                                x++
-                            }
-                            y++
-                        }
-                        tempRed = (tempRed / kernelCoef).toFloat()
-                        tempGreen = (tempGreen / kernelCoef).toFloat()
-                        tempBlue = (tempBlue / kernelCoef).toFloat()
-                        tempAlpha = (tempAlpha / kernelCoef).toFloat()
-                        newBitmap.setPixel(j,i, Color.argb(tempAlpha, tempRed, tempGreen, tempBlue))
+                        newBitmap.setPixel(j,i, Color.argb(data[0], data[1], data[2], data[3]))
                         j++
                     }
                     i++
@@ -240,7 +218,36 @@ class ColorFilters: PhotoActivity() {
 
         return newBitmap
     }
+    suspend fun blurPixel(bitmap: Bitmap, kernel: MutableList<MutableList<Double>>, len:Int, mid:Int, j:Int, i:Int ): MutableList<Float> {
+        var tempRed = 0f
+        var tempGreen = 0f
+        var tempBlue = 0f
+        var tempAlpha = 0f
+        var kernelCoef = 0.0
+        var y = 0
+        while (y < len) {
+            var x = 0
+            while (x < len) {
+                if ((j - mid + x) >= 0 && (j - mid + x) < bitmap.width && (i - mid + y) >= 0 && (i - mid + y) < bitmap.height) {
+                    var tempColors = bitmap.getColor(j - mid + x, i - mid + y).components
+                    tempRed+= (tempColors[0] * kernel[y][x]).toFloat()
+                    tempGreen+= (tempColors[1] * kernel[y][x]).toFloat()
+                    tempBlue+= (tempColors[2] * kernel[y][x]).toFloat()
+                    tempAlpha+= (tempColors[3] * kernel[y][x]).toFloat()
+                    kernelCoef+= kernel[y][x]
+                }
 
+                x++
+            }
+            y++
+        }
+        tempRed = (tempRed / kernelCoef).toFloat()
+        tempGreen = (tempGreen / kernelCoef).toFloat()
+        tempBlue = (tempBlue / kernelCoef).toFloat()
+        tempAlpha = (tempAlpha / kernelCoef).toFloat()
+
+        return mutableListOf(tempAlpha, tempRed, tempGreen, tempBlue)
+    }
     fun normalizeColor(color:Float):Float {
         var newColor = color
         if (newColor > 1) {
@@ -320,22 +327,25 @@ class ColorFilters: PhotoActivity() {
 
         val radius = 4
 
-        for (x in radius until width - radius) {
-            for (y in radius until height - radius) {
+        for (x in 0 until width) {
+            for (y in 0 until height) {
                 var minR = 255
                 var minG = 255
                 var minB = 255
 
                 for (i in -radius..radius) {
                     for (j in -radius..radius) {
-                        val pixel = bitmap.getPixel(x + i, y + j)
-                        val r = Color.red(pixel)
-                        val g = Color.green(pixel)
-                        val b = Color.blue(pixel)
+                        if (x + i >= 0 && x+i < bitmap.width && y + j >= 0 && y+j < bitmap.height) {
+                            val pixel = bitmap.getPixel(x + i, y + j)
+                            val r = Color.red(pixel)
+                            val g = Color.green(pixel)
+                            val b = Color.blue(pixel)
 
-                        if (r < minR) minR = r
-                        if (g < minG) minG = g
-                        if (b < minB) minB = b
+                            if (r < minR) minR = r
+                            if (g < minG) minG = g
+                            if (b < minB) minB = b
+                        }
+
                     }
                 }
 
