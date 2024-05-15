@@ -58,6 +58,13 @@ import com.example.hitsmobile.tools.ToolsType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.opencv.android.OpenCVLoader
+import org.opencv.android.Utils
+import org.opencv.core.Mat
+import org.opencv.core.MatOfRect
+import org.opencv.core.Scalar
+import org.opencv.imgproc.Imgproc
+import org.opencv.objdetect.CascadeClassifier
 import java.io.IOException
 import java.util.concurrent.Executors
 import kotlin.math.floor
@@ -181,10 +188,10 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         blueImg = findViewById(R.id.blueImg)
         greenImg = findViewById(R.id.greenImg)
 
-        /*if (!OpenCVLoader.initDebug())
+        if (!OpenCVLoader.initDebug())
             Log.e("OpenCV", "Unable to load OpenCV!")
         else
-            Log.d("OpenCV", "OpenCV loaded Successfully!")*/
+            Log.d("OpenCV", "OpenCV loaded Successfully!")
 
         /*Динамическая загрузка изображения*/
         val imageView = findViewById<ImageView>(R.id.photoEditorView)
@@ -849,6 +856,11 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             MyVariables.isRetouch = false
             seekBarRetouchRadius.progress = 5
             seekBarRetouchSharpness.progress = 5
+            redImg.visibility = View.GONE
+            blueImg.visibility = View.GONE
+            greenImg.visibility = View.GONE
+            listFirstPoints.clear()
+            listSecondPoints.clear()
 
         } else if(!mIsFilterVisible){
 
@@ -939,16 +951,44 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 MyVariables.isRetouch = true
             }
 
-            ToolsType.MASKING-> {
+            ToolsType.MASKING -> {
                 currNumberBlock = 5
                 showFilter(true)
             }
 
-            ToolsType.AFFINE-> {
+            ToolsType.AFFINE -> {
                 currNumberBlock = 6
                 showFilter(true)
             }
+
+            ToolsType.FACE -> {
+                var newImg = findViewById<ImageView>(R.id.photoEditorView)
+                detectFaces(newImg)
+            }
         }
+    }
+    fun detectFaces(imageView: ImageView) {
+        val bitmap = (imageView.drawable as BitmapDrawable).bitmap
+        val image = Mat()
+        Utils.bitmapToMat(bitmap, image)
+
+        val faceCascade = CascadeClassifier()
+        faceCascade.load("haarcascade_frontalface_default.xml")
+
+        val grayImage = Mat()
+        Imgproc.cvtColor(image, grayImage, Imgproc.COLOR_BGR2GRAY)
+        Imgproc.equalizeHist(grayImage, grayImage)
+
+        val faces = MatOfRect()
+
+        faceCascade.detectMultiScale(grayImage, faces)
+        for(rect in faces.toArray()){
+            Imgproc.rectangle(image, rect.tl(), rect.br(), Scalar(255.0, 0.0, 0.0), 2)
+        }
+
+        val outputBitmap = Bitmap.createBitmap(image.cols(), image.rows(), Bitmap.Config.RGB_565)
+        Utils.matToBitmap(image, outputBitmap)
+        imageView.setImageBitmap(outputBitmap)
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {

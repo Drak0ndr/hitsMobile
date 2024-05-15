@@ -6,9 +6,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.hitsmobile.activity.PhotoActivity
 import com.example.hitsmobile.R
-import java.util.ArrayList
+import com.example.hitsmobile.activity.PhotoActivity
 
 class ToolsAdapter(private val mOnItemSelected: PhotoActivity) :
     RecyclerView.Adapter<ToolsAdapter.ViewHolder>() {
@@ -59,5 +58,6 @@ class ToolsAdapter(private val mOnItemSelected: PhotoActivity) :
         mToolList.add(ToolModel("Retouch", R.drawable.retouch, ToolsType.RETOUCH))
         mToolList.add(ToolModel("Masking", R.drawable.masking, ToolsType.MASKING))
         mToolList.add(ToolModel("Transform", R.drawable.affine_transformations, ToolsType.AFFINE))
+        mToolList.add(ToolModel("Face", R.drawable.search2, ToolsType.FACE))
     }
 }

@@ -23,11 +23,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         viewBinding = true
@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.ui.graphics.android)
     implementation(libs.androidx.emoji2.emojipicker)
+    implementation(project(":openCV"))
     testImplementation(libs.junit)
     testImplementation("junit:junit:4.12")
     androidTestImplementation(libs.androidx.junit)
@@ -57,6 +58,5 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4")
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:x.x.x")
-    implementation("com.quickbirdstudios:opencv:3.4.15")
     implementation("androidx.multidex:multidex:2.0.1")
 }

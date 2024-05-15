@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "hitsMobile"
 include(":app")
+include(":openCV")
