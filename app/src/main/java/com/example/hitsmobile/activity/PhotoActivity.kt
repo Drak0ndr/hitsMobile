@@ -1,5 +1,6 @@
 package com.example.hitsmobile.activity
 
+
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Intent
@@ -65,6 +66,8 @@ import org.opencv.core.MatOfRect
 import org.opencv.core.Scalar
 import org.opencv.imgproc.Imgproc
 import org.opencv.objdetect.CascadeClassifier
+import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 import java.util.concurrent.Executors
 import kotlin.concurrent.thread
@@ -203,8 +206,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         var image: Bitmap? = null
 
         executor.execute {
-            val imageURL =
-                "https://fydi.ru/wp-content/uploads/2021/08/koty-i-koshki-89.jpg"
+            val imageURL = "https://fydi.ru/wp-content/uploads/2021/08/koty-i-koshki-89.jpg"
             try {
                 val `in` = java.net.URL(imageURL).openStream()
                 image = BitmapFactory.decodeStream(`in`)
@@ -452,6 +454,17 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             MyVariables.currImg = newMask
             MyVariables.rotateImg = newMask
             seekBarMasking.progress = 5
+
+            if(MyVariables.isFace){
+                MyVariables.isFace = false
+                val imageView = findViewById<ImageView>(R.id.photoEditorView)
+
+                val bitmap = (imageView.drawable as BitmapDrawable).bitmap
+                val mat = Mat()
+                Utils.bitmapToMat(bitmap, mat)
+
+                detectFaces(mat, imageView)
+            }
         }
 
         /*Отслеживаем переключения для изменения размера фото*/
@@ -706,7 +719,13 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
                 var resize = Resize()
                 var newImage = resize.downScale(bitmap, 10f)
-                fillList(newImage)
+
+                runBlocking {
+                    launch {
+                        fillList(newImage)
+                    }
+                }
+
                 filterAdapter.updateAdapter(pairsList2)
             }
         }
@@ -720,7 +739,13 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
                     var resize = Resize()
                     var newImage = resize.downScale(MyVariables.currImg, 4f)
-                    fillList(newImage)
+
+                    runBlocking {
+                        launch {
+                            fillList(newImage)
+                        }
+                    }
+
                     filterAdapter.updateAdapter(pairsList2)
                 }
 
@@ -730,18 +755,18 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         }
     }
 
-    fun fillList(image: Bitmap){
+    suspend fun fillList(image: Bitmap){
         pairsList2.clear()
         var filter = ColorFilters()
         pairsList2.add(Pair(image, PhotoFilter.NONE))
-        pairsList2.add(Pair(filter.toGreenBasic(image), PhotoFilter.GREEN))
-        pairsList2.add(Pair(filter.toBlueBasic(image), PhotoFilter.BLUE))
-        pairsList2.add(Pair(filter.toRedBasic(image), PhotoFilter.RED))
-        pairsList2.add(Pair(filter.toYellowBasic(image), PhotoFilter.YELLOW))
-        pairsList2.add(Pair(filter.toGrayBasic(image), PhotoFilter.GRAYSCALE))
-        pairsList2.add(Pair(filter.toNegativeBasic(image), PhotoFilter.NEGATIVE))
-        pairsList2.add(Pair(filter.gausBlurBasic(image, 5f), PhotoFilter.BLUR))
-        pairsList2.add(Pair(filter.changeContrastBasic(image, 100f), PhotoFilter.CONTRAST))
+        pairsList2.add(Pair(filter.toGreen(image), PhotoFilter.GREEN))
+        pairsList2.add(Pair(filter.toBlue(image), PhotoFilter.BLUE))
+        pairsList2.add(Pair(filter.toRed(image), PhotoFilter.RED))
+        pairsList2.add(Pair(filter.toYellow(image), PhotoFilter.YELLOW))
+        pairsList2.add(Pair(filter.toGray(image), PhotoFilter.GRAYSCALE))
+        pairsList2.add(Pair(filter.toNegative(image), PhotoFilter.NEGATIVE))
+        pairsList2.add(Pair(filter.gausBlur(image, 5f), PhotoFilter.BLUR))
+        pairsList2.add(Pair(filter.changeContrast(image, 100f), PhotoFilter.CONTRAST))
         pairsList2.add(Pair(filter.erosionFilter(image), PhotoFilter.EROSION))
     }
 
@@ -981,34 +1006,63 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             }
 
             ToolsType.FACE -> {
-                var newImg = findViewById<ImageView>(R.id.photoEditorView)
-                detectFaces(newImg)
+                val imageView = findViewById<ImageView>(R.id.photoEditorView)
+
+                val bitmap = (imageView.drawable as BitmapDrawable).bitmap
+                val mat = Mat()
+                Utils.bitmapToMat(bitmap, mat)
+
+                detectFaces(mat, imageView)
             }
         }
     }
-    fun detectFaces(imageView: ImageView) {
-        val bitmap = (imageView.drawable as BitmapDrawable).bitmap
-        val image = Mat()
-        Utils.bitmapToMat(bitmap, image)
 
-        val faceCascade = CascadeClassifier()
-        faceCascade.load("haarcascade_frontalface_default.xml")
+    private fun detectFaces(input: Mat, imageView: ImageView) {
 
-        val grayImage = Mat()
-        Imgproc.cvtColor(image, grayImage, Imgproc.COLOR_BGR2GRAY)
-        Imgproc.equalizeHist(grayImage, grayImage)
+        if(!MyVariables.isFace){
+            try {
+                val `is` = getResources().openRawResource(R.raw.haarcascade_frontalface_default)
+                val cascadeDir = getDir("cascade", MODE_PRIVATE)
+                val mCascadeFile = File(cascadeDir, "haarcascade_frontalface_default.xml")
+                val os = FileOutputStream(mCascadeFile)
+                val buffer = ByteArray(4096)
+                var bytesRead: Int
 
-        val faces = MatOfRect()
+                while (`is`.read(buffer).also { bytesRead = it } != -1) {
+                    os.write(buffer, 0, bytesRead)
+                }
 
-        faceCascade.detectMultiScale(grayImage, faces)
-        for(rect in faces.toArray()){
-            Imgproc.rectangle(image, rect.tl(), rect.br(), Scalar(255.0, 0.0, 0.0), 2)
+                `is`.close()
+                os.close()
+
+                var cascadeClassifier = CascadeClassifier(mCascadeFile.absolutePath)
+                val faces = MatOfRect()
+                cascadeClassifier.detectMultiScale(input, faces)
+
+                if(faces.toArray().size == 0){
+                    Toast.makeText(this,"Лица на изображении не найдены!",Toast.LENGTH_LONG).show()
+                }
+                else{
+                    for (rect in faces.toArray()) {
+                        Imgproc.rectangle(input, rect.tl(), rect.br(), Scalar(0.0, 255.0, 0.0), 5)
+                    }
+                    MyVariables.isFace = true
+                    MyVariables.processedBitmap = Bitmap.createBitmap(input.cols(), input.rows(), Bitmap.Config.ARGB_8888)
+                    Utils.matToBitmap(input, MyVariables.processedBitmap)
+                    imageView.setImageBitmap(MyVariables.processedBitmap)
+                }
+
+            } catch (e: java.lang.Exception) {
+                Log.e("OpenCVActivity", "Error loading cascade", e)
+            }
         }
-
-        val outputBitmap = Bitmap.createBitmap(image.cols(), image.rows(), Bitmap.Config.RGB_565)
-        Utils.matToBitmap(image, outputBitmap)
-        imageView.setImageBitmap(outputBitmap)
+        else{
+           MyVariables.isFace = false
+            imageView.setImageBitmap(MyVariables.rotateImg)
+            MyVariables.processedBitmap = null
+        }
     }
+
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         return if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -1031,5 +1085,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
         var isFirstPoints : Boolean = false
         var isSecondPoints : Boolean = false
+
+        var processedBitmap : Bitmap? = null
+        var isFace : Boolean = false
     }
 }
