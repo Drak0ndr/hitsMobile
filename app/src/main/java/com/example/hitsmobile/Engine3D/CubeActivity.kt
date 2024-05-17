@@ -33,10 +33,13 @@ class CubeActivity : AppCompatActivity() {
     private var currX : Int = 0
     private var currY : Int = 0
     private var currZ : Int = 0
-    private  var currDistance: Int = 0
+    private  var currDistance: Int = 300
 
     var cubeVertices = mutableListOf<Vector>()
     var cubeEdges = mutableListOf<MutableList<Int>>()
+
+    var cameraDirection = Vector(0f, 0f, -1f, 0f)
+    var cameraPos = Vector(0f,0f,300f)
     @SuppressLint("MissingInflatedId", "ClickableViewAccessibility", "ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -126,6 +129,8 @@ class CubeActivity : AppCompatActivity() {
         seekBarDist.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 currDistance = seekBarDist.progress
+                cameraPos.z = currDistance.toFloat()
+                render()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
@@ -146,11 +151,11 @@ class CubeActivity : AppCompatActivity() {
         matrix = Matrix.multiply(Matrix.getRotationY(angleY), matrix)
         matrix = Matrix.multiply(Matrix.getRotationZ(angleZ), matrix)
         matrix = Matrix.multiply(Matrix.getScale(120f,120f,120f), matrix)
-        matrix = Matrix.multiply(Matrix.getTranslation(0f,0f,-300f), matrix)
+        matrix = Matrix.multiply(Matrix.getTranslation(0f,0f,0f), matrix)
         matrix = Matrix.multiply(
             Matrix.getLookAt(
-                Vector(0f,0f,0f),
-                Vector(0f,0f,-1f),
+                cameraPos,
+                Vector.add(cameraPos, cameraDirection),
                 Vector(0f,1f,0f)
             ), matrix
         )
