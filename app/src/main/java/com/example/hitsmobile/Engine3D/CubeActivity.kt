@@ -37,7 +37,7 @@ class CubeActivity : AppCompatActivity() {
 
     var cubeVertices = mutableListOf<Vector>()
     var cubeEdges = mutableListOf<MutableList<Int>>()
-    var cubeIndices = mutableListOf<MutableList<Int>>()
+    var cubeIndices = mutableListOf<MutableList<Float>>()
 
     var cameraDirection = Vector(0f, 0f, -1f, 0f)
     var cameraPos = Vector(0f,0f,300f)
@@ -71,18 +71,18 @@ class CubeActivity : AppCompatActivity() {
         cubeEdges.add(mutableListOf(6,7))
         cubeEdges.add(mutableListOf(7,4))
 
-        cubeIndices.add(mutableListOf(0,1,2))
-        cubeIndices.add(mutableListOf(0,2,3))
-        cubeIndices.add(mutableListOf(4,6,5))
-        cubeIndices.add(mutableListOf(4,7,6))
-        cubeIndices.add(mutableListOf(0,5,1))
-        cubeIndices.add(mutableListOf(0,4,5))
-        cubeIndices.add(mutableListOf(1,5,2))
-        cubeIndices.add(mutableListOf(6,2,5))
-        cubeIndices.add(mutableListOf(3,2,6))
-        cubeIndices.add(mutableListOf(3,6,7))
-        cubeIndices.add(mutableListOf(3,4,0))
-        cubeIndices.add(mutableListOf(4,3,7))
+        cubeIndices.add(mutableListOf(0f,1f,2f, 0f, 0f, 0f))
+        cubeIndices.add(mutableListOf(0f,2f,3f, 0f, 0f, 0f))
+        cubeIndices.add(mutableListOf(4f,6f,5f, 0f, 0f, 0f))
+        cubeIndices.add(mutableListOf(4f,7f,6f, 0f, 0f, 0f))
+        cubeIndices.add(mutableListOf(0f,5f,1f, 0f, 0f, 0f))
+        cubeIndices.add(mutableListOf(0f,4f,5f, 0f, 0f, 0f))
+        cubeIndices.add(mutableListOf(1f,5f,2f, 0f, 0f, 0f))
+        cubeIndices.add(mutableListOf(6f,2f,5f, 0f, 0f, 0f))
+        cubeIndices.add(mutableListOf(3f,2f,6f, 0f, 0f, 0f))
+        cubeIndices.add(mutableListOf(3f,6f,7f, 0f, 0f, 0f))
+        cubeIndices.add(mutableListOf(3f,4f,0f, 0f, 0f, 0f))
+        cubeIndices.add(mutableListOf(4f,3f,7f, 0f, 0f, 0f))
 
         render()
 
@@ -200,9 +200,13 @@ class CubeActivity : AppCompatActivity() {
         while (i < cubeIndices.size) {
             var e = cubeIndices[i]
 
-            var v1 = sceneVertices[e[0]]
-            var v2 = sceneVertices[e[1]]
-            var v3 = sceneVertices[e[2]]
+            var v1 = sceneVertices[e[0].toInt()]
+            var v2 = sceneVertices[e[1].toInt()]
+            var v3 = sceneVertices[e[2].toInt()]
+
+            var red = e[3]
+            var green = e[4]
+            var blue = e[5]
 
             var t1 = Vector.substruct(v1,v2)
             var t2 = Vector.substruct(v2,v3)
@@ -215,21 +219,21 @@ class CubeActivity : AppCompatActivity() {
                     v1.y,
                     v2.x,
                     v2.y,
-                    0f,0f,1f
+                    red,green,blue
                 )
                 drawer.drawLine(
                     v2.x,
                     v2.y,
                     v3.x,
                     v3.y,
-                    0f,0f,1f
+                    red,green,blue
                 )
                 drawer.drawLine(
                     v1.x,
                     v1.y,
                     v3.x,
                     v3.y,
-                    0f,0f,1f
+                    red,green,blue
                 )
             }
 
