@@ -8,11 +8,9 @@ import android.provider.MediaStore
 import android.view.KeyEvent
 import android.view.ViewTreeObserver
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.hitsmobile.R
@@ -51,7 +49,7 @@ class SplineActivity : AppCompatActivity() {
         /*Кнопка для алгоритма сплайна*/
         startBtn = findViewById(R.id.imgSpline)
         startBtn.setOnClickListener(){
-
+            paint.start()
         }
 
         /*Блок для рисования*/
