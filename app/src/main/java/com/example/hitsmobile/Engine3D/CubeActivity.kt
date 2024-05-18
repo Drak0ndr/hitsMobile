@@ -71,18 +71,18 @@ class CubeActivity : AppCompatActivity() {
         cubeEdges.add(mutableListOf(6,7))
         cubeEdges.add(mutableListOf(7,4))
 
-        cubeIndices.add(mutableListOf(0f,1f,2f, 0f, 0f, 0f))
-        cubeIndices.add(mutableListOf(0f,2f,3f, 0f, 0f, 0f))
-        cubeIndices.add(mutableListOf(4f,6f,5f, 0f, 0f, 0f))
-        cubeIndices.add(mutableListOf(4f,7f,6f, 0f, 0f, 0f))
-        cubeIndices.add(mutableListOf(0f,5f,1f, 0f, 0f, 0f))
-        cubeIndices.add(mutableListOf(0f,4f,5f, 0f, 0f, 0f))
-        cubeIndices.add(mutableListOf(1f,5f,2f, 0f, 0f, 0f))
-        cubeIndices.add(mutableListOf(6f,2f,5f, 0f, 0f, 0f))
-        cubeIndices.add(mutableListOf(3f,2f,6f, 0f, 0f, 0f))
-        cubeIndices.add(mutableListOf(3f,6f,7f, 0f, 0f, 0f))
-        cubeIndices.add(mutableListOf(3f,4f,0f, 0f, 0f, 0f))
-        cubeIndices.add(mutableListOf(4f,3f,7f, 0f, 0f, 0f))
+        cubeIndices.add(mutableListOf(0f,1f,2f, 1f, 0f, 0f))
+        cubeIndices.add(mutableListOf(0f,2f,3f, 1f, 0f, 0f))
+        cubeIndices.add(mutableListOf(4f,6f,5f, 0f, 1f, 0f))
+        cubeIndices.add(mutableListOf(4f,7f,6f, 0f, 1f, 0f))
+        cubeIndices.add(mutableListOf(0f,5f,1f, 0f, 0f, 1f))
+        cubeIndices.add(mutableListOf(0f,4f,5f, 0f, 0f, 1f))
+        cubeIndices.add(mutableListOf(1f,5f,2f, 0f, 1f, 1f))
+        cubeIndices.add(mutableListOf(6f,2f,5f, 0f, 1f, 1f))
+        cubeIndices.add(mutableListOf(3f,2f,6f, 1f, 1f, 0f))
+        cubeIndices.add(mutableListOf(3f,6f,7f, 1f, 1f, 0f))
+        cubeIndices.add(mutableListOf(3f,4f,0f, 1f, 0f, 1f))
+        cubeIndices.add(mutableListOf(4f,3f,7f, 1f, 0f, 1f))
 
         render()
 
@@ -233,6 +233,11 @@ class CubeActivity : AppCompatActivity() {
                     v1.y,
                     v3.x,
                     v3.y,
+                    red,green,blue
+                )
+
+                drawer.fillPolygon(
+                    v1,v2,v3,
                     red,green,blue
                 )
             }
