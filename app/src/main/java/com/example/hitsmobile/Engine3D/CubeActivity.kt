@@ -35,9 +35,8 @@ class CubeActivity : AppCompatActivity() {
     private var currZ : Int = 0
     private  var currDistance: Int = 300
 
-    var cubeVertices = mutableListOf<Vector>()
-    var cubeEdges = mutableListOf<MutableList<Int>>()
-    var cubeIndices = mutableListOf<MutableList<Float>>()
+    var vertices = mutableListOf<Vector>()
+    var polygons = mutableListOf<MutableList<Float>>()
 
     var cameraDirection = Vector(0f, 0f, -1f, 0f)
     var cameraPos = Vector(0f,0f,300f)
@@ -48,41 +47,10 @@ class CubeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_cube)
 
         var img = findViewById<ImageView>(R.id.draw_view)
+        vertices = Cube.getVertices()
 
-        cubeVertices.add(Vector(-0.5f,1f,0.5f))
-        cubeVertices.add(Vector(-0.5f,1f,-0.5f))
-        cubeVertices.add(Vector(0.5f,1f,-0.5f))
-        cubeVertices.add(Vector(0.5f,1f,0.5f))
-        cubeVertices.add(Vector(-1f,-1f,1f))
-        cubeVertices.add(Vector(-1f,-1f,-1f))
-        cubeVertices.add(Vector(1f,-1f,-1f))
-        cubeVertices.add(Vector(1f,-1f,1f))
+        polygons = Cube.getPolygons()
 
-        cubeEdges.add(mutableListOf(0,1))
-        cubeEdges.add(mutableListOf(1,2))
-        cubeEdges.add(mutableListOf(2,3))
-        cubeEdges.add(mutableListOf(3,0))
-        cubeEdges.add(mutableListOf(0,4))
-        cubeEdges.add(mutableListOf(1,5))
-        cubeEdges.add(mutableListOf(2,6))
-        cubeEdges.add(mutableListOf(3,7))
-        cubeEdges.add(mutableListOf(4,5))
-        cubeEdges.add(mutableListOf(5,6))
-        cubeEdges.add(mutableListOf(6,7))
-        cubeEdges.add(mutableListOf(7,4))
-
-        cubeIndices.add(mutableListOf(0f,1f,2f, 1f, 0f, 0f))
-        cubeIndices.add(mutableListOf(0f,2f,3f, 1f, 0f, 0f))
-        cubeIndices.add(mutableListOf(4f,6f,5f, 0f, 1f, 0f))
-        cubeIndices.add(mutableListOf(4f,7f,6f, 0f, 1f, 0f))
-        cubeIndices.add(mutableListOf(0f,5f,1f, 0f, 0f, 1f))
-        cubeIndices.add(mutableListOf(0f,4f,5f, 0f, 0f, 1f))
-        cubeIndices.add(mutableListOf(1f,5f,2f, 0f, 1f, 1f))
-        cubeIndices.add(mutableListOf(6f,2f,5f, 0f, 1f, 1f))
-        cubeIndices.add(mutableListOf(3f,2f,6f, 1f, 1f, 0f))
-        cubeIndices.add(mutableListOf(3f,6f,7f, 1f, 1f, 0f))
-        cubeIndices.add(mutableListOf(3f,4f,0f, 1f, 0f, 1f))
-        cubeIndices.add(mutableListOf(4f,3f,7f, 1f, 0f, 1f))
 
         render()
 
@@ -186,8 +154,8 @@ class CubeActivity : AppCompatActivity() {
         var sceneVertices = mutableListOf<Vector>()
         var matrix = genMatrix(currX.toFloat(),currY.toFloat(),currZ.toFloat())
         var i = 0
-        while (i < cubeVertices.size) {
-            var vertex = Matrix.multiplyVector(matrix, cubeVertices[i])
+        while (i < vertices.size) {
+            var vertex = Matrix.multiplyVector(matrix, vertices[i])
             vertex.x = vertex.x / vertex.w * 400
             vertex.y = vertex.y / vertex.w * 300
             sceneVertices.add(vertex)
@@ -197,8 +165,8 @@ class CubeActivity : AppCompatActivity() {
         var drawer = Drawer(800,600)
 
         i = 0
-        while (i < cubeIndices.size) {
-            var e = cubeIndices[i]
+        while (i < polygons.size) {
+            var e = polygons[i]
 
             var v1 = sceneVertices[e[0].toInt()]
             var v2 = sceneVertices[e[1].toInt()]
