@@ -354,4 +354,126 @@ class ColorFilters: PhotoActivity() {
         }
         return resultBitmap
     }
+
+    fun isIdentical(bitmap1:Bitmap, bitmap2: Bitmap, x: Int, y: Int): Boolean {
+        var color1 = bitmap1.getColor(x,y).components
+        var color2 = bitmap2.getColor(x,y).components
+        var ans = true
+        var i = 0
+        while (i < 4) {
+            if (color1[i] != color2[i]) {
+                ans = false
+            }
+            i++
+        }
+        return ans
+    }
+
+    fun gausBlurSquare(bitmap: Bitmap, openBitmap: Bitmap, r: Float): Bitmap {
+        var width = bitmap.width
+        var height = bitmap.height
+        var newBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        var kernel = mutableListOf<MutableList<Double>>()
+        var len = (r).toInt() * 2 + 1
+        var sigma = r/3
+        var mid = (r).toInt()
+        var i = 0
+        while (i < len) {
+            var temp = mutableListOf<Double>()
+            var j = 0
+            while (j < len) {
+                temp.add(gaussian(sigma, i-mid, j-mid))
+                j++
+            }
+            kernel.add(temp)
+            i++
+        }
+        runBlocking {
+            launch(Dispatchers.IO) {
+                var count = 0
+                var i = 0
+                while (i < bitmap.height * 0.25f) {
+                    var j = 0
+                    while (j < bitmap.width) {
+                        var tempIsIdentical = isIdentical(bitmap, openBitmap, i, j)
+                        if (tempIsIdentical == false) {
+                            count++
+                        }
+                        if (count%2 == 1) {
+                            var data = blurPixel(bitmap, kernel, len, mid, j, i)
+
+                            newBitmap.setPixel(j,i, Color.argb(data[0], data[1], data[2], data[3]))
+                        }
+                        j++
+                    }
+                    i++
+                }
+            }
+            launch(Dispatchers.IO) {
+                var i = (bitmap.height * 0.25f).toInt()
+                var count = 0
+                while (i < bitmap.height * 0.5f) {
+                    var j = 0
+                    while (j < bitmap.width) {
+                        var tempIsIdentical = isIdentical(bitmap, openBitmap, i, j)
+                        if (tempIsIdentical == false) {
+                            count++
+                        }
+                        if (count%2 == 1) {
+                            var data = blurPixel(bitmap, kernel, len, mid, j, i)
+
+                            newBitmap.setPixel(j,i, Color.argb(data[0], data[1], data[2], data[3]))
+                        }
+
+                        j++
+                    }
+                    i++
+                }
+            }
+            launch(Dispatchers.IO) {
+                var i = (bitmap.height * 0.5f).toInt()
+                var count = 0
+                while (i < bitmap.height * 0.75f) {
+                    var j = 0
+                    while (j < bitmap.width) {
+                        var tempIsIdentical = isIdentical(bitmap, openBitmap, i, j)
+                        if (tempIsIdentical == false) {
+                            count++
+                        }
+                        if (count%2 == 1) {
+                            var data = blurPixel(bitmap, kernel, len, mid, j, i)
+
+                            newBitmap.setPixel(j,i, Color.argb(data[0], data[1], data[2], data[3]))
+                        }
+
+                        j++
+                    }
+                    i++
+                }
+            }
+            launch(Dispatchers.IO) {
+                var i = (bitmap.height * 0.75f).toInt()
+                var count = 0
+                while (i < bitmap.height) {
+                    var j = 0
+                    while (j < bitmap.width) {
+                        var tempIsIdentical = isIdentical(bitmap, openBitmap, i, j)
+                        if (tempIsIdentical == false) {
+                            count++
+                        }
+                        if (count%2 == 1) {
+                            var data = blurPixel(bitmap, kernel, len, mid, j, i)
+
+                            newBitmap.setPixel(j,i, Color.argb(data[0], data[1], data[2], data[3]))
+                        }
+
+                        j++
+                    }
+                    i++
+                }
+            }
+        }
+
+        return newBitmap
+    }
 }
