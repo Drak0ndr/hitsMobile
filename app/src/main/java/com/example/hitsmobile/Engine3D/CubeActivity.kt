@@ -54,9 +54,9 @@ class CubeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_cube)
 
         var img = findViewById<ImageView>(R.id.draw_view)
-        vertices = PrismFive.getVertices()
+        vertices = Cube.getVertices()
 
-        polygons = PrismFive.getPolygons()
+        polygons = Cube.getPolygons()
 
 
         render()
@@ -76,7 +76,15 @@ class CubeActivity : AppCompatActivity() {
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 val selectedItem = parent.getItemAtPosition(position).toString()
-
+                if (selectedItem == "6") {
+                    vertices = Cube.getVertices()
+                    polygons = Cube.getPolygons()
+                }
+                if (selectedItem == "7") {
+                    vertices = PrismFive.getVertices()
+                    polygons = PrismFive.getPolygons()
+                }
+                render()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
