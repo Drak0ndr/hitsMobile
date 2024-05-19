@@ -712,6 +712,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             if (bitmap != null) {
                 MyVariables.currImg = bitmap
                 MyVariables.rotateImg = MyVariables.currImg
+                MyVariables.isFace = false
 
                 val resize = Resize()
                 val newImage = resize.downScale(bitmap, 10f)
@@ -733,6 +734,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                     img.setImageBitmap(data.extras?.get("data") as Bitmap)
                     MyVariables.currImg = data.extras?.get("data") as Bitmap
                     MyVariables.rotateImg = MyVariables.currImg
+                    MyVariables.isFace = false
 
                     runBlocking {
                         launch {
@@ -855,9 +857,14 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 thread {
                     runBlocking {
                         launch(Dispatchers.IO) {
-                            filterImg = filter.gausBlur(MyVariables.currImg, 5f)
-                            newImg.setImageBitmap(filterImg)
-                            MyVariables.rotateImg = filterImg
+                            if(MyVariables.isFace){
+                                filterImg = filter.gausBlurSquare(MyVariables.currImg, MyVariables.processedBitmap, 5f  )
+                            }
+                            else{
+                                filterImg = filter.gausBlur(MyVariables.currImg, 5f)
+                                newImg.setImageBitmap(filterImg)
+                                MyVariables.rotateImg = filterImg
+                            }
                         }
                     }
                 }
@@ -1051,7 +1058,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         else{
            MyVariables.isFace = false
             imageView.setImageBitmap(MyVariables.rotateImg)
-            MyVariables.processedBitmap = null
+            MyVariables.processedBitmap.recycle()
         }
     }
 
@@ -1078,7 +1085,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         var isFirstPoints : Boolean = false
         var isSecondPoints : Boolean = false
 
-        var processedBitmap : Bitmap? = null
+        lateinit var processedBitmap : Bitmap
         var isFace : Boolean = false
     }
 }
