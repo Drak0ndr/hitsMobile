@@ -395,7 +395,7 @@ class ColorFilters: PhotoActivity() {
                 while (i < bitmap.height * 0.25f) {
                     var j = 0
                     while (j < bitmap.width) {
-                        var tempIsIdentical = isIdentical(bitmap, openBitmap, i, j)
+                        var tempIsIdentical = isIdentical(bitmap, openBitmap, j, i)
                         if (tempIsIdentical == false) {
                             count++
                         }
@@ -415,7 +415,7 @@ class ColorFilters: PhotoActivity() {
                 while (i < bitmap.height * 0.5f) {
                     var j = 0
                     while (j < bitmap.width) {
-                        var tempIsIdentical = isIdentical(bitmap, openBitmap, i, j)
+                        var tempIsIdentical = isIdentical(bitmap, openBitmap, j, i)
                         if (tempIsIdentical == false) {
                             count++
                         }
@@ -436,7 +436,7 @@ class ColorFilters: PhotoActivity() {
                 while (i < bitmap.height * 0.75f) {
                     var j = 0
                     while (j < bitmap.width) {
-                        var tempIsIdentical = isIdentical(bitmap, openBitmap, i, j)
+                        var tempIsIdentical = isIdentical(bitmap, openBitmap, j, i)
                         if (tempIsIdentical == false) {
                             count++
                         }
@@ -457,7 +457,7 @@ class ColorFilters: PhotoActivity() {
                 while (i < bitmap.height) {
                     var j = 0
                     while (j < bitmap.width) {
-                        var tempIsIdentical = isIdentical(bitmap, openBitmap, i, j)
+                        var tempIsIdentical = isIdentical(bitmap, openBitmap, j, i)
                         if (tempIsIdentical == false) {
                             count++
                         }
