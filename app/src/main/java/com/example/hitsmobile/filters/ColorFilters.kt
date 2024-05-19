@@ -372,7 +372,7 @@ class ColorFilters: PhotoActivity() {
     fun gausBlurSquare(bitmap: Bitmap, openBitmap: Bitmap, r: Float): Bitmap {
         var width = bitmap.width
         var height = bitmap.height
-        var newBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        var newBitmap = bitmap.copy(bitmap.config, true)
         var kernel = mutableListOf<MutableList<Double>>()
         var len = (r).toInt() * 2 + 1
         var sigma = r/3
@@ -394,16 +394,26 @@ class ColorFilters: PhotoActivity() {
                 var i = 0
                 while (i < bitmap.height * 0.25f) {
                     var j = 0
+                    var maxVal = 0
+                    var minVal = bitmap.width
                     while (j < bitmap.width) {
                         var tempIsIdentical = isIdentical(bitmap, openBitmap, j, i)
                         if (tempIsIdentical == false) {
-                            count++
+                            if (j < minVal) {
+                                minVal = j
+                            }
+                            if (j > maxVal) {
+                                maxVal = j
+                            }
                         }
-                        if (count%2 == 1) {
-                            var data = blurPixel(bitmap, kernel, len, mid, j, i)
+                        j++
+                    }
+                    j = minVal
+                    while (j <= maxVal) {
+                        var data = blurPixel(bitmap, kernel, len, mid, j, i)
 
-                            newBitmap.setPixel(j,i, Color.argb(data[0], data[1], data[2], data[3]))
-                        }
+                        newBitmap.setPixel(j,i, Color.argb(data[0], data[1], data[2], data[3]))
+
                         j++
                     }
                     i++
@@ -414,16 +424,25 @@ class ColorFilters: PhotoActivity() {
                 var count = 0
                 while (i < bitmap.height * 0.5f) {
                     var j = 0
+                    var maxVal = 0
+                    var minVal = bitmap.width
                     while (j < bitmap.width) {
                         var tempIsIdentical = isIdentical(bitmap, openBitmap, j, i)
                         if (tempIsIdentical == false) {
-                            count++
+                            if (j < minVal) {
+                                minVal = j
+                            }
+                            if (j > maxVal) {
+                                maxVal = j
+                            }
                         }
-                        if (count%2 == 1) {
-                            var data = blurPixel(bitmap, kernel, len, mid, j, i)
+                        j++
+                    }
+                    j = minVal
+                    while (j <= maxVal) {
+                        var data = blurPixel(bitmap, kernel, len, mid, j, i)
 
-                            newBitmap.setPixel(j,i, Color.argb(data[0], data[1], data[2], data[3]))
-                        }
+                        newBitmap.setPixel(j,i, Color.argb(data[0], data[1], data[2], data[3]))
 
                         j++
                     }
@@ -435,16 +454,25 @@ class ColorFilters: PhotoActivity() {
                 var count = 0
                 while (i < bitmap.height * 0.75f) {
                     var j = 0
+                    var maxVal = 0
+                    var minVal = bitmap.width
                     while (j < bitmap.width) {
                         var tempIsIdentical = isIdentical(bitmap, openBitmap, j, i)
                         if (tempIsIdentical == false) {
-                            count++
+                            if (j < minVal) {
+                                minVal = j
+                            }
+                            if (j > maxVal) {
+                                maxVal = j
+                            }
                         }
-                        if (count%2 == 1) {
-                            var data = blurPixel(bitmap, kernel, len, mid, j, i)
+                        j++
+                    }
+                    j = minVal
+                    while (j <= maxVal) {
+                        var data = blurPixel(bitmap, kernel, len, mid, j, i)
 
-                            newBitmap.setPixel(j,i, Color.argb(data[0], data[1], data[2], data[3]))
-                        }
+                        newBitmap.setPixel(j,i, Color.argb(data[0], data[1], data[2], data[3]))
 
                         j++
                     }
@@ -453,19 +481,28 @@ class ColorFilters: PhotoActivity() {
             }
             launch(Dispatchers.IO) {
                 var i = (bitmap.height * 0.75f).toInt()
-                var count = 0
                 while (i < bitmap.height) {
+
                     var j = 0
+                    var maxVal = 0
+                    var minVal = bitmap.width
                     while (j < bitmap.width) {
                         var tempIsIdentical = isIdentical(bitmap, openBitmap, j, i)
                         if (tempIsIdentical == false) {
-                            count++
+                            if (j < minVal) {
+                                minVal = j
+                            }
+                            if (j > maxVal) {
+                                maxVal = j
+                            }
                         }
-                        if (count%2 == 1) {
-                            var data = blurPixel(bitmap, kernel, len, mid, j, i)
+                        j++
+                    }
+                    j = minVal
+                    while (j <= maxVal) {
+                        var data = blurPixel(bitmap, kernel, len, mid, j, i)
 
-                            newBitmap.setPixel(j,i, Color.argb(data[0], data[1], data[2], data[3]))
-                        }
+                        newBitmap.setPixel(j,i, Color.argb(data[0], data[1], data[2], data[3]))
 
                         j++
                     }
