@@ -10,6 +10,7 @@ class Spline(val _points: MutableList<Pair<Float, Float>>) {
     private var coefficientsC = mutableListOf<Float>()
     private var coefficientsD = mutableListOf<Float>()
 
+    private var currSign : Int = 0
 
     fun initializingFirstFunction(){
         if(points.size > 1){
@@ -20,8 +21,8 @@ class Spline(val _points: MutableList<Pair<Float, Float>>) {
                 floatArrayOf(0.0f, 1.0f, 2.0f * points[0].first, 3.0f * points[0].first.pow(2))
             )
 
-            val constants = floatArrayOf(points[0].second, points[1].second,
-                    (points[0].second - points[1].second) / (points[0].first - points[1].first), 0.0f)
+            val constants = floatArrayOf(points[0].second,points[1].second,
+                   (points[0].second - points[1].second) / (points[0].first - points[1].first), 0.0f)
 
             val det = determinant(coefficients)
 
@@ -41,24 +42,52 @@ class Spline(val _points: MutableList<Pair<Float, Float>>) {
             coefficientsB.add(solutions[1])
             coefficientsC.add(solutions[2])
             coefficientsD.add(solutions[3])
+
+            currSign = if((points[0].first - points[1].first) < 0){ 1 } else{ -1 }
         }
     }
 
     fun initializingAllFunctions(){
         for(i in 2..< points.size) {
+            var constants = floatArrayOf()
 
             val valueFirstDerivative = coefficientsB[i - 2] + 2.0f * coefficientsC[i - 2] *
                     points[i - 1].first + 3.0f * coefficientsD[i - 2] * points[i - 1].first.pow(2)
 
-            val coefficients = arrayOf(
+            val valueSecondDerivative = 2.0f * coefficientsC[i - 2] + 6.0f * coefficientsD[i - 2] * points[i - 1].first
+
+            var coefficients = arrayOf(
                 floatArrayOf(1.0f, points[i - 1].first, points[i - 1].first.pow(2), points[i - 1].first.pow(3)),
                 floatArrayOf(1.0f, points[i].first, points[i].first.pow(2), points[i].first.pow(3)),
                 floatArrayOf(0.0f, 1.0f, 2.0f * points[i - 1].first, 3.0f * points[i - 1].first.pow(2)),
                 floatArrayOf(0.0f, 1.0f, 2.0f * points[i].first, 3.0f * points[i].first.pow(2))
             )
 
-            val constants = floatArrayOf(points[i - 1].second, points[i].second, valueFirstDerivative,
+            if(currSign == 1 && (points[i].first - points[i - 1].first) < 0){
+                constants = floatArrayOf(points[i - 1].second, points[i].second, -1 * valueFirstDerivative,
                     (points[i - 1].second - points[i].second) / (points[i - 1].first - points[i].first))
+
+                currSign = -1
+            }
+            else if(currSign == -1 && (points[i].first - points[i - 1].first) > 0){
+                constants = floatArrayOf(points[i - 1].second, points[i].second, -1.0f * valueFirstDerivative,
+                     (points[i - 1].second - points[i].second) / (points[i - 1].first - points[i].first))
+
+                currSign = 1
+            }
+            else{
+                constants = floatArrayOf(points[i - 1].second, points[i].second, valueFirstDerivative,
+                   (points[i - 1].second - points[i].second) / (points[i - 1].first - points[i].first))
+            }
+
+            /*val dX = points[i].first - points[i - 1].first
+
+            if(abs(dX) < 0.5){
+                coefficients[0][3] = 0.0f
+                coefficients[1][3] = 0.0f
+                coefficients[2][3] = 0.0f
+                coefficients[3][3] = 0.0f
+            }*/
 
             val det = determinant(coefficients)
 

@@ -156,6 +156,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llCube"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -164,6 +165,7 @@
                 android:id="@+id/imgHome"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
                 android:src="@drawable/circle_home"
                 android:layout_gravity="bottom"
@@ -172,40 +174,70 @@
             </ImageView>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:foregroundGravity="center_vertical">
+                android:gravity="center"
+                android:orientation="horizontal">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Distance"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:padding="4dp">
-                </TextView>
-
-                <SeekBar
-                    android:id="@+id/distance"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
-                    android:layout_margin="5dp"
-                    android:foregroundGravity="center_horizontal"
-                    android:padding="4dp"
-                    android:minHeight="3dp"
-                    android:maxHeight="3dp"
-                    android:progressDrawable="@drawable/seekbar_style"
-                    android:max="400"
-                    android:min="200"
-                    android:progress="300">
-                </SeekBar>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="Distance"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="18sp">
+                    </TextView>
+
+                    <SeekBar
+                        android:id="@+id/distance"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="5dp"
+                        android:foregroundGravity="center_horizontal"
+                        android:max="400"
+                        android:maxHeight="3dp"
+                        android:min="200"
+                        android:minHeight="3dp"
+                        android:padding="4dp"
+                        android:progress="300"
+                        android:progressDrawable="@drawable/seekbar_style">
+                    </SeekBar>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="Number of faces"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="18sp">
+                    </TextView>
+
+                    <Spinner
+                        android:id="@+id/facesSpinner"
+                        android:layout_width="80dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity = "center"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 

@@ -208,15 +208,15 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
                 a /= 200.0f
                 b /= 200.0f
 
-                while(a + 0.01f < b) {
-                    val v1 = a + 0.01f
+                while(a + 0.0001f < b) {
+                    val v1 = a + 0.0001f
                     val v2 = spline.findValue(v1, i - 1)
 
                     mPath!!.lineTo(v1 * 200.0f, ((currHeight / 2.0f) - v2) * 200.0f)
 
                     invalidate()
 
-                    a += 0.01f
+                    a += 0.0001f
                 }
 
                 mPath!!.lineTo(points[i].first, points[i].second)
@@ -243,15 +243,15 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
                 a /= 200.0f
                 b /= 200.0f
 
-                while(a - 0.01f > b) {
-                    val v1 = a - 0.01f
+                while(a - 0.0001f > b) {
+                    val v1 = a - 0.0001f
                     val v2 = spline.findValue(v1, i - 1)
 
                     mPath!!.lineTo(v1 * 200.0f, ((currHeight / 2.0f) - v2) * 200.0f)
 
                     invalidate()
 
-                    a -= 0.01f
+                    a -= 0.0001f
                 }
 
                 mPath!!.lineTo(points[i].first, points[i].second)
