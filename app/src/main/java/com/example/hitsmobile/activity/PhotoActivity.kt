@@ -858,7 +858,9 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                     runBlocking {
                         launch(Dispatchers.IO) {
                             if(MyVariables.isFace){
-                                filterImg = filter.gausBlurSquare(MyVariables.currImg, MyVariables.processedBitmap, 5f  )
+                                filterImg = filter.gausBlurSquare(MyVariables.currImg, MyVariables.processedBitmap, 5f)
+                                newImg.setImageBitmap(filterImg)
+                                MyVariables.rotateImg = filterImg
                             }
                             else{
                                 filterImg = filter.gausBlur(MyVariables.currImg, 5f)
