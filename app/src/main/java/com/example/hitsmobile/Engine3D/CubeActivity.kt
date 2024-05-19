@@ -47,9 +47,9 @@ class CubeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_cube)
 
         var img = findViewById<ImageView>(R.id.draw_view)
-        vertices = Cube.getVertices()
+        vertices = PrismFive.getVertices()
 
-        polygons = Cube.getPolygons()
+        polygons = PrismFive.getPolygons()
 
 
         render()
