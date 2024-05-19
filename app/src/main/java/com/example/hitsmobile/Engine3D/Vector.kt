@@ -33,6 +33,12 @@ class Vector {
             var ans = a.x * b.x + a.y * b.y + a.z * b.z
             return ans
         }
+
+        fun calculateCos(a:Vector, b:Vector): Float {
+            var ans = Vector.scalarProduct(a,b) / (a.getLength() * b.getLength())
+
+            return ans
+        }
     }
 
     fun getLength():Float {

@@ -240,6 +240,16 @@ class CubeActivity : AppCompatActivity() {
                     v1,v2,v3,
                     red,green,blue
                 )
+                if (e.size > 6) {
+                    drawer.texturePolygon(
+                        v1,v2,v3,
+                        Textures.netherBrickBase64,
+                        e[6], e[7],
+                        e[8], e[9],
+                        e[10], e[11]
+                    )
+                }
+
             }
 
             i++

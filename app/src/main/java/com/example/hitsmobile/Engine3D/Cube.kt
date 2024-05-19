@@ -28,8 +28,8 @@ class Cube {
             polygons.add(mutableListOf(6f,2f,5f, 0f, 1f, 1f))
             polygons.add(mutableListOf(3f,2f,6f, 1f, 1f, 0f))
             polygons.add(mutableListOf(3f,6f,7f, 1f, 1f, 0f))
-            polygons.add(mutableListOf(3f,4f,0f, 1f, 0f, 1f))
-            polygons.add(mutableListOf(4f,3f,7f, 1f, 0f, 1f))
+            polygons.add(mutableListOf(3f,4f,0f, 1f, 0f, 1f, 15f,0f, 0f,15f, 0f,0f))
+            polygons.add(mutableListOf(4f,3f,7f, 1f, 0f, 1f, 0f,15f, 15f,0f, 15f,15f))
 
             return polygons
         }
