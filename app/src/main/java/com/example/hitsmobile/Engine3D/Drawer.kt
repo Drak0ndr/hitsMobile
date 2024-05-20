@@ -148,100 +148,117 @@ class Drawer {
 
         return ans
     }
-    fun texturePolygon(v1:Vector, v2:Vector, v3:Vector, texture:String, t1x:Float, t1y:Float, t2x:Float, t2y:Float, t3x:Float, t3y:Float) {
-        var minX = min(v3.x ,min(v1.x, v2.x))
-        var minY = min(v3.y ,min(v1.y, v2.y))
-        var maxX = max(v3.x ,max(v1.x, v2.x))
-        var maxY = max(v3.y ,max(v1.y, v2.y))
-
-        var n1 = getLeftTopVector(v1,v2,v3)
-        var n1tx = 0f
-        var n1ty = 0f
-        if (n1.x == v1.x && n1.y == v1.y) {
-            n1tx = t1x
-            n1ty = t1y
-        } else if (n1.x == v2.x && n1.y == v2.y) {
-            n1tx = t2x
-            n1ty = t2y
-        } else {
-            n1tx = t3x
-            n1ty = t3y
+    fun texturePolygon(a:Vector, b:Vector, c:Vector, texture:String, t1x:Float, t1y:Float, t2x:Float, t2y:Float, t3x:Float, t3y:Float) {
+        var d = Vector(0f,0f,0f)
+        var temp = 0f
+        var a = a
+        var au = t1x
+        var av = t1y
+        var b= b
+        var bu = t2x
+        var bv = t2y
+        var c= c
+        var cu = t3x
+        var cv = t3y
+        if (a.y > b.y) {
+            d = a
+            a = b
+            b = d
+            temp = au
+            au = bu
+            bu = temp
+            temp = av
+            av = bv
+            bv = temp
         }
 
-        var n2 = getRightTopVector(v1,v2,v3)
-        var n2tx = 0f
-        var n2ty = 0f
-        if (n2.x == v1.x && n2.y == v1.y) {
-            n2tx = t1x
-            n2ty = t1y
-        } else if (n2.x == v2.x && n2.y == v2.y) {
-            n2tx = t2x
-            n2ty = t2y
-        } else {
-            n2tx = t3x
-            n2ty = t3y
+        if (a.y > c.y) {
+            d = a
+            a = c
+            c = d
+            temp = au
+            au = cu
+            cu = temp
+            temp = av
+            av = cv
+            cv = temp
         }
 
-        var n3 = getBottomVector(v1, v2, v3)
-        var n3tx = 0f
-        var n3ty = 0f
-        if (n3.x == v1.x && n3.y == v1.y) {
-            n3tx = t1x
-            n3ty = t1y
-        } else if (n3.x == v2.x && n3.y == v2.y) {
-            n3tx = t2x
-            n3ty = t2y
-        } else {
-            n3tx = t3x
-            n3ty = t3y
+        if (b.y > c.y) {
+            d = b
+            b = c
+            c = d
+            temp = bu
+            bu = cu
+            cu = temp
+            temp = bv
+            bv = cv
+            cv = temp
         }
-        var image = Textures.getBitmap(texture)
-        var kx = (image.width - 1) / (maxX - minX)
-        var ky = (image.height - 1) / (maxY - minY)
-        var x = minX
-        while (x <= maxX) {
-            var y = minY
-            while (y <= maxY) {
-                var t1 = (v1.x - x) * (v2.y - v1.y) - (v2.x - v1.x) * (v1.y - y)
-                var t2 = (v2.x - x) * (v3.y - v2.y) - (v3.x - v2.x) * (v2.y - y)
-                var t3 = (v3.x - x) * (v1.y - v3.y) - (v1.x - v3.x) * (v3.y - y)
-                if ((t1 <= 0 && t2 <= 0 && t3 <= 0) || (t1 >= 0 && t2 >= 0 && t3 >= 0)) {
-                    var ox = Vector.substruct(n2, n1)
-                    var oy = Vector.substruct(n3,n1)
-                    var pointX = Vector(x, y, 0f)
-                    var dir = Vector.substruct(pointX, n1)
-                    var tempCosX = Vector.calculateCos(ox, dir)
-                    var tempLen = dir.getLength()
-                    var tx = tempLen * tempCosX
 
-                    var textureX = tx / ox.getLength() * (image.width - 1)
-                    if (textureX < 0) {
-                        textureX = 0f
-                    }
-                    if (textureX > image.width - 1) {
-                        textureX = (image.width - 1).toFloat()
-                    }
+        if (a.y == c.y) {
+            return
+        }
 
-                    var tempCosY = Vector.calculateCos(oy, dir)
-                    var ty = tempLen * tempCosY
+        var x1 = a.x + (c.x - a.x) * (b.y - a.y) / (c.y - a.y)
+        var u1 = au + (cu - au) * (b.y - a.y) / (c.y - a.y)
+        var v1 = av + (cv - av) * (b.y - a.y) / (c.y - a.y)
+        var x2 = b.x
+        var u2 = bu
+        var v2 = bv
+        var du = (u1 - u2) / (x1 - x2)
+        var dv = (v1 - v2) / (x1 - x2)
+        var x3 = 0f
+        var u3 = 0f
+        var v3 = 0f
 
-                    var textureY = ty / oy.getLength() * (image.height - 1)
-                    if (textureY < 0) {
-                        textureY = 0f
-                    }
-                    if (textureY > image.height - 1) {
-                        textureY = (image.height - 1).toFloat()
-                    }
-                    var colors = image.getColor(((x - minX) * kx).toInt(), ((y - minY) * ky).toInt()).components
-                    var r = colors[0]
-                    var g = colors[1]
-                    var b = colors[2]
-                    drawPixel(x.toInt(), y.toInt(),r, g, b)
-                }
+        var u = 0f
+        var v = 0f
+        var y = a.y.toInt()
+        while (y <= c.y.toInt()) {
+            x1 = a.x  + (c.x - a.x) * (y - a.y) / (c.y - a.y)
+            u1 = au  + (cu - au) * (y - a.y) / (c.y - a.y)
+            v1 = av  + (cv - av) * (y - a.y) / (c.y - a.y)
 
-                y++
+            if (y >= b.y) {
+                x2 = b.x + (c.x - b.x) * (y - b.y) / (c.y - b.y)
+                u2 = bu + (cu - bu) * (y - b.y) / (c.y - b.y)
+                v2 = bv + (cv - bv) * (y - b.y) / (c.y - b.y)
+            } else {
+                x2 = a.x + (b.x - a.x) * (y - a.y) / (b.y - a.y)
+                u2 = au + (bu - au) * (y - a.y) / (b.y - a.y)
+                v2 = av + (bv - av) * (y - a.y) / (b.y - a.y)
             }
-            x++
+
+            if (x1 > x2) {
+                x3 = x1
+                x1 = x2
+                x2 = x3
+
+                u3 = u1
+                u1 = u2
+                u2 = u3
+
+                v3 = v1
+                v1 = v2
+                v2 = v3
+            }
+            u = u1
+            v = v1
+            var x = x1.toInt()
+            while (x <= x2.toInt()) {
+                var img = Textures.getBitmap(texture)
+                var tempColors = img.getColor(u.toInt(),v.toInt()).components
+                var r = tempColors[0]
+                var g = tempColors[1]
+                var b = tempColors[2]
+
+                drawPixel(x.toInt(), y.toInt(), r, g, b)
+                u+= du
+                v+=dv
+                x++
+            }
+            y++
         }
     }
 }
