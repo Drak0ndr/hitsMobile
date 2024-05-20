@@ -214,6 +214,9 @@ class Drawer {
 
         var u = 0f
         var v = 0f
+
+        var img = Textures.getBitmap(texture)
+
         var y = a.y.toInt()
         while (y <= c.y.toInt()) {
             x1 = a.x  + (c.x - a.x) * (y - a.y) / (c.y - a.y)
@@ -247,7 +250,7 @@ class Drawer {
             v = v1
             var x = x1.toInt()
             while (x <= x2.toInt()) {
-                var img = Textures.getBitmap(texture)
+
                 var tempColors = img.getColor(u.toInt(),v.toInt()).components
                 var r = tempColors[0]
                 var g = tempColors[1]
