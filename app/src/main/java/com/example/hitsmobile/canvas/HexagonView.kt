@@ -9,6 +9,7 @@ import android.graphics.PointF
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import kotlin.math.pow
 
 class HexagonView (context: Context, attrs: AttributeSet) : View(context, attrs) {
 
@@ -43,35 +44,23 @@ class HexagonView (context: Context, attrs: AttributeSet) : View(context, attrs)
 
         path.moveTo(Point1.x, Point1.y)
 
-        path.quadTo(
-            controlPoint1.x, controlPoint1.y,
-            Point2.x, Point2.y
-        )
+        cubicInterpolation(path, Point1.x, Point1.y, controlPoint1.x, controlPoint1.y,
+            Point2.x, Point2.y)
 
-        path.quadTo(
-            controlPoint2.x, controlPoint2.y,
-            Point3.x, Point3.y
-        )
+        cubicInterpolation(path, Point2.x, Point2.y, controlPoint2.x, controlPoint2.y,
+            Point3.x, Point3.y)
 
-        path.quadTo(
-            controlPoint3.x, controlPoint3.y,
-            Point4.x, Point4.y
-        )
+        cubicInterpolation(path, Point3.x, Point3.y, controlPoint3.x, controlPoint3.y,
+            Point4.x, Point4.y)
 
-        path.quadTo(
-            controlPoint4.x, controlPoint4.y,
-            Point5.x, Point5.y
-        )
+        cubicInterpolation(path, Point4.x, Point4.y, controlPoint4.x, controlPoint4.y,
+            Point5.x, Point5.y)
 
-        path.quadTo(
-            controlPoint5.x, controlPoint5.y,
-            Point6.x, Point6.y
-        )
+        cubicInterpolation(path, Point5.x, Point5.y, controlPoint5.x, controlPoint5.y,
+            Point6.x, Point6.y)
 
-        path.quadTo(
-            controlPoint6.x, controlPoint6.y,
-            Point1.x, Point1.y
-        )
+        cubicInterpolation(path, Point6.x, Point6.y, controlPoint6.x, controlPoint6.y,
+            Point1.x, Point1.y)
 
         canvas.drawPath(path, paint)
 
@@ -206,6 +195,23 @@ class HexagonView (context: Context, attrs: AttributeSet) : View(context, attrs)
         controlPoint4 = PointF(885f, 1147f)
         controlPoint5 = PointF(540f, 1346f)
         controlPoint6 = PointF(195f, 1147f)
+
+        invalidate()
+    }
+
+    fun cubicInterpolation(path : Path, x1 : Float, y1 : Float, x2 : Float, y2 : Float,
+                           x3 : Float, y3 : Float){
+        var t = 0.0f
+
+        while(t <= 1) {
+            val x = (1.0f - t).pow(2) * x1 + 2 * (1.0f - t) * t * x2 + t.pow(2) * x3
+
+            val y = (1.0f - t).pow(2) * y1 + 2 * (1.0f - t) * t * y2 + t.pow(2) * y3
+
+            path.lineTo(x, y)
+
+            t += 0.01f
+        }
 
         invalidate()
     }
