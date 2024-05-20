@@ -200,6 +200,18 @@ class Drawer {
             return
         }
 
+        var awz = 1f / a.z
+        var auz = au * awz
+        var avz = av * awz
+
+        var bwz = 1f / b.z
+        var buz = bu * bwz
+        var bvz = bv * bwz
+
+        var cwz = 1f / c.z
+        var cuz = cu * cwz
+        var cvz = cv * cwz
+
         var x1 = a.x + (c.x - a.x) * (b.y - a.y) / (c.y - a.y)
         var u1 = au + (cu - au) * (b.y - a.y) / (c.y - a.y)
         var v1 = av + (cv - av) * (b.y - a.y) / (c.y - a.y)
