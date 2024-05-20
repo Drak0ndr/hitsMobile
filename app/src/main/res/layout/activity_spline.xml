@@ -17,6 +17,50 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"/>
 
+    <com.example.hitsmobile.canvas.TriangleView
+        android:id="@+id/draw_view2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/linear"
+        android:background="@color/white"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone"/>
+
+    <com.example.hitsmobile.canvas.SquareView
+        android:id="@+id/draw_view3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/linear"
+        android:background="@color/white"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone"/>
+
+    <com.example.hitsmobile.canvas.HexagonView
+        android:id="@+id/draw_view4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/linear"
+        android:background="@color/white"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone"/>
+
+    <com.example.hitsmobile.canvas.OctagonView
+        android:id="@+id/draw_view5"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/linear"
+        android:background="@color/white"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -70,6 +114,18 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="@+id/imgHome"
                 app:layout_constraintRight_toRightOf="@+id/imgCamera">
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/imgShapes"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/circle_shapes"
+                android:layout_weight="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@+id/imgCamera"
+                app:layout_constraintRight_toRightOf="@+id/imgSave">
             </ImageView>
 
             <ImageView
