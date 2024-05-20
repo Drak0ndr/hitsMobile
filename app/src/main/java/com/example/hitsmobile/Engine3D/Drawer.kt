@@ -262,13 +262,15 @@ class Drawer {
             v = v1
             var x = x1.toInt()
             while (x <= x2.toInt()) {
+                if (u.toInt() >= 0 && u.toInt() < img.width && v.toInt() >= 0 && v.toInt() < img.height) {
+                    var tempColors = img.getColor(u.toInt(),v.toInt()).components
+                    var r = tempColors[0]
+                    var g = tempColors[1]
+                    var b = tempColors[2]
 
-                var tempColors = img.getColor(u.toInt(),v.toInt()).components
-                var r = tempColors[0]
-                var g = tempColors[1]
-                var b = tempColors[2]
+                    drawPixel(x.toInt(), y.toInt(), r, g, b)
+                }
 
-                drawPixel(x.toInt(), y.toInt(), r, g, b)
                 u+= du
                 v+=dv
                 x++
