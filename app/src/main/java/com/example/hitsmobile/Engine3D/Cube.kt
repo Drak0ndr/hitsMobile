@@ -18,10 +18,10 @@ class Cube {
 
         fun getPolygons(): MutableList<MutableList<Float>> {
             var polygons = mutableListOf<MutableList<Float>>()
-            polygons.add(mutableListOf(0f,1f,2f, 1f, 0f, 0f))
-            polygons.add(mutableListOf(0f,2f,3f, 1f, 0f, 0f))
-            polygons.add(mutableListOf(4f,6f,5f, 0f, 1f, 0f))
-            polygons.add(mutableListOf(4f,7f,6f, 0f, 1f, 0f))
+            polygons.add(mutableListOf(0f,1f,2f, 1f, 0f, 0f, 0f,15f, 0f,0f, 15f,0f))
+            polygons.add(mutableListOf(0f,2f,3f, 1f, 0f, 0f, 0f,15f, 15f,0f, 15f,15f))
+            polygons.add(mutableListOf(4f,6f,5f, 0f, 1f, 0f, 0f,15f, 15f,0f, 0f,0f))
+            polygons.add(mutableListOf(4f,7f,6f, 0f, 1f, 0f, 0f,15f, 15f,15f, 15f,0f))
             polygons.add(mutableListOf(0f,5f,1f, 0f, 0f, 1f))
             polygons.add(mutableListOf(0f,4f,5f, 0f, 0f, 1f))
             polygons.add(mutableListOf(1f,5f,2f, 0f, 1f, 1f))
