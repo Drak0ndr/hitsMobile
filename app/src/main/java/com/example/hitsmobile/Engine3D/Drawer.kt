@@ -332,6 +332,9 @@ class Drawer {
             }
 
             var lenght = (x2 - x1).toInt()
+            if (lenght > 1000) {
+                lenght = 1000
+            }
             var uz_a = uz1
             var vz_a = vz1
             var wz_a = wz1
