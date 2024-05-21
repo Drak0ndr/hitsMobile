@@ -11,7 +11,6 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import com.example.hitsmobile.activity.SplineActivity
-import kotlin.math.abs
 import kotlin.math.pow
 
 
@@ -23,8 +22,6 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
     private val mPaint: Paint = Paint()
     private val paths = ArrayList<Stroke>()
     private val points = mutableListOf<Pair<Float, Float>>()
-    private val newPoints = mutableListOf<Pair<Float, Float>>()
-    private val customPoints = mutableListOf<Pair<Float, Float>>()
     private var currentColor = 0
     private var strokeWidth = 0
     private var mBitmap: Bitmap? = null
@@ -49,15 +46,11 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
 
         currentColor = Color.BLACK
         strokeWidth = 25
-
-        currHeight = mCanvas!!.height / 200.0f
-        currWidth = mCanvas!!.width / 200.0f
     }
 
     fun reset(){
         paths.clear()
         points.clear()
-        newPoints.clear()
 
         invalidate()
     }
@@ -75,12 +68,6 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
 
                 paths.removeAt(paths.size - 1)
                 points.removeAt(points.size - 1)
-                newPoints.removeAt(newPoints.size - 1)
-
-                if(newPoints.size > 0 && customPoints.contains(points[points.size - 1])){
-                    points.removeAt(points.size - 1)
-                    newPoints.removeAt(newPoints.size - 1)
-                }
 
                 invalidate()
             }
@@ -121,27 +108,6 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
 
             mPath!!.moveTo(x, y)
 
-            if(SplineActivity.MyFun.currShape == 4){
-                if(newPoints.size > 0){
-                    val lastX = newPoints[newPoints.size - 1].first
-
-                    val dX = lastX - x / 200.0f
-
-                    if(abs(dX) < 0.3f){
-                        val newX = if(x / 200.0f + 0.4f < currWidth){x / 200.0f + 0.4f}else{x / 200.0f - 0.4f}
-
-                        val newY = ((newPoints[newPoints.size - 1].second + (currHeight / 2.0f) - (y / 200.0f)) / 2.0f)
-
-                        newPoints.add(newX to newY)
-
-                        points.add(newX * 200 to ((currHeight / 2.0f) - newY) * 200.0f)
-
-                        customPoints.add(newX * 200 to ((currHeight / 2.0f) - newY) * 200.0f)
-                    }
-                }
-                newPoints.add((x / 200.0f) to (currHeight / 2.0f) - (y / 200.0f))
-            }
-
             points.add(x to y)
 
             mX = x
@@ -176,20 +142,8 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
 
             mPath!!.reset()
 
-            if(SplineActivity.MyFun.currShape == 4){
-                if(customPoints.contains(points[points.size - 2])){
-                    mPath!!.moveTo(points[points.size - 3].first, points[points.size - 3].second)
-                    mPath!!.lineTo(points[points.size - 1].first, points[points.size - 1].second)
-                }
-                else{
-                    mPath!!.moveTo(points[points.size - 2].first, points[points.size - 2].second)
-                    mPath!!.lineTo(points[points.size - 1].first, points[points.size - 1].second)
-                }
-            }
-            else{
-                mPath!!.moveTo(points[points.size - 2].first, points[points.size - 2].second)
-                mPath!!.lineTo(points[points.size - 1].first, points[points.size - 1].second)
-            }
+            mPath!!.moveTo(points[points.size - 2].first, points[points.size - 2].second)
+            mPath!!.lineTo(points[points.size - 1].first, points[points.size - 1].second)
 
             invalidate()
         }
@@ -216,13 +170,59 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
     fun start(){
         if(points.size > 1){
             if(SplineActivity.MyFun.currShape == 4){
-                /*cubic()*/
-                val spline = Spline(newPoints)
+                points.add(points[points.size - 1])
+                points.add(0, points[0])
 
-                spline.initializingFirstFunction()
-                spline.initializingAllFunctions()
+                paths.clear()
 
-                rendering(spline)
+                mPath = Path()
+                val stroke = Stroke(
+                    currentColor, 30,
+                    mPath!!
+                )
+
+                paths.add(stroke)
+
+                mPath!!.reset()
+
+                mPath!!.moveTo(points[1].first, points[1].second)
+                mPath!!.lineTo(points[1].first, points[1].second)
+
+                invalidate()
+
+                for(i in 3..< points.size){
+                    mPath = Path()
+                    val stroke = Stroke(
+                        currentColor, 10,
+                        mPath!!
+                    )
+
+                    paths.add(stroke)
+
+                    mPath!!.reset()
+
+                    mPath!!.moveTo(points[i - 2].first, points[i - 2].second)
+
+                    catmullRom(mPath!!, points[i - 3], points[i - 2], points[i - 1], points[i])
+
+                    mPath = Path()
+                    val stroke2 = Stroke(
+                        currentColor, 30,
+                        mPath!!
+                    )
+
+                    paths.add(stroke2)
+
+                    mPath!!.reset()
+
+                    mPath!!.moveTo(points[i - 1].first, points[i - 1].second)
+                    mPath!!.lineTo(points[i - 1].first, points[i - 1].second)
+
+                    invalidate()
+                }
+
+                points.removeAt(0)
+                points.removeAt(points.size - 1)
             }
             else{
                 paths.clear()
@@ -294,52 +294,26 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
         }
     }
 
-    private fun cubic(){
-        paths.clear()
-        invalidate()
+    fun catmullRom(path: Path, pair1: Pair<Float,Float>, pair2: Pair<Float,Float>,
+                   pair3: Pair<Float,Float>, pair4: Pair<Float,Float>){
+        var t = 0.0f
 
-        mPath = Path()
-        val stroke = Stroke(
-            currentColor, 10,
-            mPath!!
-        )
+        while(t <= 1.0f){
+            val x = 0.5f * (-1.0f * t * (1.0f - t).pow(2) * pair1.first
+                    + (2.0f - 5.0f * t.pow(2) +  3.0f * t.pow(3)) * pair2.first
+                    + t * (1.0f + 4.0f * t - 3.0f * t.pow(2)) * pair3.first
+                    - t.pow(2) * (1.0f - t) * pair4.first)
 
-        paths.add(stroke)
+            val y = 0.5f * (-1.0f * t * (1.0f - t).pow(2) * pair1.second
+                    + (2.0f - 5.0f * t.pow(2) +  3.0f * t.pow(3)) * pair2.second
+                    + t * (1.0f + 4.0f * t - 3.0f * t.pow(2)) * pair3.second
+                    - t.pow(2) * (1.0f - t) * pair4.second)
 
-        mPath!!.reset()
-
-        mPath!!.moveTo(points[0].first, points[0].second)
-
-        for(i in 1..< points.size){
-
-            val newY1 = ((points[i].second + points[i - 1].second) / 2.0f + points[i].second) / 2.0f
-            val newY2 = ((points[i].second + points[i - 1].second) / 2.0f + points[i].second) / 2.0f
-
-            val newX1 = ((newPoints[i].first + newPoints[i - 1].first) / 2 - 0.8f) * 200
-            val newX2 = ((newPoints[i].first + newPoints[i - 1].first) / 2 + 0.8f) * 200
-
-            /*mPath!!.cubicTo(newX1, newY1, newX2, newY2, points[i].first, points[i].second)*/
-
-            val a1 = points[i - 1].first
-            val a2 = points[i - 1].second
-            val b1 = points[i].first
-            val b2 = points[i].second
-
-            var t = 0.0f
-
-            while(t <= 1) {
-                val x = (1.0f - t).pow(3) * a1 + 3 * (1.0f - t).pow(2) * t * newX1 +
-                        3 * (1.0f - t) * t.pow(2) * newX2 + t.pow(3) * b1
-
-                val y = (1.0f - t).pow(3) * a2 + 3 * (1.0f - t).pow(2) * t * newY1 +
-                        3 * (1.0f - t) * t.pow(2) * newY2 + t.pow(3) * b2
-
-                mPath!!.lineTo(x, y)
-
-                t += 0.01f
-            }
+            path.lineTo(x, y)
 
             invalidate()
+
+            t += 0.01f
         }
     }
 
@@ -358,160 +332,6 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
         }
 
         invalidate()
-    }
-
-    private fun rendering(spline : Spline){
-        paths.clear()
-        invalidate()
-
-        mPath = Path()
-        val stroke = Stroke(
-            currentColor, 30,
-            mPath!!
-        )
-
-        paths.add(stroke)
-
-        mPath!!.reset()
-
-        mPath!!.moveTo(points[0].first, points[0].second)
-        mPath!!.lineTo(points[0].first, points[0].second)
-
-        for(i in 1..< points.size){
-            if(customPoints.contains(points[i])){
-                continue
-            }
-            else{
-                mPath = Path()
-                val stroke = Stroke(
-                    currentColor, 10,
-                    mPath!!
-                )
-
-                paths.add(stroke)
-
-                mPath!!.reset()
-
-                if(customPoints.contains(points[i - 1])){
-                    val newY1 = ((points[i].second + points[i - 2].second) / 2.0f + points[i - 2].second) / 2.0f
-                    val newY2 = ((points[i].second + points[i - 2].second) / 2.0f + points[i].second) / 2.0f
-
-                    val newX1 = ((newPoints[i].first + newPoints[i - 2].first) / 2 - 0.8f) * 200
-                    val newX2 = ((newPoints[i].first + newPoints[i - 2].first) / 2 + 0.8f) * 200
-
-                    mPath!!.moveTo(points[i - 2].first, points[i - 2].second)
-                    /*mPath!!.cubicTo(newX1, newY1, newX2, newY2, points[i].first, points[i].second)*/
-
-                    val a1 = points[i - 2].first
-                    val a2 = points[i - 2].second
-                    val b1 = points[i].first
-                    val b2 = points[i].second
-
-                    var t = 0.0f
-
-                    while(t <= 1) {
-                        val x = (1.0f - t).pow(3) * a1 + 3 * (1.0f - t).pow(2) * t * newX1 +
-                                3 * (1.0f - t) * t.pow(2) * newX2 + t.pow(3) * b1
-
-                        val y = (1.0f - t).pow(3) * a2 + 3 * (1.0f - t).pow(2) * t * newY1 +
-                                3 * (1.0f - t) * t.pow(2) * newY2 + t.pow(3) * b2
-
-                        mPath!!.lineTo(x, y)
-
-                        t += 0.01f
-                    }
-
-                    invalidate()
-
-                    mPath = Path()
-                    val stroke = Stroke(
-                        currentColor, 30,
-                        mPath!!
-                    )
-
-                    paths.add(stroke)
-                    mPath!!.reset()
-
-                    mPath!!.moveTo(points[i].first, points[i].second)
-                    mPath!!.lineTo(points[i].first, points[i].second)
-
-                    invalidate()
-                }
-                else{
-                    mPath!!.moveTo(points[i - 1].first, points[i - 1].second)
-
-                    var a : Float
-                    var b : Float
-
-                    if(points[i - 1].first < points[i].first){
-                        a = newPoints[i - 1].first
-                        b = newPoints[i].first
-
-                        while(a + 0.0001f < b) {
-                            val v1 = a + 0.0001f
-                            val v2 = spline.findValue(v1, i - 1)
-
-                            mPath!!.lineTo(v1 * 200.0f, ((currHeight / 2.0f) - v2) * 200.0f)
-
-                            invalidate()
-
-                            a += 0.0001f
-                        }
-
-                        mPath!!.lineTo(points[i].first, points[i].second)
-
-                        mPath = Path()
-                        val stroke = Stroke(
-                            currentColor, 30,
-                            mPath!!
-                        )
-
-                        paths.add(stroke)
-
-                        mPath!!.reset()
-
-
-                        mPath!!.moveTo(points[i].first, points[i].second)
-                        mPath!!.lineTo(points[i].first, points[i].second)
-
-
-                        invalidate()
-                    }
-                    else{
-                        a = newPoints[i - 1].first
-                        b = newPoints[i].first
-
-                        while(a - 0.0001f > b) {
-                            val v1 = a - 0.0001f
-                            val v2 = spline.findValue(v1, i - 1)
-
-                            mPath!!.lineTo(v1 * 200.0f, ((currHeight / 2.0f) - v2) * 200.0f)
-
-                            invalidate()
-
-                            a -= 0.0001f
-                        }
-
-                        mPath!!.lineTo(points[i].first, points[i].second)
-
-                        mPath = Path()
-                        val stroke = Stroke(
-                            currentColor, 30,
-                            mPath!!
-                        )
-
-                        paths.add(stroke)
-
-                        mPath!!.reset()
-
-                        mPath!!.moveTo(points[i].first, points[i].second)
-                        mPath!!.lineTo(points[i].first, points[i].second)
-
-                        invalidate()
-                    }
-                }
-            }
-        }
     }
 }
 
