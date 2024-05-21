@@ -139,25 +139,25 @@ class Drawer {
         var i = 0
         while (i < length) {
             runBlocking {
-                launch {
+                launch(Dispatchers.Default) {
                     fillPixel((x1 + xStep*i).toInt(), (y1 + yStep*i).toInt())
                 }
-                launch {
+                launch(Dispatchers.Default) {
                     if ((x1 + xStep*i).toInt() - 1 >= x1 ) {
                         fillPixel((x1 + xStep*i).toInt() - 1, (y1 + yStep*i).toInt())
                     }
                 }
-                launch {
+                launch(Dispatchers.Default) {
                     if ((x1 + xStep*i).toInt() + 1 <= x2) {
                         fillPixel((x1 + xStep*i).toInt() + 1, (y1 + yStep*i).toInt())
                     }
                 }
-                launch {
+                launch(Dispatchers.Default) {
                     if ((x1 + xStep*i).toInt() - 2 >= x1) {
                         fillPixel((x1 + xStep*i).toInt() - 2, (y1 + yStep*i).toInt())
                     }
                 }
-                launch {
+                launch(Dispatchers.Default) {
                     if ((x1 + xStep*i).toInt() + 2 <= x2) {
                         fillPixel((x1 + xStep*i).toInt() + 2, (y1 + yStep*i).toInt())
                     }
