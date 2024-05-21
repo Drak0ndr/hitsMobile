@@ -20,6 +20,7 @@ import com.example.hitsmobile.activity.SplineActivity.MyFun.imageView1
 import com.example.hitsmobile.activity.SplineActivity.MyFun.imageView2
 import com.example.hitsmobile.activity.SplineActivity.MyFun.imageView3
 import com.example.hitsmobile.activity.SplineActivity.MyFun.imageView4
+import com.example.hitsmobile.activity.SplineActivity.MyFun.paint
 import com.example.hitsmobile.algorithms.ChoosingShapesFragment
 import com.example.hitsmobile.canvas.CustomView
 import com.example.hitsmobile.canvas.HexagonView
@@ -28,9 +29,6 @@ import com.example.hitsmobile.canvas.SquareView
 import com.example.hitsmobile.canvas.TriangleView
 
 class SplineActivity : AppCompatActivity() {
-    /*Блок для рисования*/
-    private lateinit var paint: CustomView
-
     /*Кнопка домой*/
     private lateinit var homeBtn: ImageView
 
@@ -142,6 +140,7 @@ class SplineActivity : AppCompatActivity() {
                 paint.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 val width = paint.measuredWidth
                 val height = paint.measuredHeight
+
                 paint.init(height, width)
             }
         })
@@ -154,12 +153,16 @@ class SplineActivity : AppCompatActivity() {
     }
 
     object MyFun {
-        var currShape : Int = 0
+        /*Блок для рисования*/
+        lateinit var paint: CustomView
+
+        var currShape : Int = 4
         lateinit var imageView4 : CustomView
         lateinit var imageView0 : TriangleView
         lateinit var imageView1 : SquareView
         lateinit var imageView2 : HexagonView
         lateinit var imageView3 : OctagonView
+
         fun checkView(numberView : Int){
             when(numberView){
                 0 -> {
@@ -199,13 +202,28 @@ class SplineActivity : AppCompatActivity() {
                     imageView3.visibility = View.VISIBLE
                 }
                 4 -> {
-                    currShape = 4
+                    if(currShape != 4){
+                        paint.reset()
+                        currShape = 4
 
-                    imageView4.visibility = View.VISIBLE
-                    imageView0.visibility = View.GONE
-                    imageView1.visibility = View.GONE
-                    imageView2.visibility = View.GONE
-                    imageView3.visibility = View.GONE
+                        imageView4.visibility = View.VISIBLE
+                        imageView0.visibility = View.GONE
+                        imageView1.visibility = View.GONE
+                        imageView2.visibility = View.GONE
+                        imageView3.visibility = View.GONE
+                    }
+                }
+                5 -> {
+                    if(currShape != 5){
+                        paint.reset()
+                        currShape = 5
+
+                        imageView4.visibility = View.VISIBLE
+                        imageView0.visibility = View.GONE
+                        imageView1.visibility = View.GONE
+                        imageView2.visibility = View.GONE
+                        imageView3.visibility = View.GONE
+                    }
                 }
             }
         }

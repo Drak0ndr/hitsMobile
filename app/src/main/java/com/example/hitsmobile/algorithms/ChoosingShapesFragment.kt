@@ -8,7 +8,8 @@ import androidx.fragment.app.DialogFragment
 import com.example.hitsmobile.activity.SplineActivity
 
 class ChoosingShapesFragment : DialogFragment() {
-    private val shapes = arrayOf("Треугольник", "Квадрат", "Шестиугольник", "Восьмиугольник", "Ломаная" )
+    private val shapes = arrayOf("Треугольник", "Квадрат", "Шестиугольник",
+        "Восьмиугольник", "Интерполяционный сплайн", "Сглаживающий сплайн" )
     private var currShape = 4
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -25,6 +26,7 @@ class ChoosingShapesFragment : DialogFragment() {
                         2 -> {currShape = 2}
                         3 -> {currShape = 3}
                         4 -> {currShape = 4}
+                        5 -> {currShape = 5}
                     }
                 }
                 .setPositiveButton("OK"

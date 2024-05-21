@@ -10,6 +10,7 @@ import android.graphics.Path
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import com.example.hitsmobile.activity.SplineActivity
 import kotlin.math.abs
 import kotlin.math.pow
 
@@ -53,22 +54,36 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
         currWidth = mCanvas!!.width / 200.0f
     }
 
+    fun reset(){
+        paths.clear()
+        points.clear()
+        newPoints.clear()
+
+        invalidate()
+    }
+
     fun back() {
-        if(paths.size != 0){
-            if(paths.size > 1){
+        if(SplineActivity.MyFun.currShape == 5){
+            reset()
+            invalidate()
+        }
+        else{
+            if(paths.size != 0){
+                if(paths.size > 1){
+                    paths.removeAt(paths.size - 1)
+                }
+
                 paths.removeAt(paths.size - 1)
-            }
-
-            paths.removeAt(paths.size - 1)
-            points.removeAt(points.size - 1)
-            newPoints.removeAt(newPoints.size - 1)
-
-            if(newPoints.size > 0 && customPoints.contains(points[points.size - 1])){
                 points.removeAt(points.size - 1)
                 newPoints.removeAt(newPoints.size - 1)
-            }
 
-            invalidate()
+                if(newPoints.size > 0 && customPoints.contains(points[points.size - 1])){
+                    points.removeAt(points.size - 1)
+                    newPoints.removeAt(newPoints.size - 1)
+                }
+
+                invalidate()
+            }
         }
     }
 
@@ -106,27 +121,28 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
 
             mPath!!.moveTo(x, y)
 
-            if(newPoints.size > 0){
-                val lastX = newPoints[newPoints.size - 1].first
+            if(SplineActivity.MyFun.currShape == 4){
+                if(newPoints.size > 0){
+                    val lastX = newPoints[newPoints.size - 1].first
 
-                val dX = lastX - x / 200.0f
+                    val dX = lastX - x / 200.0f
 
-                if(abs(dX) < 0.3f){
-                    val newX = if(x / 200.0f + 0.4f < currWidth){x / 200.0f + 0.4f}else{x / 200.0f - 0.4f}
+                    if(abs(dX) < 0.3f){
+                        val newX = if(x / 200.0f + 0.4f < currWidth){x / 200.0f + 0.4f}else{x / 200.0f - 0.4f}
 
-                    val newY = ((newPoints[newPoints.size - 1].second + (currHeight / 2.0f) - (y / 200.0f)) / 2.0f)
+                        val newY = ((newPoints[newPoints.size - 1].second + (currHeight / 2.0f) - (y / 200.0f)) / 2.0f)
 
-                    newPoints.add(newX to newY)
+                        newPoints.add(newX to newY)
 
-                    points.add(newX * 200 to ((currHeight / 2.0f) - newY) * 200.0f)
+                        points.add(newX * 200 to ((currHeight / 2.0f) - newY) * 200.0f)
 
-                    customPoints.add(newX * 200 to ((currHeight / 2.0f) - newY) * 200.0f)
+                        customPoints.add(newX * 200 to ((currHeight / 2.0f) - newY) * 200.0f)
+                    }
                 }
+                newPoints.add((x / 200.0f) to (currHeight / 2.0f) - (y / 200.0f))
             }
 
             points.add(x to y)
-
-            newPoints.add((x / 200.0f) to (currHeight / 2.0f) - (y / 200.0f))
 
             mX = x
             mY = y
@@ -160,9 +176,15 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
 
             mPath!!.reset()
 
-            if(customPoints.contains(points[points.size - 2])){
-                mPath!!.moveTo(points[points.size - 3].first, points[points.size - 3].second)
-                mPath!!.lineTo(points[points.size - 1].first, points[points.size - 1].second)
+            if(SplineActivity.MyFun.currShape == 4){
+                if(customPoints.contains(points[points.size - 2])){
+                    mPath!!.moveTo(points[points.size - 3].first, points[points.size - 3].second)
+                    mPath!!.lineTo(points[points.size - 1].first, points[points.size - 1].second)
+                }
+                else{
+                    mPath!!.moveTo(points[points.size - 2].first, points[points.size - 2].second)
+                    mPath!!.lineTo(points[points.size - 1].first, points[points.size - 1].second)
+                }
             }
             else{
                 mPath!!.moveTo(points[points.size - 2].first, points[points.size - 2].second)
@@ -192,14 +214,83 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
     }
 
     fun start(){
-        if(newPoints.size > 1){
-            /*cubic()*/
-            val spline = Spline(newPoints)
+        if(points.size > 1){
+            if(SplineActivity.MyFun.currShape == 4){
+                /*cubic()*/
+                val spline = Spline(newPoints)
 
-            spline.initializingFirstFunction()
-            spline.initializingAllFunctions()
+                spline.initializingFirstFunction()
+                spline.initializingAllFunctions()
 
-            rendering(spline)
+                rendering(spline)
+            }
+            else{
+                paths.clear()
+
+                mPath = Path()
+
+                val stroke = Stroke(
+                    currentColor, 10,
+                    mPath!!
+                )
+
+                paths.add(stroke)
+
+                mPath!!.reset()
+
+                mPath!!.moveTo(points[0].first, points[0].second)
+
+                cubicInterpolation(
+                    mPath!!,
+                    points[0].first, points[0].second,
+                    points[1].first, points[1].second,
+                    (points[1].first + points[2].first) /2,
+                    (points[1].second + points[2].second) / 2
+                )
+
+                invalidate()
+
+                for(i in 2..< points.size - 2){
+                    cubicInterpolation(
+                        mPath!!,
+                        (points[i].first + points[i - 1].first) /2,
+                        (points[i].second + points[i - 1].second) / 2,
+                        points[i].first, points[i].second,
+                        (points[i].first + points[i + 1].first) / 2,
+                        (points[i].second + points[i + 1].second) / 2
+                    )
+
+                    invalidate()
+                }
+
+                cubicInterpolation(
+                    mPath!!,
+                    (points[points.size - 2].first + points[points.size - 3].first) / 2,
+                    (points[points.size - 3].second + points[points.size - 2].second) / 2,
+                    points[points.size - 2].first, points[points.size - 2].second,
+                    points[points.size - 1].first, points[points.size - 1].second
+                )
+
+                invalidate()
+
+                for(i in 0..< points.size) {
+
+                    mPath = Path()
+                    val stroke = Stroke(
+                        currentColor, 30,
+                        mPath!!
+                    )
+
+                    paths.add(stroke)
+
+                    mPath!!.reset()
+
+                    mPath!!.moveTo(points[i].first, points[i].second)
+                    mPath!!.lineTo(points[i].first, points[i].second)
+
+                    invalidate()
+                }
+            }
         }
     }
 
@@ -250,6 +341,23 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
 
             invalidate()
         }
+    }
+
+    fun cubicInterpolation(path : Path, x1 : Float, y1 : Float, x2 : Float, y2 : Float,
+                           x3 : Float, y3 : Float){
+        var t = 0.0f
+
+        while(t <= 1) {
+            val x = (1.0f - t).pow(2) * x1 + 2 * (1.0f - t) * t * x2 + t.pow(2) * x3
+
+            val y = (1.0f - t).pow(2) * y1 + 2 * (1.0f - t) * t * y2 + t.pow(2) * y3
+
+            path.lineTo(x, y)
+
+            t += 0.01f
+        }
+
+        invalidate()
     }
 
     private fun rendering(spline : Spline){

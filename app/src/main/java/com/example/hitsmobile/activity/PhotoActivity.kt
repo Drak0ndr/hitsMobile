@@ -517,9 +517,11 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             override fun onStopTrackingTouch(seekBar: SeekBar) {
                 val newImg = findViewById<ImageView>(R.id.photoEditorView)
                 val rotate = Rotate()
-                MyVariables.rotateImg = rotate.rotateAny(MyVariables.rotateImg, seekBarRotate.progress)
+                MyVariables.rotateImg =
+                    rotate.rotateAny(MyVariables.rotateImg, seekBarRotate.progress)
                 newImg.setImageBitmap(MyVariables.rotateImg)
-                MyVariables.currImg = rotate.rotateAny(MyVariables.currImg, seekBarRotate.progress)
+                MyVariables.currImg =
+                    rotate.rotateAny(MyVariables.currImg, seekBarRotate.progress)
                 seekBarRotate.progress = 0
             }
         })
