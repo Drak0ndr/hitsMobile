@@ -42,6 +42,8 @@ class CubeActivity : AppCompatActivity() {
     private var currZ : Int = 0
     private  var currDistance: Int = 300
 
+    var drawer = Drawer(200,200)
+
     var vertices = mutableListOf<Vector>()
     var polygons = mutableListOf<MutableList<Float>>()
 
@@ -174,27 +176,28 @@ class CubeActivity : AppCompatActivity() {
             ), matrix
         )
         matrix = Matrix.multiply(Matrix.getPerspectiveProjection(
-            90f, (800f/600f).toFloat(), -1f, -1000f), matrix
+            90f, (drawer.width.toFloat()/drawer.height.toFloat()), -1f, -1000f), matrix
         )
 
         return matrix
     }
 
     fun render() {
+        println(currY)
         var img = findViewById<ImageView>(R.id.draw_view)
-
+        drawer.clearSurface()
         var sceneVertices = mutableListOf<Vector>()
         var matrix = genMatrix(currX.toFloat(),currY.toFloat(),currZ.toFloat())
         var i = 0
         while (i < vertices.size) {
             var vertex = Matrix.multiplyVector(matrix, vertices[i])
-            vertex.x = vertex.x / vertex.w * 400
-            vertex.y = vertex.y / vertex.w * 300
+            vertex.x = vertex.x / vertex.w * drawer.width/2
+            vertex.y = vertex.y / vertex.w * drawer.height/2
             sceneVertices.add(vertex)
             i++
         }
 
-        var drawer = Drawer(800,600)
+
 
         i = 0
         while (i < polygons.size) {

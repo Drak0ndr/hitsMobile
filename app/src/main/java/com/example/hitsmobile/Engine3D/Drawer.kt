@@ -106,7 +106,6 @@ class Drawer {
             }
             if (k < 1) {
                 k = 1f
-                a = 1f
             }
             bitmap.setPixel(x,y, Color.argb(a/k, r/k, g/k, b/k))
         }
