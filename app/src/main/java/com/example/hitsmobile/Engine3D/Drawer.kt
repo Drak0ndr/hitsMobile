@@ -213,16 +213,25 @@ class Drawer {
         var cvz = cv * cwz
 
         var x1 = a.x + (c.x - a.x) * (b.y - a.y) / (c.y - a.y)
-        var u1 = au + (cu - au) * (b.y - a.y) / (c.y - a.y)
-        var v1 = av + (cv - av) * (b.y - a.y) / (c.y - a.y)
+
+        var wz1 = awz + (cwz - awz) * (b.y - a.y) / (c.y - a.y)
+        var uz1 = auz + (cuz - auz) * (b.y - a.y) / (c.y - a.y)
+        var vz1 = avz + (cvz - avz) * (b.y - a.y) / (c.y - a.y)
+
+
         var x2 = b.x
-        var u2 = bu
-        var v2 = bv
-        var du = (u1 - u2) / (x1 - x2)
-        var dv = (v1 - v2) / (x1 - x2)
+        var uz2 = buz
+        var vz2 = bvz
+        var wz2 = bwz
+        var duz = (uz1 - uz2) / (x1 - x2)
+        var dvz = (vz1 - vz2) / (x1 - x2)
+        var dwz = (wz1 - wz2) / (x1 - x2)
+
+
         var x3 = 0f
-        var u3 = 0f
-        var v3 = 0f
+        var uz3 = 0f
+        var vz3 = 0f
+        var wz3 = 0f
 
         var u = 0f
         var v = 0f
@@ -232,17 +241,20 @@ class Drawer {
         var y = a.y.toInt()
         while (y <= c.y.toInt()) {
             x1 = a.x  + (c.x - a.x) * (y - a.y) / (c.y - a.y)
-            u1 = au  + (cu - au) * (y - a.y) / (c.y - a.y)
-            v1 = av  + (cv - av) * (y - a.y) / (c.y - a.y)
+            uz1 = auz  + (cuz - auz) * (y - a.y) / (c.y - a.y)
+            vz1 = avz  + (cvz - avz) * (y - a.y) / (c.y - a.y)
+            wz1 = awz  + (cwz - awz) * (y - a.y) / (c.y - a.y)
 
             if (y >= b.y) {
                 x2 = b.x + (c.x - b.x) * (y - b.y) / (c.y - b.y)
-                u2 = bu + (cu - bu) * (y - b.y) / (c.y - b.y)
-                v2 = bv + (cv - bv) * (y - b.y) / (c.y - b.y)
+                uz2 = buz + (cuz - buz) * (y - b.y) / (c.y - b.y)
+                vz2 = bvz + (cvz - bvz) * (y - b.y) / (c.y - b.y)
+                wz2 = bwz + (cwz - bwz) * (y - b.y) / (c.y - b.y)
             } else {
                 x2 = a.x + (b.x - a.x) * (y - a.y) / (b.y - a.y)
-                u2 = au + (bu - au) * (y - a.y) / (b.y - a.y)
-                v2 = av + (bv - av) * (y - a.y) / (b.y - a.y)
+                uz2 = auz + (buz - auz) * (y - a.y) / (b.y - a.y)
+                vz2 = avz + (bvz - avz) * (y - a.y) / (b.y - a.y)
+                wz2 = awz + (bwz - awz) * (y - a.y) / (b.y - a.y)
             }
 
             if (x1 > x2) {
@@ -250,31 +262,94 @@ class Drawer {
                 x1 = x2
                 x2 = x3
 
-                u3 = u1
-                u1 = u2
-                u2 = u3
+                uz3 = uz1
+                uz1 = uz2
+                uz2 = uz3
 
-                v3 = v1
-                v1 = v2
-                v2 = v3
+                vz3 = vz1
+                vz1 = vz2
+                vz2 = vz3
+
+                wz3 = wz1
+                wz1 = wz2
+                wz2 = wz3
+
             }
-            u = u1
-            v = v1
-            var x = x1.toInt()
-            while (x <= x2.toInt()) {
-                if (u.toInt() >= 0 && u.toInt() < img.width && v.toInt() >= 0 && v.toInt() < img.height) {
-                    var tempColors = img.getColor(u.toInt(),v.toInt()).components
-                    var r = tempColors[0]
-                    var g = tempColors[1]
-                    var b = tempColors[2]
 
-                    drawPixel(x.toInt(), y.toInt(), r, g, b)
+            var lenght = (x2 - x1).toInt()
+            var uz_a = uz1
+            var vz_a = vz1
+            var wz_a = wz1
+            var u_a = uz_a / wz_a
+            var v_a = vz_a / wz_a
+            var x = x1.toInt()
+            while (lenght >= 8) {
+                var uz_b = uz_a + 8 * duz
+                var vz_b = vz_a + 8 * dvz
+                var wz_b = wz_a + 8 * dwz
+                var u_b = uz_b / wz_b
+                var v_b = vz_b / wz_b
+
+                u = u_a
+                v = v_a
+
+                var du = (u_b - u_a) / 8
+                var dv = (v_b - v_a) / 8
+
+                var len = 8
+                while (len > 0) {
+                    if (u.toInt() >= 0 && u.toInt() < img.width && v.toInt() >= 0 && v.toInt() < img.height) {
+                        var tempColors = img.getColor(u.toInt(),v.toInt()).components
+                        var r = tempColors[0]
+                        var g = tempColors[1]
+                        var b = tempColors[2]
+
+                        drawPixel(x.toInt(), y.toInt(), r, g, b)
+                    }
+                    x++
+                    u += du
+                    v += dv
+                    len -= 1
                 }
 
-                u+= du
-                v+=dv
-                x++
+                lenght-=8
+                uz_a = uz_b
+                vz_a = vz_b
+                wz_a = wz_b
+                u_a = u_b
+                v_a = v_b
+
             }
+
+            if (lenght > 0) {
+                var uz_b = uz2
+                var vz_b = vz2
+                var wz_b = wz2
+                var u_b = uz_b / wz_b
+                var v_b = vz_b / wz_b
+
+                u = u_a
+                v = v_a
+
+                var du = (u_b - u_a) / lenght
+                var dv = (v_b - v_a) / lenght
+
+                while (lenght > 0) {
+                    if (u.toInt() >= 0 && u.toInt() < img.width && v.toInt() >= 0 && v.toInt() < img.height) {
+                        var tempColors = img.getColor(u.toInt(),v.toInt()).components
+                        var r = tempColors[0]
+                        var g = tempColors[1]
+                        var b = tempColors[2]
+
+                        drawPixel(x.toInt(), y.toInt(), r, g, b)
+                    }
+                    x++
+                    u += du
+                    v += dv
+                    lenght-=1
+                }
+            }
+
             y++
         }
     }
