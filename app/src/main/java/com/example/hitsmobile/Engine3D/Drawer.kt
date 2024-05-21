@@ -2,6 +2,9 @@ package com.example.hitsmobile.Engine3D
 
 import android.graphics.Bitmap
 import android.graphics.Color
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
@@ -103,6 +106,7 @@ class Drawer {
             }
             if (k < 1) {
                 k = 1f
+                a = 1f
             }
             bitmap.setPixel(x,y, Color.argb(a/k, r/k, g/k, b/k))
         }
@@ -118,11 +122,23 @@ class Drawer {
 
         var i = 0
         while (i < length) {
-            fillPixel((x1 + xStep*i).toInt(), (y1 + yStep*i).toInt())
-            fillPixel((x1 + xStep*i).toInt() - 1, (y1 + yStep*i).toInt())
-            fillPixel((x1 + xStep*i).toInt() + 1, (y1 + yStep*i).toInt())
-            fillPixel((x1 + xStep*i).toInt() - 2, (y1 + yStep*i).toInt())
-            fillPixel((x1 + xStep*i).toInt() + 2, (y1 + yStep*i).toInt())
+            runBlocking {
+                launch {
+                    fillPixel((x1 + xStep*i).toInt(), (y1 + yStep*i).toInt())
+                }
+                launch {
+                    fillPixel((x1 + xStep*i).toInt() - 1, (y1 + yStep*i).toInt())
+                }
+                launch {
+                    fillPixel((x1 + xStep*i).toInt() + 1, (y1 + yStep*i).toInt())
+                }
+                launch {
+                    fillPixel((x1 + xStep*i).toInt() - 2, (y1 + yStep*i).toInt())
+                }
+                launch {
+                    fillPixel((x1 + xStep*i).toInt() + 2, (y1 + yStep*i).toInt())
+                }
+            }
             i++
         }
     }
@@ -133,103 +149,48 @@ class Drawer {
         var maxX = max(v3.x ,max(v1.x, v2.x))
         var maxY = max(v3.y ,max(v1.y, v2.y))
 
+        runBlocking {
+            launch(Dispatchers.IO) {
+                var d = ((maxX - minX) / 2).toInt()
+                var x = minX
+                while (x <= minX + d) {
+                    var y = minY
+                    while (y <= maxY) {
+                        var t1 = (v1.x - x) * (v2.y - v1.y) - (v2.x - v1.x) * (v1.y - y)
+                        var t2 = (v2.x - x) * (v3.y - v2.y) - (v3.x - v2.x) * (v2.y - y)
+                        var t3 = (v3.x - x) * (v1.y - v3.y) - (v1.x - v3.x) * (v3.y - y)
+                        if ((t1 <= 0 && t2 <= 0 && t3 <= 0) || (t1 >= 0 && t2 >= 0 && t3 >= 0)) {
+                            drawPixel(x.toInt(), y.toInt(),r, g, b)
+                        }
 
-        var x = minX
-        while (x <= maxX) {
-            var y = minY
-            while (y <= maxY) {
-                var t1 = (v1.x - x) * (v2.y - v1.y) - (v2.x - v1.x) * (v1.y - y)
-                var t2 = (v2.x - x) * (v3.y - v2.y) - (v3.x - v2.x) * (v2.y - y)
-                var t3 = (v3.x - x) * (v1.y - v3.y) - (v1.x - v3.x) * (v3.y - y)
-                if ((t1 <= 0 && t2 <= 0 && t3 <= 0) || (t1 >= 0 && t2 >= 0 && t3 >= 0)) {
-                    drawPixel(x.toInt(), y.toInt(),r, g, b)
+                        y++
+                    }
+                    x++
                 }
+            }
 
-                y++
+            launch(Dispatchers.IO) {
+                var d = ((maxX - minX) / 2).toInt()
+                var x = minX + d
+                while (x <= maxX) {
+                    var y = minY
+                    while (y <= maxY) {
+                        var t1 = (v1.x - x) * (v2.y - v1.y) - (v2.x - v1.x) * (v1.y - y)
+                        var t2 = (v2.x - x) * (v3.y - v2.y) - (v3.x - v2.x) * (v2.y - y)
+                        var t3 = (v3.x - x) * (v1.y - v3.y) - (v1.x - v3.x) * (v3.y - y)
+                        if ((t1 <= 0 && t2 <= 0 && t3 <= 0) || (t1 >= 0 && t2 >= 0 && t3 >= 0)) {
+                            drawPixel(x.toInt(), y.toInt(),r, g, b)
+                        }
+
+                        y++
+                    }
+                    x++
+                }
             }
-            x++
-        }
-    }
-    fun getLeftTopVector(v1:Vector, v2:Vector, v3:Vector):Vector {
-        var minX = min(v3.x ,min(v1.x, v2.x))
-        var minY = min(v3.y ,min(v1.y, v2.y))
-        var maxX = max(v3.x ,max(v1.x, v2.x))
-        var maxY = max(v3.y ,max(v1.y, v2.y))
-        var tempn = mutableListOf<Vector>()
-        if (v1.x == minX) {
-            tempn.add(v1)
-        }
-        if (v2.x == minX) {
-            tempn.add(v2)
-        }
-        if (v3.x == minX) {
-            tempn.add(v3)
-        }
-        var ans = tempn[0]
-        var i = 0
-        while (i < tempn.size) {
-            if (tempn[i].y > ans.y) {
-                ans = tempn[i]
-            }
-            i++
         }
 
-        return ans
     }
 
-    fun getRightTopVector(v1:Vector, v2:Vector, v3:Vector):Vector {
-        var minX = min(v3.x ,min(v1.x, v2.x))
-        var minY = min(v3.y ,min(v1.y, v2.y))
-        var maxX = max(v3.x ,max(v1.x, v2.x))
-        var maxY = max(v3.y ,max(v1.y, v2.y))
-        var tempn = mutableListOf<Vector>()
-        if (v1.x == maxX) {
-            tempn.add(v1)
-        }
-        if (v2.x == maxX) {
-            tempn.add(v2)
-        }
-        if (v3.x == maxX) {
-            tempn.add(v3)
-        }
-        var ans = tempn[0]
-        var i = 0
-        while (i < tempn.size) {
-            if (tempn[i].y > ans.y) {
-                ans = tempn[i]
-            }
-            i++
-        }
-
-        return ans
-    }
-
-    fun getBottomVector(v1:Vector, v2:Vector, v3:Vector):Vector {
-        var minX = min(v3.x ,min(v1.x, v2.x))
-        var minY = min(v3.y ,min(v1.y, v2.y))
-        var maxX = max(v3.x ,max(v1.x, v2.x))
-        var maxY = max(v3.y ,max(v1.y, v2.y))
-        var tempn = mutableListOf<Vector>()
-        if (v1.y == minY) {
-            tempn.add(v1)
-        }
-        if (v2.y == minY) {
-            tempn.add(v2)
-        }
-        if (v3.y == minY) {
-            tempn.add(v3)
-        }
-        var ans = tempn[0]
-        var i = 0
-        while (i < tempn.size) {
-            if (tempn[i].x < ans.x) {
-                ans = tempn[i]
-            }
-            i++
-        }
-
-        return ans
-    }
     fun texturePolygon(a:Vector, b:Vector, c:Vector, texture:String, t1x:Float, t1y:Float, t2x:Float, t2y:Float, t3x:Float, t3y:Float) {
         var d = Vector(0f,0f,0f)
         var temp = 0f
