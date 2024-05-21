@@ -201,7 +201,7 @@ class CubeActivity : AppCompatActivity() {
     }
 
     fun render() {
-        println(currY)
+        println(currX)
         var img = findViewById<ImageView>(R.id.draw_view)
         drawer.clearSurface()
         var sceneVertices = mutableListOf<Vector>()
