@@ -55,9 +55,14 @@ class Drawer {
         var b = 0f
         var a = 0f
         var k = 0f
+
         if (x >= 0 && x < bitmap.width && y >= 0 && y < bitmap.height) {
+            var tempColor = bitmap.getColor(x,y).components
+            if (tempColor[3] > 0) {
+                return
+            }
             if (x-1 >= 0) {
-                var tempColor = bitmap.getColor(x-1,y).components
+                tempColor = bitmap.getColor(x-1,y).components
                 if (tempColor[3] > 0) {
                     r+= tempColor[0]
                     g+= tempColor[1]
@@ -67,7 +72,7 @@ class Drawer {
                 }
             }
             if (x+1 < bitmap.width) {
-                var tempColor = bitmap.getColor(x+1,y).components
+                tempColor = bitmap.getColor(x+1,y).components
                 if (tempColor[3] > 0) {
                     r+= tempColor[0]
                     g+= tempColor[1]
@@ -77,7 +82,7 @@ class Drawer {
                 }
             }
             if (y-1 >= 0) {
-                var tempColor = bitmap.getColor(x,y-1).components
+                tempColor = bitmap.getColor(x,y-1).components
                 if (tempColor[3] > 0) {
                     r+= tempColor[0]
                     g+= tempColor[1]
@@ -87,7 +92,7 @@ class Drawer {
                 }
             }
             if (y+1 < bitmap.height) {
-                var tempColor = bitmap.getColor(x,y+1).components
+                tempColor = bitmap.getColor(x,y+1).components
                 if (tempColor[3] > 0) {
                     r+= tempColor[0]
                     g+= tempColor[1]
@@ -96,7 +101,7 @@ class Drawer {
                     k+=1
                 }
             }
-            var tempColor = bitmap.getColor(x,y).components
+            tempColor = bitmap.getColor(x,y).components
             if (tempColor[3] > 0) {
                 r+= tempColor[0]
                 g+= tempColor[1]
@@ -111,6 +116,18 @@ class Drawer {
         }
     }
     fun fillLine(x1:Float, y1:Float, x2:Float, y2:Float) {
+        var x1 = x1
+        var y1 = y1
+        var x2 = x2
+        var y2 = y2
+        if (x1 > x2) {
+            var x3 = x1
+            x1 = x2
+            x2 = x3
+            var y3 = y1
+            y1 = y2
+            y2 = y3
+        }
         val c1 = y2 - y1
         val c2 = x2 - x1
 
@@ -126,16 +143,24 @@ class Drawer {
                     fillPixel((x1 + xStep*i).toInt(), (y1 + yStep*i).toInt())
                 }
                 launch {
-                    fillPixel((x1 + xStep*i).toInt() - 1, (y1 + yStep*i).toInt())
+                    if ((x1 + xStep*i).toInt() - 1 >= x1 ) {
+                        fillPixel((x1 + xStep*i).toInt() - 1, (y1 + yStep*i).toInt())
+                    }
                 }
                 launch {
-                    fillPixel((x1 + xStep*i).toInt() + 1, (y1 + yStep*i).toInt())
+                    if ((x1 + xStep*i).toInt() + 1 <= x2) {
+                        fillPixel((x1 + xStep*i).toInt() + 1, (y1 + yStep*i).toInt())
+                    }
                 }
                 launch {
-                    fillPixel((x1 + xStep*i).toInt() - 2, (y1 + yStep*i).toInt())
+                    if ((x1 + xStep*i).toInt() - 2 >= x1) {
+                        fillPixel((x1 + xStep*i).toInt() - 2, (y1 + yStep*i).toInt())
+                    }
                 }
                 launch {
-                    fillPixel((x1 + xStep*i).toInt() + 2, (y1 + yStep*i).toInt())
+                    if ((x1 + xStep*i).toInt() + 2 <= x2) {
+                        fillPixel((x1 + xStep*i).toInt() + 2, (y1 + yStep*i).toInt())
+                    }
                 }
             }
             i++

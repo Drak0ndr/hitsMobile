@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.hitsmobile.R
 import com.example.hitsmobile.activity.HomePageActivity
+import kotlin.math.abs
 
 
 class CubeActivity : AppCompatActivity() {
@@ -42,7 +43,7 @@ class CubeActivity : AppCompatActivity() {
     private var currZ : Int = 0
     private  var currDistance: Int = 300
 
-    var drawer = Drawer(200,200)
+    var drawer = Drawer(250,200)
 
     var vertices = mutableListOf<Vector>()
     var polygons = mutableListOf<MutableList<Float>>()
@@ -105,39 +106,56 @@ class CubeActivity : AppCompatActivity() {
         seekBarX = findViewById(R.id.rotationX)
         seekBarX.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                if (abs(seekBarX.progress - currX) >= 5) {
+                    currX = seekBarX.progress
+                    render()
+                }
                 currX = seekBarX.progress
-                render()
+
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
 
-            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                render()
+            }
         })
 
         /*Ползунок для поворота Y*/
         seekBarY = findViewById(R.id.rotationY)
         seekBarY.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                if (abs(seekBarY.progress - currY) >= 5) {
+                    currY = seekBarY.progress
+                    render()
+                }
                 currY = seekBarY.progress
-                render()
+
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
 
-            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                render()
+            }
         })
 
         /*Ползунок для поворота Z*/
         seekBarZ = findViewById(R.id.rotationZ)
         seekBarZ.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                if (abs(seekBarZ.progress - currZ) >= 5) {
+                    currZ = seekBarZ.progress
+                    render()
+                }
                 currZ = seekBarZ.progress
-                render()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
 
-            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                render()
+            }
         })
 
         /*Ползунок для изменения дистанции*/
@@ -232,26 +250,30 @@ class CubeActivity : AppCompatActivity() {
                         red,green,blue
                     )
                 }
-
-                drawer.fillLine(
-                    v1.x,
-                    v1.y,
-                    v2.x,
-                    v2.y,
-                )
-                drawer.fillLine(
-                    v2.x,
-                    v2.y,
-                    v3.x,
-                    v3.y,
-                )
-                drawer.fillLine(
-                    v1.x,
-                    v1.y,
-                    v3.x,
-                    v3.y,
-                )
-
+                if (v1.x != v2.x && v1.y != v2.y) {
+                    drawer.fillLine(
+                        v1.x,
+                        v1.y,
+                        v2.x,
+                        v2.y,
+                    )
+                }
+                if (v2.x != v3.x && v2.y != v3.y) {
+                    drawer.fillLine(
+                        v2.x,
+                        v2.y,
+                        v3.x,
+                        v3.y,
+                    )
+                }
+                if (v1.x != v3.x && v1.y != v3.y) {
+                    drawer.fillLine(
+                        v1.x,
+                        v1.y,
+                        v3.x,
+                        v3.y,
+                    )
+                }
             }
 
             i++
