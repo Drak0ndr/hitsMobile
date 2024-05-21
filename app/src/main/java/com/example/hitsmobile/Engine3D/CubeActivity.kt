@@ -214,32 +214,7 @@ class CubeActivity : AppCompatActivity() {
             var normal = Vector.crossProduct(t1,t2).normalize()
             var res = Vector.scalarProduct(cameraDirection, normal)
             if (res >= 0) {
-                drawer.drawLine(
-                    v1.x,
-                    v1.y,
-                    v2.x,
-                    v2.y,
-                    red,green,blue
-                )
-                drawer.drawLine(
-                    v2.x,
-                    v2.y,
-                    v3.x,
-                    v3.y,
-                    red,green,blue
-                )
-                drawer.drawLine(
-                    v1.x,
-                    v1.y,
-                    v3.x,
-                    v3.y,
-                    red,green,blue
-                )
 
-                drawer.fillPolygon(
-                    v1,v2,v3,
-                    red,green,blue
-                )
                 if (e.size > 6) {
                     drawer.texturePolygon(
                         v1,v2,v3,
@@ -248,7 +223,31 @@ class CubeActivity : AppCompatActivity() {
                         e[8], e[9],
                         e[10], e[11]
                     )
+                } else {
+                    drawer.fillPolygon(
+                        v1,v2,v3,
+                        red,green,blue
+                    )
                 }
+
+                drawer.fillLine(
+                    v1.x,
+                    v1.y,
+                    v2.x,
+                    v2.y,
+                )
+                drawer.fillLine(
+                    v2.x,
+                    v2.y,
+                    v3.x,
+                    v3.y,
+                )
+                drawer.fillLine(
+                    v1.x,
+                    v1.y,
+                    v3.x,
+                    v3.y,
+                )
 
             }
 

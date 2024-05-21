@@ -44,6 +44,88 @@ class Drawer {
             i++
         }
     }
+    fun fillPixel (x:Int, y:Int) {
+        var x = (x + width/2f).toInt()
+        var y = (-(y - height/2 * 1.01)).toInt()
+        var r = 0f
+        var g = 0f
+        var b = 0f
+        var a = 0f
+        var k = 0f
+        if (x >= 0 && x < bitmap.width && y >= 0 && y < bitmap.height) {
+            if (x-1 >= 0) {
+                var tempColor = bitmap.getColor(x-1,y).components
+                if (tempColor[3] > 0) {
+                    r+= tempColor[0]
+                    g+= tempColor[1]
+                    b+= tempColor[2]
+                    a += tempColor[3]
+                    k+=1
+                }
+            }
+            if (x+1 < bitmap.width) {
+                var tempColor = bitmap.getColor(x+1,y).components
+                if (tempColor[3] > 0) {
+                    r+= tempColor[0]
+                    g+= tempColor[1]
+                    b+= tempColor[2]
+                    a += tempColor[3]
+                    k+=1
+                }
+            }
+            if (y-1 >= 0) {
+                var tempColor = bitmap.getColor(x,y-1).components
+                if (tempColor[3] > 0) {
+                    r+= tempColor[0]
+                    g+= tempColor[1]
+                    b+= tempColor[2]
+                    a += tempColor[3]
+                    k+=1
+                }
+            }
+            if (y+1 < bitmap.height) {
+                var tempColor = bitmap.getColor(x,y+1).components
+                if (tempColor[3] > 0) {
+                    r+= tempColor[0]
+                    g+= tempColor[1]
+                    b+= tempColor[2]
+                    a += tempColor[3]
+                    k+=1
+                }
+            }
+            var tempColor = bitmap.getColor(x,y).components
+            if (tempColor[3] > 0) {
+                r+= tempColor[0]
+                g+= tempColor[1]
+                b+= tempColor[2]
+                a += tempColor[3]
+                k+=1
+            }
+            if (k < 1) {
+                k = 1f
+            }
+            bitmap.setPixel(x,y, Color.argb(a/k, r/k, g/k, b/k))
+        }
+    }
+    fun fillLine(x1:Float, y1:Float, x2:Float, y2:Float) {
+        val c1 = y2 - y1
+        val c2 = x2 - x1
+
+        val length = (c1*c1 + c2*c2).toFloat().pow(0.5f)
+
+        val xStep = c2 / length
+        val yStep = c1 / length
+
+        var i = 0
+        while (i < length) {
+            fillPixel((x1 + xStep*i).toInt(), (y1 + yStep*i).toInt())
+            fillPixel((x1 + xStep*i).toInt() - 1, (y1 + yStep*i).toInt())
+            fillPixel((x1 + xStep*i).toInt() + 1, (y1 + yStep*i).toInt())
+            fillPixel((x1 + xStep*i).toInt() - 2, (y1 + yStep*i).toInt())
+            fillPixel((x1 + xStep*i).toInt() + 2, (y1 + yStep*i).toInt())
+            i++
+        }
+    }
 
     fun fillPolygon(v1:Vector, v2:Vector, v3:Vector, r:Float, g:Float, b:Float) {
         var minX = min(v3.x ,min(v1.x, v2.x))
