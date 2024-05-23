@@ -393,22 +393,10 @@ class ColorFilters: PhotoActivity() {
                 var count = 0
                 var i = 0
                 while (i < bitmap.height * 0.25f) {
-                    var j = 0
-                    var maxVal = 0
-                    var minVal = bitmap.width
-                    while (j < bitmap.width) {
-                        var tempIsIdentical = isIdentical(bitmap, openBitmap, j, i)
-                        if (tempIsIdentical == false) {
-                            if (j < minVal) {
-                                minVal = j
-                            }
-                            if (j > maxVal) {
-                                maxVal = j
-                            }
-                        }
-                        j++
-                    }
-                    j = minVal
+                    var data = faceDetect(bitmap, openBitmap, i)
+                    var minVal = data[0]
+                    var maxVal = data[1]
+                    var j = minVal
                     while (j <= maxVal) {
                         var data = blurPixel(bitmap, kernel, len, mid, j, i)
 
@@ -423,22 +411,10 @@ class ColorFilters: PhotoActivity() {
                 var i = (bitmap.height * 0.25f).toInt()
                 var count = 0
                 while (i < bitmap.height * 0.5f) {
-                    var j = 0
-                    var maxVal = 0
-                    var minVal = bitmap.width
-                    while (j < bitmap.width) {
-                        var tempIsIdentical = isIdentical(bitmap, openBitmap, j, i)
-                        if (tempIsIdentical == false) {
-                            if (j < minVal) {
-                                minVal = j
-                            }
-                            if (j > maxVal) {
-                                maxVal = j
-                            }
-                        }
-                        j++
-                    }
-                    j = minVal
+                    var data = faceDetect(bitmap, openBitmap, i)
+                    var minVal = data[0]
+                    var maxVal = data[1]
+                    var j = minVal
                     while (j <= maxVal) {
                         var data = blurPixel(bitmap, kernel, len, mid, j, i)
 
@@ -453,22 +429,10 @@ class ColorFilters: PhotoActivity() {
                 var i = (bitmap.height * 0.5f).toInt()
                 var count = 0
                 while (i < bitmap.height * 0.75f) {
-                    var j = 0
-                    var maxVal = 0
-                    var minVal = bitmap.width
-                    while (j < bitmap.width) {
-                        var tempIsIdentical = isIdentical(bitmap, openBitmap, j, i)
-                        if (tempIsIdentical == false) {
-                            if (j < minVal) {
-                                minVal = j
-                            }
-                            if (j > maxVal) {
-                                maxVal = j
-                            }
-                        }
-                        j++
-                    }
-                    j = minVal
+                    var data = faceDetect(bitmap, openBitmap, i)
+                    var minVal = data[0]
+                    var maxVal = data[1]
+                    var j = minVal
                     while (j <= maxVal) {
                         var data = blurPixel(bitmap, kernel, len, mid, j, i)
 
@@ -483,22 +447,10 @@ class ColorFilters: PhotoActivity() {
                 var i = (bitmap.height * 0.75f).toInt()
                 while (i < bitmap.height) {
 
-                    var j = 0
-                    var maxVal = 0
-                    var minVal = bitmap.width
-                    while (j < bitmap.width) {
-                        var tempIsIdentical = isIdentical(bitmap, openBitmap, j, i)
-                        if (tempIsIdentical == false) {
-                            if (j < minVal) {
-                                minVal = j
-                            }
-                            if (j > maxVal) {
-                                maxVal = j
-                            }
-                        }
-                        j++
-                    }
-                    j = minVal
+                    var data = faceDetect(bitmap, openBitmap, i)
+                    var minVal = data[0]
+                    var maxVal = data[1]
+                    var j = minVal
                     while (j <= maxVal) {
                         var data = blurPixel(bitmap, kernel, len, mid, j, i)
 
@@ -512,5 +464,25 @@ class ColorFilters: PhotoActivity() {
         }
 
         return newBitmap
+    }
+
+    fun faceDetect(bitmap: Bitmap, openBitmap: Bitmap, i: Int): MutableList<Int> {
+        var j = 0
+        var maxVal = 0
+        var minVal = bitmap.width
+        while (j < bitmap.width) {
+            var tempIsIdentical = isIdentical(bitmap, openBitmap, j, i)
+            if (tempIsIdentical == false) {
+                if (j < minVal) {
+                    minVal = j
+                }
+                if (j > maxVal) {
+                    maxVal = j
+                }
+            }
+            j++
+        }
+
+        return mutableListOf(minVal, maxVal)
     }
 }
