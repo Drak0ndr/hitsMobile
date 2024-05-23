@@ -392,7 +392,27 @@ class ColorFilters: PhotoActivity() {
 
             launch(Dispatchers.IO) {
                 var i = (bitmap.height * 0f).toInt()
-                var count = 0
+                while (i < bitmap.height * 0.5f) {
+                    var data = faceDetect(bitmap, openBitmap, i)
+                    var k = 0
+                    while (k+1 < data.size) {
+                        var minVal = data[k]
+                        var maxVal = data[k+1]
+                        var j = minVal
+                        while (j <= maxVal) {
+                            var data = blurPixel(bitmap, kernel, len, mid, j, i)
+
+                            newBitmap.setPixel(j,i, Color.argb(data[0], data[1], data[2], data[3]))
+
+                            j++
+                        }
+                        k+=2
+                    }
+                    i++
+                }
+            }
+            launch(Dispatchers.IO) {
+                var i = (bitmap.height * 0.5f).toInt()
                 while (i < bitmap.height * 1f) {
                     var data = faceDetect(bitmap, openBitmap, i)
                     var k = 0

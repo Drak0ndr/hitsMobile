@@ -43,7 +43,7 @@ class CubeActivity : AppCompatActivity() {
     private var currZ : Int = 0
     private  var currDistance: Int = 300
 
-    var drawer = Drawer(350,300)
+    var drawer = Drawer(250,250)
 
     var vertices = mutableListOf<Vector>()
     var polygons = mutableListOf<MutableList<Float>>()
