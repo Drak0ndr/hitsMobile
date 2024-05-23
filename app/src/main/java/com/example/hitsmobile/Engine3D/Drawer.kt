@@ -109,10 +109,10 @@ class Drawer {
                 a += tempColor[3]
                 k+=1
             }
-            if (k < 1) {
-                k = 1f
+            if (k > 0) {
+                bitmap.setPixel(x,y, Color.argb(a/k, r/k, g/k, b/k))
             }
-            bitmap.setPixel(x,y, Color.argb(a/k, r/k, g/k, b/k))
+
         }
     }
     fun fillLine(x1:Float, y1:Float, x2:Float, y2:Float) {
@@ -139,12 +139,9 @@ class Drawer {
         var i = 0
         while (i < length) {
                 fillPixel((x1 + xStep*i).toInt(), (y1 + yStep*i).toInt())
-                if ((x1 + xStep*i).toInt() - 1 >= x1 ) {
-                    fillPixel((x1 + xStep*i).toInt() - 1, (y1 + yStep*i).toInt())
-                }
-                if ((x1 + xStep*i).toInt() + 1 <= x2) {
-                    fillPixel((x1 + xStep*i).toInt() + 1, (y1 + yStep*i).toInt())
-                }
+                fillPixel((x1 + xStep*i).toInt() - 1, (y1 + yStep*i).toInt())
+                fillPixel((x1 + xStep*i).toInt() + 1, (y1 + yStep*i).toInt())
+
                 if ((x1 + xStep*i).toInt() - 2 >= x1) {
                     fillPixel((x1 + xStep*i).toInt() - 2, (y1 + yStep*i).toInt())
                 }
