@@ -20,11 +20,13 @@ import com.example.hitsmobile.activity.SplineActivity.MyFun.imageView1
 import com.example.hitsmobile.activity.SplineActivity.MyFun.imageView2
 import com.example.hitsmobile.activity.SplineActivity.MyFun.imageView3
 import com.example.hitsmobile.activity.SplineActivity.MyFun.imageView4
+import com.example.hitsmobile.activity.SplineActivity.MyFun.imageView5
 import com.example.hitsmobile.activity.SplineActivity.MyFun.paint
 import com.example.hitsmobile.algorithms.ChoosingShapesFragment
 import com.example.hitsmobile.canvas.CustomView
 import com.example.hitsmobile.canvas.HexagonView
 import com.example.hitsmobile.canvas.OctagonView
+import com.example.hitsmobile.canvas.PoligonView
 import com.example.hitsmobile.canvas.SquareView
 import com.example.hitsmobile.canvas.TriangleView
 
@@ -63,6 +65,7 @@ class SplineActivity : AppCompatActivity() {
         imageView1 = findViewById(R.id.draw_view3)
         imageView2 = findViewById(R.id.draw_view4)
         imageView3 = findViewById(R.id.draw_view5)
+        imageView5 = findViewById(R.id.draw_view6)
 
         /*Кнопка для диалога*/
         shapeBtn = findViewById(R.id.imgShapes)
@@ -75,19 +78,10 @@ class SplineActivity : AppCompatActivity() {
         /*Кнопка для алгоритма сплайна*/
         startBtn = findViewById(R.id.imgSpline)
         startBtn.setOnClickListener(){
-            if(MyFun.currShape == 0){
-                MyFun.imageView0.reset()
+            if(MyFun.currShape == 6){
+                MyFun.imageView5.start()
             }
-            else if(MyFun.currShape == 1){
-                MyFun.imageView1.reset()
-            }
-            else if(MyFun.currShape == 2){
-                MyFun.imageView2.reset()
-            }
-            else if(MyFun.currShape == 3){
-                MyFun.imageView3.reset()
-            }
-            else{
+            else if(MyFun.currShape == 4){
                 paint.start()
             }
         }
@@ -105,7 +99,24 @@ class SplineActivity : AppCompatActivity() {
         /*Кнопка для отмены*/
         backBtn = findViewById(R.id.imgBack)
         backBtn.setOnClickListener {
-            paint.back()
+            if(MyFun.currShape == 0){
+                MyFun.imageView0.reset()
+            }
+            else if(MyFun.currShape == 1){
+                MyFun.imageView1.reset()
+            }
+            else if(MyFun.currShape == 2){
+                MyFun.imageView2.reset()
+            }
+            else if(MyFun.currShape == 3){
+                MyFun.imageView3.reset()
+            }
+            else if(MyFun.currShape == 6){
+                MyFun.imageView5.reset()
+            }
+            else{
+                paint.back()
+            }
         }
 
         /*Сохранение фотографии в галерею*/
@@ -162,6 +173,7 @@ class SplineActivity : AppCompatActivity() {
         lateinit var imageView1 : SquareView
         lateinit var imageView2 : HexagonView
         lateinit var imageView3 : OctagonView
+        lateinit var imageView5 : PoligonView
 
         fun checkView(numberView : Int){
             when(numberView){
@@ -173,6 +185,7 @@ class SplineActivity : AppCompatActivity() {
                     imageView1.visibility = View.GONE
                     imageView2.visibility = View.GONE
                     imageView3.visibility = View.GONE
+                    imageView5.visibility = View.GONE
                 }
                 1 -> {
                     currShape = 1
@@ -182,6 +195,7 @@ class SplineActivity : AppCompatActivity() {
                     imageView1.visibility = View.VISIBLE
                     imageView2.visibility = View.GONE
                     imageView3.visibility = View.GONE
+                    imageView5.visibility = View.GONE
                 }
                 2 -> {
                     currShape = 2
@@ -191,6 +205,7 @@ class SplineActivity : AppCompatActivity() {
                     imageView1.visibility = View.GONE
                     imageView2.visibility = View.VISIBLE
                     imageView3.visibility = View.GONE
+                    imageView5.visibility = View.GONE
                 }
                 3 -> {
                     currShape = 3
@@ -200,6 +215,7 @@ class SplineActivity : AppCompatActivity() {
                     imageView1.visibility = View.GONE
                     imageView2.visibility = View.GONE
                     imageView3.visibility = View.VISIBLE
+                    imageView5.visibility = View.GONE
                 }
                 4 -> {
                     if(currShape != 4){
@@ -211,6 +227,7 @@ class SplineActivity : AppCompatActivity() {
                         imageView1.visibility = View.GONE
                         imageView2.visibility = View.GONE
                         imageView3.visibility = View.GONE
+                        imageView5.visibility = View.GONE
                     }
                 }
                 5 -> {
@@ -223,7 +240,18 @@ class SplineActivity : AppCompatActivity() {
                         imageView1.visibility = View.GONE
                         imageView2.visibility = View.GONE
                         imageView3.visibility = View.GONE
+                        imageView5.visibility = View.GONE
                     }
+                }
+                6 ->{
+                    currShape = 6
+
+                    imageView4.visibility = View.GONE
+                    imageView0.visibility = View.GONE
+                    imageView1.visibility = View.GONE
+                    imageView2.visibility = View.GONE
+                    imageView3.visibility = View.GONE
+                    imageView5.visibility = View.VISIBLE
                 }
             }
         }
