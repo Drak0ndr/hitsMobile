@@ -389,74 +389,25 @@ class ColorFilters: PhotoActivity() {
             i++
         }
         runBlocking {
+
             launch(Dispatchers.IO) {
+                var i = (bitmap.height * 0f).toInt()
                 var count = 0
-                var i = 0
-                while (i < bitmap.height * 0.25f) {
+                while (i < bitmap.height * 1f) {
                     var data = faceDetect(bitmap, openBitmap, i)
-                    var minVal = data[0]
-                    var maxVal = data[1]
-                    var j = minVal
-                    while (j <= maxVal) {
-                        var data = blurPixel(bitmap, kernel, len, mid, j, i)
+                    var k = 0
+                    while (k+1 < data.size) {
+                        var minVal = data[k]
+                        var maxVal = data[k+1]
+                        var j = minVal
+                        while (j <= maxVal) {
+                            var data = blurPixel(bitmap, kernel, len, mid, j, i)
 
-                        newBitmap.setPixel(j,i, Color.argb(data[0], data[1], data[2], data[3]))
+                            newBitmap.setPixel(j,i, Color.argb(data[0], data[1], data[2], data[3]))
 
-                        j++
-                    }
-                    i++
-                }
-            }
-            launch(Dispatchers.IO) {
-                var i = (bitmap.height * 0.25f).toInt()
-                var count = 0
-                while (i < bitmap.height * 0.5f) {
-                    var data = faceDetect(bitmap, openBitmap, i)
-                    var minVal = data[0]
-                    var maxVal = data[1]
-                    var j = minVal
-                    while (j <= maxVal) {
-                        var data = blurPixel(bitmap, kernel, len, mid, j, i)
-
-                        newBitmap.setPixel(j,i, Color.argb(data[0], data[1], data[2], data[3]))
-
-                        j++
-                    }
-                    i++
-                }
-            }
-            launch(Dispatchers.IO) {
-                var i = (bitmap.height * 0.5f).toInt()
-                var count = 0
-                while (i < bitmap.height * 0.75f) {
-                    var data = faceDetect(bitmap, openBitmap, i)
-                    var minVal = data[0]
-                    var maxVal = data[1]
-                    var j = minVal
-                    while (j <= maxVal) {
-                        var data = blurPixel(bitmap, kernel, len, mid, j, i)
-
-                        newBitmap.setPixel(j,i, Color.argb(data[0], data[1], data[2], data[3]))
-
-                        j++
-                    }
-                    i++
-                }
-            }
-            launch(Dispatchers.IO) {
-                var i = (bitmap.height * 0.75f).toInt()
-                while (i < bitmap.height) {
-
-                    var data = faceDetect(bitmap, openBitmap, i)
-                    var minVal = data[0]
-                    var maxVal = data[1]
-                    var j = minVal
-                    while (j <= maxVal) {
-                        var data = blurPixel(bitmap, kernel, len, mid, j, i)
-
-                        newBitmap.setPixel(j,i, Color.argb(data[0], data[1], data[2], data[3]))
-
-                        j++
+                            j++
+                        }
+                        k+=2
                     }
                     i++
                 }
@@ -468,21 +419,70 @@ class ColorFilters: PhotoActivity() {
 
     fun faceDetect(bitmap: Bitmap, openBitmap: Bitmap, i: Int): MutableList<Int> {
         var j = 0
-        var maxVal = 0
+        var maxVal = -1
         var minVal = bitmap.width
+        var ans = mutableListOf<Int>()
+        var isStart = false
+        var inSquare = false
+        var inFrame = false
+        var frameCount = 0
+        var lenFrame = 0
         while (j < bitmap.width) {
             var tempIsIdentical = isIdentical(bitmap, openBitmap, j, i)
-            if (tempIsIdentical == false) {
-                if (j < minVal) {
-                    minVal = j
-                }
-                if (j > maxVal) {
-                    maxVal = j
-                }
+            if (tempIsIdentical == false && isStart == false) {
+                isStart = true
+                inFrame = true
+                inSquare = false
+                lenFrame+=1
+            } else if (tempIsIdentical == false && isStart == true) {
+                inFrame = true
+                inSquare = false
+                lenFrame+=1
             }
+            if (tempIsIdentical == true && isStart == true) {
+                if (inSquare == false) {
+                    inSquare = true
+                }
+                if (inFrame == true) {
+                    inFrame = false
+                    if (lenFrame > 20) {
+                        maxVal = -1
+                        minVal = bitmap.width
+                        isStart = false
+                        inSquare = false
+                        inFrame = false
+                        frameCount = 0
+                        lenFrame = 0
+                    }
+                    lenFrame = 0
+                    frameCount +=1
+                }
+                if (frameCount == 2) {
+                    if (minVal != maxVal) {
+                        ans.add(minVal)
+                        ans.add(maxVal)
+                    }
+                    maxVal = -1
+                    minVal = bitmap.width
+                    isStart = false
+                    inSquare = false
+                    inFrame = false
+                    frameCount = 0
+                    lenFrame = 0
+                } else {
+                    if (j < minVal) {
+                        minVal = j
+                    }
+                    if (j > maxVal)  {
+                        maxVal = j
+                    }
+                }
+
+
+            }
+
             j++
         }
-
-        return mutableListOf(minVal, maxVal)
+        return ans
     }
 }
