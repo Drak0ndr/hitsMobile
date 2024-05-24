@@ -7,14 +7,14 @@
                 android:angle = "315"/>
         </shape>
     </item>
-    <item android:bottom="3dp" android:top="3dp"
-        android:right="3dp"
-        android:left="3dp">
+    <item android:bottom="@dimen/circle_img_margin" android:top="@dimen/circle_img_margin"
+        android:right="@dimen/circle_img_margin"
+        android:left="@dimen/circle_img_margin">
         <shape android:shape="oval">
 
         </shape>
     </item>
     <item android:drawable="@drawable/baseline_add_home_24"
-        android:top = "15dp" android:bottom="15dp"
-        android:left = "15dp" android:right="15dp"/>
+        android:top = "@dimen/circle_img_padding" android:bottom="@dimen/circle_img_padding"
+        android:left = "@dimen/circle_img_padding" android:right="@dimen/circle_img_padding"/>
 </layer-list>

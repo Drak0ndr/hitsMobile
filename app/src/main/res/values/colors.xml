@@ -13,4 +13,19 @@
     <color name="semi_black_transparent">#99000000</color>
     <color name="black_filter_text">#90000000</color>
     <color name="our_green">#0f8a75</color>
+    <color name="azure">#008AD8</color>
+    <color name="blue">#0000FF</color>
+    <color name="brown">#4E3524</color>
+    <color name="green_btn">#0f8a75</color>
+    <color name="pink_btn">#7c3660</color>
+    <color name="red">#FF0000</color>
+    <color name="dark_green">#19543E</color>
+    <color name="green_bg">#800f8a75</color>
+    <color name="pink_bg">#997c3660</color>
+    <color name="black_bg">#19191b</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="purple">#8031A7</color>
+    <color name="gray">#808080</color>
+    <color name="light_green">#00FF00</color>
+    <color name="orange">#FFA500</color>
 </resources>

@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="50dp">
+            <corners android:radius="@dimen/circle_radius">
             </corners>
             <solid android:color="@color/white"/>
             <size
@@ -11,11 +11,11 @@
             </size>
         </shape>
     </item>
-    <item android:top="4dp" android:bottom="4dp"
-        android:left="4dp" android:right="4dp">
+    <item android:top="@dimen/btn_padding" android:bottom="@dimen/btn_padding"
+        android:left="@dimen/btn_padding" android:right="@dimen/btn_padding">
         <shape
             android:shape="rectangle">
-            <corners android:radius="50dp">
+            <corners android:radius="@dimen/circle_radius">
             </corners>
             <solid android:color="@color/main_bg">
             </solid>
