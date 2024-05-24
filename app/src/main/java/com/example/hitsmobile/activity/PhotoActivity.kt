@@ -179,6 +179,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
     private var pairsList2: MutableList<Pair<Bitmap, PhotoFilter>> = ArrayList()
 
+    private lateinit var selectedItem : String
+
     @SuppressLint("MissingInflatedId", "ClickableViewAccessibility", "ResourceType",
         "UseCompatLoadingForDrawables"
     )
@@ -278,7 +280,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                val selectedItem = parent.getItemAtPosition(position).toString()
+                selectedItem = parent.getItemAtPosition(position).toString()
+                println(selectedItem)
 
             }
 
@@ -455,7 +458,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
             if(MyVariables.isFace){
                 MyVariables.isFace = false
-                
+
                 val bitmap = (imageView.drawable as BitmapDrawable).bitmap
                 val mat = Mat()
                 Utils.bitmapToMat(bitmap, mat)
@@ -539,18 +542,68 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 val newImg = findViewById<ImageView>(R.id.photoEditorView)
                 val resize = Resize()
 
+                val k = (seekBarResize.progress).toFloat() / 100
+
                 if(currRadio == 1){
-                    MyVariables.rotateImg = resize.bilinearFilter(resize.upScale(MyVariables.rotateImg, (seekBarResize.progress).toFloat() / 100))
+                    if(selectedItem == "Без фильтрации"){
+                        MyVariables.rotateImg = resize.bilinearFilter(resize.upScale(MyVariables.rotateImg, k))
+
+                        MyVariables.currImg = resize.bilinearFilter(resize.upScale(MyVariables.currImg, k))
+                    }
+                    else if(selectedItem == "Билинейная"){
+                        MyVariables.rotateImg = resize.bilinearFilter(resize.upScale(
+                            resize.bilinearFilter(MyVariables.rotateImg), k))
+
+                        MyVariables.currImg = resize.bilinearFilter(resize.upScale(
+                            resize.bilinearFilter(MyVariables.currImg), k))
+                    }
+                    else{
+                        MyVariables.rotateImg = resize.bilinearFilter(resize.upScale(
+                            resize.trilinearFilter(MyVariables.rotateImg,
+                                resize.upScale(MyVariables.currImg, 2 * k)), k))
+
+                        MyVariables.currImg = resize.bilinearFilter(resize.upScale(
+                            resize.trilinearFilter(MyVariables.currImg,
+                                resize.upScale(MyVariables.currImg, 2 * k)), k))
+                    }
+
                     newImg.setImageBitmap(MyVariables.rotateImg)
-                    MyVariables.currImg = resize.bilinearFilter(resize.upScale(MyVariables.currImg, (seekBarResize.progress).toFloat() / 100))
+
                     seekBarResize.progress = 0
                 }
                 else{
-                    MyVariables.rotateImg = resize.trilinearFilter(resize.downScale(MyVariables.rotateImg, (seekBarResize.progress).toFloat() / 100),
-                        resize.downScale(MyVariables.rotateImg, (seekBarResize.progress).toFloat() / 50))
+                    if(selectedItem == "Без фильтрации"){
+                        MyVariables.rotateImg = resize.trilinearFilter(resize.downScale(MyVariables.rotateImg, k),
+                            resize.downScale(MyVariables.rotateImg, 2 * k))
+
+                        MyVariables.currImg = resize.trilinearFilter(resize.downScale(MyVariables.currImg, k),
+                            resize.downScale(MyVariables.currImg, 2 * k))
+                    }
+                    else if(selectedItem == "Билинейная"){
+                        MyVariables.rotateImg = resize.trilinearFilter(resize.downScale(
+                            resize.bilinearFilter(MyVariables.rotateImg), k),
+                            resize.downScale(resize.bilinearFilter(MyVariables.rotateImg), 2 * k))
+
+                        MyVariables.currImg = resize.trilinearFilter(resize.downScale(
+                            resize.bilinearFilter(MyVariables.currImg), k),
+                            resize.downScale(resize.bilinearFilter(MyVariables.currImg), 2 * k))
+                    }
+                    else{
+                        MyVariables.rotateImg = resize.trilinearFilter(resize.downScale(resize.trilinearFilter(
+                            resize.downScale(MyVariables.rotateImg, k),
+                            resize.downScale(MyVariables.rotateImg, 2 * k)), k),
+                            resize.downScale(resize.trilinearFilter(resize.downScale(MyVariables.rotateImg, k),
+                                resize.downScale(MyVariables.rotateImg, 2 * k)), 2 * k))
+
+                        MyVariables.currImg = resize.trilinearFilter(resize.downScale(resize.trilinearFilter(
+                            resize.downScale(MyVariables.currImg, k),
+                            resize.downScale(MyVariables.currImg, 2 * k)), k),
+                            resize.downScale(resize.trilinearFilter(resize.downScale(MyVariables.currImg, k),
+                                resize.downScale(MyVariables.currImg, 2 * k)), 2 * k))
+                    }
+
                     newImg.setImageBitmap(MyVariables.rotateImg)
-                    MyVariables.currImg = resize.trilinearFilter(resize.downScale(MyVariables.currImg, (seekBarResize.progress).toFloat() / 100),
-                        resize.downScale(MyVariables.currImg, (seekBarResize.progress).toFloat() / 50))
+
                     seekBarResize.progress = 0
                 }
             }
@@ -738,13 +791,17 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                     MyVariables.rotateImg = MyVariables.currImg
                     MyVariables.isFace = false
 
-                    runBlocking {
-                        launch {
-                            val resize = Resize()
-                            val newImage = resize.downScale(MyVariables.currImg, 4f)
-                            fillList(newImage)
+                    thread {
+                        runBlocking {
+                            launch {
+                                val resize = Resize()
+                                val newImage = resize.downScale(MyVariables.currImg, 4f)
+                                fillList(newImage)
+                            }
                         }
                     }
+
+
 
                     filterAdapter.updateAdapter(pairsList2)
                 }
@@ -787,9 +844,16 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 thread {
                     runBlocking {
                         launch(Dispatchers.IO) {
-                            filterImg = filter.toGreen(MyVariables.currImg)
-                            newImg.setImageBitmap(filterImg)
-                            MyVariables.rotateImg = filterImg
+                            if(MyVariables.isFace){
+                                filterImg = filter.toColorSquare(MyVariables.currImg, MyVariables.processedBitmap, "green")!!
+                                newImg.setImageBitmap(filterImg)
+                                MyVariables.rotateImg = filterImg
+                            }
+                            else{
+                                filterImg = filter.toGreen(MyVariables.currImg)
+                                newImg.setImageBitmap(filterImg)
+                                MyVariables.rotateImg = filterImg
+                            }
                         }
                     }
                 }
@@ -799,9 +863,16 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 thread {
                     runBlocking {
                         launch(Dispatchers.IO) {
-                            filterImg = filter.toBlue(MyVariables.currImg)
-                            newImg.setImageBitmap(filterImg)
-                            MyVariables.rotateImg = filterImg
+                            if(MyVariables.isFace){
+                                filterImg = filter.toColorSquare(MyVariables.currImg, MyVariables.processedBitmap, "blue")!!
+                                newImg.setImageBitmap(filterImg)
+                                MyVariables.rotateImg = filterImg
+                            }
+                            else{
+                                filterImg = filter.toBlue(MyVariables.currImg)
+                                newImg.setImageBitmap(filterImg)
+                                MyVariables.rotateImg = filterImg
+                            }
                         }
                     }
                 }
@@ -811,9 +882,16 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 thread {
                     runBlocking {
                         launch(Dispatchers.IO) {
-                            filterImg = filter.toRed(MyVariables.currImg)
-                            newImg.setImageBitmap(filterImg)
-                            MyVariables.rotateImg = filterImg
+                            if(MyVariables.isFace){
+                                filterImg = filter.toColorSquare(MyVariables.currImg, MyVariables.processedBitmap, "red")!!
+                                newImg.setImageBitmap(filterImg)
+                                MyVariables.rotateImg = filterImg
+                            }
+                            else{
+                                filterImg = filter.toRed(MyVariables.currImg)
+                                newImg.setImageBitmap(filterImg)
+                                MyVariables.rotateImg = filterImg
+                            }
                         }
                     }
                 }
@@ -823,9 +901,16 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 thread {
                     runBlocking{
                         launch(Dispatchers.IO) {
-                            filterImg = filter.toYellow(MyVariables.currImg)
-                            newImg.setImageBitmap(filterImg)
-                            MyVariables.rotateImg = filterImg
+                            if(MyVariables.isFace){
+                                filterImg = filter.toColorSquare(MyVariables.currImg, MyVariables.processedBitmap, "yellow")!!
+                                newImg.setImageBitmap(filterImg)
+                                MyVariables.rotateImg = filterImg
+                            }
+                            else{
+                                filterImg = filter.toYellow(MyVariables.currImg)
+                                newImg.setImageBitmap(filterImg)
+                                MyVariables.rotateImg = filterImg
+                            }
                         }
                     }
                 }
@@ -835,9 +920,16 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 thread {
                     runBlocking {
                         launch(Dispatchers.IO) {
-                            filterImg = filter.toGray(MyVariables.currImg)
-                            newImg.setImageBitmap(filterImg)
-                            MyVariables.rotateImg = filterImg
+                            if(MyVariables.isFace){
+                                filterImg = filter.toColorSquare(MyVariables.currImg, MyVariables.processedBitmap, "gray")!!
+                                newImg.setImageBitmap(filterImg)
+                                MyVariables.rotateImg = filterImg
+                            }
+                            else{
+                                filterImg = filter.toGray(MyVariables.currImg)
+                                newImg.setImageBitmap(filterImg)
+                                MyVariables.rotateImg = filterImg
+                            }
                         }
                     }
                 }
@@ -847,9 +939,16 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 thread {
                     runBlocking {
                         launch {
-                            filterImg = filter.toNegative(MyVariables.currImg)
-                            newImg.setImageBitmap(filterImg)
-                            MyVariables.rotateImg = filterImg
+                            if(MyVariables.isFace){
+                                filterImg = filter.toColorSquare(MyVariables.currImg, MyVariables.processedBitmap, "negative")!!
+                                newImg.setImageBitmap(filterImg)
+                                MyVariables.rotateImg = filterImg
+                            }
+                            else{
+                                filterImg = filter.toNegative(MyVariables.currImg)
+                                newImg.setImageBitmap(filterImg)
+                                MyVariables.rotateImg = filterImg
+                            }
                         }
                     }
                 }
@@ -1060,7 +1159,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             }
         }
         else{
-           MyVariables.isFace = false
+            MyVariables.isFace = false
             imageView.setImageBitmap(MyVariables.rotateImg)
             MyVariables.processedBitmap.recycle()
         }

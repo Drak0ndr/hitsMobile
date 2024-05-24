@@ -32,9 +32,9 @@
 
             <ImageView
                 android:id="@+id/imgHome"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_margin="10dp"
+                android:layout_width="@dimen/circle_size"
+                android:layout_height="@dimen/circle_size"
+                android:layout_margin="@dimen/circle_margin"
                 android:src="@drawable/circle_home"
                 android:layout_weight="1"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -43,9 +43,9 @@
 
             <ImageView
                 android:id="@+id/imgBack"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_margin="10dp"
+                android:layout_width="@dimen/circle_size"
+                android:layout_height="@dimen/circle_size"
+                android:layout_margin="@dimen/circle_margin"
                 android:layout_weight="1"
                 android:src="@drawable/circle_back"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -55,9 +55,9 @@
 
             <ImageView
                 android:id="@+id/imgStroke"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_margin="10dp"
+                android:layout_width="@dimen/circle_size"
+                android:layout_height="@dimen/circle_size"
+                android:layout_margin="@dimen/circle_margin"
                 android:layout_weight="1"
                 android:src="@drawable/circle_brush"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -67,9 +67,9 @@
 
             <ImageView
                 android:id="@+id/imgColor"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_margin="10dp"
+                android:layout_width="@dimen/circle_size"
+                android:layout_height="@dimen/circle_size"
+                android:layout_margin="@dimen/circle_margin"
                 android:layout_weight="1"
                 android:src="@drawable/circle_color"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -79,9 +79,9 @@
 
             <ImageView
                 android:id="@+id/imgSave"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_margin="10dp"
+                android:layout_width="@dimen/circle_size"
+                android:layout_height="@dimen/circle_size"
+                android:layout_margin="@dimen/circle_margin"
                 android:src="@drawable/circle_save"
                 android:layout_weight="1"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -92,9 +92,9 @@
 
             <ImageView
                 android:id="@+id/imgShare"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_margin="10dp"
+                android:layout_width="@dimen/circle_size"
+                android:layout_height="@dimen/circle_size"
+                android:layout_margin="@dimen/circle_margin"
                 android:src="@drawable/circle_share"
                 android:layout_weight="1"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -116,7 +116,7 @@
                 android:visibility="gone"
                 app:labelStyle="@style/Widget.App.Tooltip"
                 app:thumbColor="@color/pink"
-                app:trackColor="#0f8a75"
+                app:trackColor="@color/our_green"
                 app:trackHeight="12dp" />
 
             <LinearLayout

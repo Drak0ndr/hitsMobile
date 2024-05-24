@@ -34,10 +34,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Rotation"
+                android:text="@string/rotation"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="@dimen/cube_text_size"
                 android:padding="4dp">
             </TextView>
 
@@ -59,7 +59,7 @@
                         android:text="X"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/cube_text_size"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp">
                     </TextView>
@@ -71,8 +71,8 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:foregroundGravity="center_vertical"
-                        android:minHeight="3dp"
-                        android:maxHeight="3dp"
+                        android:minHeight="@dimen/cube_seekbar_height"
+                        android:maxHeight="@dimen/cube_seekbar_height"
                         android:progressDrawable="@drawable/seekbar_style"
                         android:max="359"
                         android:min="0"
@@ -94,7 +94,7 @@
                         android:text="Y"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/cube_text_size"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp">
                     </TextView>
@@ -106,8 +106,8 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:foregroundGravity="center_vertical"
-                        android:maxHeight="3dp"
-                        android:minHeight="3dp"
+                        android:maxHeight="@dimen/cube_seekbar_height"
+                        android:minHeight="@dimen/cube_seekbar_height"
                         android:progressDrawable="@drawable/seekbar_style"
                         android:max="359"
                         android:min="0"
@@ -129,7 +129,7 @@
                         android:text="Z"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/cube_text_size"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp">
                     </TextView>
@@ -141,8 +141,8 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:foregroundGravity="center_vertical"
-                        android:minHeight="3dp"
-                        android:maxHeight="3dp"
+                        android:minHeight="@dimen/cube_seekbar_height"
+                        android:maxHeight="@dimen/cube_seekbar_height"
                         android:progressDrawable="@drawable/seekbar_style"
                         android:max="359"
                         android:min="0"
@@ -163,13 +163,13 @@
 
             <ImageView
                 android:id="@+id/imgHome"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
+                android:layout_width="@dimen/circle_size"
+                android:layout_height="@dimen/circle_size"
+                android:layout_marginRight="@dimen/circle_margin"
+                android:layout_marginBottom="@dimen/circle_margin"
                 android:src="@drawable/circle_home"
                 android:layout_gravity="bottom"
-                android:layout_marginLeft="10dp">
+                android:layout_marginLeft="@dimen/circle_margin">
 
             </ImageView>
 
@@ -190,10 +190,10 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="4dp"
-                        android:text="Distance"
+                        android:text="@string/distance"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="18sp">
+                        android:textSize="@dimen/cube_text_size">
                     </TextView>
 
                     <SeekBar
@@ -204,9 +204,9 @@
                         android:layout_margin="5dp"
                         android:foregroundGravity="center_horizontal"
                         android:max="400"
-                        android:maxHeight="3dp"
+                        android:maxHeight="@dimen/cube_seekbar_height"
                         android:min="200"
-                        android:minHeight="3dp"
+                        android:minHeight="@dimen/cube_seekbar_height"
                         android:padding="4dp"
                         android:progress="300"
                         android:progressDrawable="@drawable/seekbar_style">
@@ -225,10 +225,10 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="4dp"
-                        android:text="Number of faces"
+                        android:text="@string/number_of_faces"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="18sp">
+                        android:textSize="@dimen/cube_text_size">
                     </TextView>
 
                     <Spinner
