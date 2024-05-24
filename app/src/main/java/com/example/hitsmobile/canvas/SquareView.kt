@@ -142,8 +142,8 @@ class SquareView(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 touchY >= point.y - touchRadius && touchY <= point.y + touchRadius
     }
 
-    fun cubicInterpolation(path : Path, x1 : Float, y1 : Float, x2 : Float, y2 : Float,
-                           x3 : Float, y3 : Float){
+    private fun cubicInterpolation(path : Path, x1 : Float, y1 : Float, x2 : Float, y2 : Float,
+                                   x3 : Float, y3 : Float){
         var t = 0.0f
 
         while(t <= 1) {

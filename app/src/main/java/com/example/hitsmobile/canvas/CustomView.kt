@@ -27,8 +27,6 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
     private var mBitmap: Bitmap? = null
     private var mCanvas: Canvas? = null
     private val mBitmapPaint = Paint(Paint.DITHER_FLAG)
-    private var currHeight : Float = 0.0f
-    private var currWidth : Float = 0.0f
 
     init {
         mPaint.isAntiAlias = true
@@ -294,8 +292,8 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
         }
     }
 
-    fun catmullRom(path: Path, pair1: Pair<Float,Float>, pair2: Pair<Float,Float>,
-                   pair3: Pair<Float,Float>, pair4: Pair<Float,Float>){
+    private fun catmullRom(path: Path, pair1: Pair<Float,Float>, pair2: Pair<Float,Float>,
+                           pair3: Pair<Float,Float>, pair4: Pair<Float,Float>){
         var t = 0.0f
 
         while(t <= 1.0f){
@@ -317,8 +315,8 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
         }
     }
 
-    fun cubicInterpolation(path : Path, x1 : Float, y1 : Float, x2 : Float, y2 : Float,
-                           x3 : Float, y3 : Float){
+    private fun cubicInterpolation(path : Path, x1 : Float, y1 : Float, x2 : Float, y2 : Float,
+                                   x3 : Float, y3 : Float){
         var t = 0.0f
 
         while(t <= 1) {

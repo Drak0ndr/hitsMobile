@@ -80,8 +80,6 @@ class DrawView @JvmOverloads constructor(context: Context?, attrs: AttributeSet?
         canvas.restore()
     }
 
-
-
     private fun touchPoint(x: Float, y: Float) {
         mPath = Path()
         val stroke = Stroke(

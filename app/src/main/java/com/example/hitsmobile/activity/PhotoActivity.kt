@@ -545,26 +545,28 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 val k = (seekBarResize.progress).toFloat() / 100
 
                 if(currRadio == 1){
-                    if(selectedItem == "Без фильтрации"){
-                        MyVariables.rotateImg = resize.bilinearFilter(resize.upScale(MyVariables.rotateImg, k))
+                    when (selectedItem) {
+                        "Без фильтрации" -> {
+                            MyVariables.rotateImg = resize.bilinearFilter(resize.upScale(MyVariables.rotateImg, k))
 
-                        MyVariables.currImg = resize.bilinearFilter(resize.upScale(MyVariables.currImg, k))
-                    }
-                    else if(selectedItem == "Билинейная"){
-                        MyVariables.rotateImg = resize.bilinearFilter(resize.upScale(
-                            resize.bilinearFilter(MyVariables.rotateImg), k))
+                            MyVariables.currImg = resize.bilinearFilter(resize.upScale(MyVariables.currImg, k))
+                        }
+                        "Билинейная" -> {
+                            MyVariables.rotateImg = resize.bilinearFilter(resize.upScale(
+                                resize.bilinearFilter(MyVariables.rotateImg), k))
 
-                        MyVariables.currImg = resize.bilinearFilter(resize.upScale(
-                            resize.bilinearFilter(MyVariables.currImg), k))
-                    }
-                    else{
-                        MyVariables.rotateImg = resize.bilinearFilter(resize.upScale(
-                            resize.trilinearFilter(MyVariables.rotateImg,
-                                resize.upScale(MyVariables.currImg, 1.5f * k)), k))
+                            MyVariables.currImg = resize.bilinearFilter(resize.upScale(
+                                resize.bilinearFilter(MyVariables.currImg), k))
+                        }
+                        else -> {
+                            MyVariables.rotateImg = resize.bilinearFilter(resize.upScale(
+                                resize.trilinearFilter(MyVariables.rotateImg,
+                                    resize.upScale(MyVariables.currImg, 1.5f * k)), k))
 
-                        MyVariables.currImg = resize.bilinearFilter(resize.upScale(
-                            resize.trilinearFilter(MyVariables.currImg,
-                                resize.upScale(MyVariables.currImg, 1.5f * k)), k))
+                            MyVariables.currImg = resize.bilinearFilter(resize.upScale(
+                                resize.trilinearFilter(MyVariables.currImg,
+                                    resize.upScale(MyVariables.currImg, 1.5f * k)), k))
+                        }
                     }
 
                     newImg.setImageBitmap(MyVariables.rotateImg)
@@ -572,34 +574,36 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                     seekBarResize.progress = 0
                 }
                 else{
-                    if(selectedItem == "Без фильтрации"){
-                        MyVariables.rotateImg = resize.trilinearFilter(resize.downScale(MyVariables.rotateImg, k),
-                            resize.downScale(MyVariables.rotateImg, 1.5f * k))
+                    when (selectedItem) {
+                        "Без фильтрации" -> {
+                            MyVariables.rotateImg = resize.trilinearFilter(resize.downScale(MyVariables.rotateImg, k),
+                                resize.downScale(MyVariables.rotateImg, 1.5f * k))
 
-                        MyVariables.currImg = resize.trilinearFilter(resize.downScale(MyVariables.currImg, k),
-                            resize.downScale(MyVariables.currImg, 1.5f * k))
-                    }
-                    else if(selectedItem == "Билинейная"){
-                        MyVariables.rotateImg = resize.trilinearFilter(resize.downScale(
-                            resize.bilinearFilter(MyVariables.rotateImg), k),
-                            resize.downScale(resize.bilinearFilter(MyVariables.rotateImg), 1.5f * k))
+                            MyVariables.currImg = resize.trilinearFilter(resize.downScale(MyVariables.currImg, k),
+                                resize.downScale(MyVariables.currImg, 1.5f * k))
+                        }
+                        "Билинейная" -> {
+                            MyVariables.rotateImg = resize.trilinearFilter(resize.downScale(
+                                resize.bilinearFilter(MyVariables.rotateImg), k),
+                                resize.downScale(resize.bilinearFilter(MyVariables.rotateImg), 1.5f * k))
 
-                        MyVariables.currImg = resize.trilinearFilter(resize.downScale(
-                            resize.bilinearFilter(MyVariables.currImg), k),
-                            resize.downScale(resize.bilinearFilter(MyVariables.currImg), 1.5f * k))
-                    }
-                    else{
-                        MyVariables.rotateImg = resize.trilinearFilter(resize.downScale(
-                            resize.trilinearFilter(MyVariables.rotateImg,
-                                resize.downScale(MyVariables.rotateImg, 1.5f * k)), k),
-                            resize.downScale(resize.trilinearFilter(MyVariables.rotateImg,
-                                resize.downScale(MyVariables.rotateImg, 1.5f * k)), 1.5f * k))
+                            MyVariables.currImg = resize.trilinearFilter(resize.downScale(
+                                resize.bilinearFilter(MyVariables.currImg), k),
+                                resize.downScale(resize.bilinearFilter(MyVariables.currImg), 1.5f * k))
+                        }
+                        else -> {
+                            MyVariables.rotateImg = resize.trilinearFilter(resize.downScale(
+                                resize.trilinearFilter(MyVariables.rotateImg,
+                                    resize.downScale(MyVariables.rotateImg, 1.5f * k)), k),
+                                resize.downScale(resize.trilinearFilter(MyVariables.rotateImg,
+                                    resize.downScale(MyVariables.rotateImg, 1.5f * k)), 1.5f * k))
 
-                        MyVariables.currImg = resize.trilinearFilter(resize.downScale(
-                            resize.trilinearFilter(MyVariables.currImg,
-                                resize.downScale(MyVariables.currImg, 1.5f * k)), k),
-                            resize.downScale(resize.trilinearFilter(MyVariables.currImg,
-                                resize.downScale(MyVariables.currImg, 1.5f * k)), 1.5f * k))
+                            MyVariables.currImg = resize.trilinearFilter(resize.downScale(
+                                resize.trilinearFilter(MyVariables.currImg,
+                                    resize.downScale(MyVariables.currImg, 1.5f * k)), k),
+                                resize.downScale(resize.trilinearFilter(MyVariables.currImg,
+                                    resize.downScale(MyVariables.currImg, 1.5f * k)), 1.5f * k))
+                        }
                     }
 
                     newImg.setImageBitmap(MyVariables.rotateImg)

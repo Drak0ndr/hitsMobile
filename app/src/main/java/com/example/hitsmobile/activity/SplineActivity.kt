@@ -79,7 +79,7 @@ class SplineActivity : AppCompatActivity() {
         startBtn = findViewById(R.id.imgSpline)
         startBtn.setOnClickListener(){
             if(MyFun.currShape == 6){
-                MyFun.imageView5.start()
+                imageView5.start()
             }
             else if(MyFun.currShape == 4){
                 paint.start()
@@ -99,30 +99,32 @@ class SplineActivity : AppCompatActivity() {
         /*Кнопка для отмены*/
         backBtn = findViewById(R.id.imgBack)
         backBtn.setOnClickListener {
-            if(MyFun.currShape == 0){
-                MyFun.imageView0.reset()
-            }
-            else if(MyFun.currShape == 1){
-                MyFun.imageView1.reset()
-            }
-            else if(MyFun.currShape == 2){
-                MyFun.imageView2.reset()
-            }
-            else if(MyFun.currShape == 3){
-                MyFun.imageView3.reset()
-            }
-            else if(MyFun.currShape == 6){
-                MyFun.imageView5.reset()
-            }
-            else{
-                paint.back()
+            when (MyFun.currShape) {
+                0 -> {
+                    imageView0.reset()
+                }
+                1 -> {
+                    imageView1.reset()
+                }
+                2 -> {
+                    imageView2.reset()
+                }
+                3 -> {
+                    imageView3.reset()
+                }
+                6 -> {
+                    imageView5.reset()
+                }
+                else -> {
+                    paint.back()
+                }
             }
         }
 
         /*Сохранение фотографии в галерею*/
         saveBtn = findViewById(R.id.imgSave)
         saveBtn.setOnClickListener{
-            val bitmap = paint!!.save()
+            val bitmap = paint.save()
             val title = "image_" + System.currentTimeMillis() + ".jpg"
             MediaStore.Images.Media.insertImage(contentResolver, bitmap, title, "")
             Toast.makeText(this,"Изображение сохранено", Toast.LENGTH_LONG).show()
@@ -131,7 +133,7 @@ class SplineActivity : AppCompatActivity() {
         /*Отправка фото*/
         shareBtn = findViewById(R.id.imgShare)
         shareBtn.setOnClickListener(){
-            val wl = paint!!.save()
+            val wl = paint.save()
             val intent = Intent()
             intent.action = Intent.ACTION_SEND
 
