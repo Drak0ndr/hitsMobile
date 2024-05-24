@@ -298,15 +298,55 @@ class Drawer {
             wz1 = awz  + (cwz - awz) * (y - a.y) / (c.y - a.y)
 
             if (y >= b.y) {
-                x2 = b.x + (c.x - b.x) * (y - b.y) / (c.y - b.y)
-                uz2 = buz + (cuz - buz) * (y - b.y) / (c.y - b.y)
-                vz2 = bvz + (cvz - bvz) * (y - b.y) / (c.y - b.y)
-                wz2 = bwz + (cwz - bwz) * (y - b.y) / (c.y - b.y)
+                if (c.y == b.y) {
+                    if (y < b.y) {
+                        x2 = b.x + (c.x - b.x) * (-1)
+                        uz2 = buz + (cuz - buz) * (-1)
+                        vz2 = bvz + (cvz - bvz) * (-1)
+                        wz2 = bwz + (cwz - bwz) * (-1)
+                    } else if (y > b.y) {
+                        x2 = b.x + (c.x - b.x) * (1)
+                        uz2 = buz + (cuz - buz) * (1)
+                        vz2 = bvz + (cvz - bvz) * (1)
+                        wz2 = bwz + (cwz - bwz) * (1)
+                    } else {
+                        x2 = b.x + (c.x - b.x) * (0)
+                        uz2 = buz + (cuz - buz) * (0)
+                        vz2 = bvz + (cvz - bvz) * (0)
+                        wz2 = bwz + (cwz - bwz) * (0)
+                    }
+                } else {
+                    x2 = b.x + (c.x - b.x) * (y - b.y) / (c.y - b.y)
+                    uz2 = buz + (cuz - buz) * (y - b.y) / (c.y - b.y)
+                    vz2 = bvz + (cvz - bvz) * (y - b.y) / (c.y - b.y)
+                    wz2 = bwz + (cwz - bwz) * (y - b.y) / (c.y - b.y)
+                }
             } else {
-                x2 = a.x + (b.x - a.x) * (y - a.y) / (b.y - a.y)
-                uz2 = auz + (buz - auz) * (y - a.y) / (b.y - a.y)
-                vz2 = avz + (bvz - avz) * (y - a.y) / (b.y - a.y)
-                wz2 = awz + (bwz - awz) * (y - a.y) / (b.y - a.y)
+                if (b.y == a.y) {
+                    if (y < a.y) {
+                        x2 = a.x + (b.x - a.x) * (-1)
+                        uz2 = auz + (buz - auz) * (-1)
+                        vz2 = avz + (bvz - avz) * (-1)
+                        wz2 = awz + (bwz - awz) * (-1)
+                    } else if (y > a.y) {
+                        x2 = a.x + (b.x - a.x) * (1)
+                        uz2 = auz + (buz - auz) * (1)
+                        vz2 = avz + (bvz - avz) * (1)
+                        wz2 = awz + (bwz - awz) * (1)
+                    } else {
+                        x2 = a.x + (b.x - a.x) * (0)
+                        uz2 = auz + (buz - auz) * (0)
+                        vz2 = avz + (bvz - avz) * (0)
+                        wz2 = awz + (bwz - awz) * (0)
+                    }
+
+                } else {
+                    x2 = a.x + (b.x - a.x) * (y - a.y) / (b.y - a.y)
+                    uz2 = auz + (buz - auz) * (y - a.y) / (b.y - a.y)
+                    vz2 = avz + (bvz - avz) * (y - a.y) / (b.y - a.y)
+                    wz2 = awz + (bwz - awz) * (y - a.y) / (b.y - a.y)
+                }
+
             }
 
             if (x1 > x2) {
