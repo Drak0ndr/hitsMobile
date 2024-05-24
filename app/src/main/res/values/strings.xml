@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">hitsMobile</string>
+    <string name="app_name">Pixel Room</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -8,6 +8,12 @@
     <string name="rotation">Rotation</string>
     <string name="distance">Distance</string>
     <string name="number_of_faces">Number of faces</string>
+    <string name="logo">Pixel Room</string>
+    <string name="description">Погрузись в удивительный мир пикселей!</string>
+    <string name="btn_title1">Редактор\nфото</string>
+    <string name="btn_title2">Графический\nредактор</string>
+    <string name="btn_title3">3D куб</string>
+    <string name="btn_title4">Сплайны</string>
     <string-array name="choiceFilter">
         <item>Без фильтрации</item>
         <item>Билинейная</item>

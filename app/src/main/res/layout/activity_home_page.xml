@@ -44,7 +44,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="55dp"
                             android:layout_marginTop="15dp"
-                            android:text="Pixel Room"
+                            android:text="@string/logo"
                             android:gravity="center"
                             android:textColor="@color/white"
                             android:textSize="30sp">
@@ -53,8 +53,8 @@
 
                     <ImageView
                         android:id="@+id/imageView"
-                        android:layout_width="320dp"
-                        android:layout_height="320dp"
+                        android:layout_width="@dimen/home_page_img_size"
+                        android:layout_height="@dimen/home_page_img_size"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -63,8 +63,8 @@
                         app:srcCompat="@drawable/circle_gradient" />
 
                     <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="320dp"
-                        android:layout_height="320dp"
+                        android:layout_width="@dimen/home_page_img_size"
+                        android:layout_height="@dimen/home_page_img_size"
                         android:src="@drawable/woman"
                         app:layout_constraintBottom_toBottomOf="@+id/imageView"
                         app:layout_constraintEnd_toEndOf="@+id/imageView"
@@ -80,13 +80,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
                         android:lineSpacingExtra="8sp"
-                        android:text="Погрузись в удивительный мир пикселей!"
+                        android:text="@string/description"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="28sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/imageView"></TextView>
+                        app:layout_constraintTop_toBottomOf="@+id/imageView">
+                    </TextView>
 
                     <LinearLayout
                         android:id="@+id/linearLayout2"
@@ -102,8 +103,8 @@
                             android:layout_width="140dp"
                             android:layout_height="60dp"
                             android:layout_marginTop="35dp"
-                            android:layout_marginRight="20dp"
-                            android:text="Редактор\nфото"
+                            android:layout_marginEnd="20dp"
+                            android:text="@string/btn_title1"
                             android:background="@drawable/btn_bg">
                         </androidx.appcompat.widget.AppCompatButton>
 
@@ -111,9 +112,9 @@
                             android:id="@+id/drawingBtn"
                             android:layout_width="140dp"
                             android:layout_height="60dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:layout_marginTop="35dp"
-                            android:text="Графический\nредактор"
+                            android:text="@string/btn_title2"
                             android:background="@drawable/btn_bg">
                         </androidx.appcompat.widget.AppCompatButton>
 
@@ -133,8 +134,8 @@
                             android:layout_width="140dp"
                             android:layout_height="60dp"
                             android:layout_marginTop="35dp"
-                            android:layout_marginRight="20dp"
-                            android:text="3D куб"
+                            android:layout_marginEnd="20dp"
+                            android:text="@string/btn_title3"
                             android:background="@drawable/btn_bg">
                         </androidx.appcompat.widget.AppCompatButton>
 
@@ -142,9 +143,9 @@
                             android:id="@+id/splineBtn"
                             android:layout_width="140dp"
                             android:layout_height="60dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:layout_marginTop="35dp"
-                            android:text="Сплайны"
+                            android:text="@string/btn_title4"
                             android:background="@drawable/btn_bg">
                         </androidx.appcompat.widget.AppCompatButton>
 

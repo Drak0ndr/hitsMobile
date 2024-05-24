@@ -560,11 +560,11 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                     else{
                         MyVariables.rotateImg = resize.bilinearFilter(resize.upScale(
                             resize.trilinearFilter(MyVariables.rotateImg,
-                                resize.upScale(MyVariables.currImg, 2 * k)), k))
+                                resize.upScale(MyVariables.currImg, 1.5f * k)), k))
 
                         MyVariables.currImg = resize.bilinearFilter(resize.upScale(
                             resize.trilinearFilter(MyVariables.currImg,
-                                resize.upScale(MyVariables.currImg, 2 * k)), k))
+                                resize.upScale(MyVariables.currImg, 1.5f * k)), k))
                     }
 
                     newImg.setImageBitmap(MyVariables.rotateImg)
@@ -574,32 +574,32 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 else{
                     if(selectedItem == "Без фильтрации"){
                         MyVariables.rotateImg = resize.trilinearFilter(resize.downScale(MyVariables.rotateImg, k),
-                            resize.downScale(MyVariables.rotateImg, 2 * k))
+                            resize.downScale(MyVariables.rotateImg, 1.5f * k))
 
                         MyVariables.currImg = resize.trilinearFilter(resize.downScale(MyVariables.currImg, k),
-                            resize.downScale(MyVariables.currImg, 2 * k))
+                            resize.downScale(MyVariables.currImg, 1.5f * k))
                     }
                     else if(selectedItem == "Билинейная"){
                         MyVariables.rotateImg = resize.trilinearFilter(resize.downScale(
                             resize.bilinearFilter(MyVariables.rotateImg), k),
-                            resize.downScale(resize.bilinearFilter(MyVariables.rotateImg), 2 * k))
+                            resize.downScale(resize.bilinearFilter(MyVariables.rotateImg), 1.5f * k))
 
                         MyVariables.currImg = resize.trilinearFilter(resize.downScale(
                             resize.bilinearFilter(MyVariables.currImg), k),
-                            resize.downScale(resize.bilinearFilter(MyVariables.currImg), 2 * k))
+                            resize.downScale(resize.bilinearFilter(MyVariables.currImg), 1.5f * k))
                     }
                     else{
-                        MyVariables.rotateImg = resize.trilinearFilter(resize.downScale(resize.trilinearFilter(
-                            resize.downScale(MyVariables.rotateImg, k),
-                            resize.downScale(MyVariables.rotateImg, 2 * k)), k),
-                            resize.downScale(resize.trilinearFilter(resize.downScale(MyVariables.rotateImg, k),
-                                resize.downScale(MyVariables.rotateImg, 2 * k)), 2 * k))
+                        MyVariables.rotateImg = resize.trilinearFilter(resize.downScale(
+                            resize.trilinearFilter(MyVariables.rotateImg,
+                                resize.downScale(MyVariables.rotateImg, 1.5f * k)), k),
+                            resize.downScale(resize.trilinearFilter(MyVariables.rotateImg,
+                                resize.downScale(MyVariables.rotateImg, 1.5f * k)), 1.5f * k))
 
-                        MyVariables.currImg = resize.trilinearFilter(resize.downScale(resize.trilinearFilter(
-                            resize.downScale(MyVariables.currImg, k),
-                            resize.downScale(MyVariables.currImg, 2 * k)), k),
-                            resize.downScale(resize.trilinearFilter(resize.downScale(MyVariables.currImg, k),
-                                resize.downScale(MyVariables.currImg, 2 * k)), 2 * k))
+                        MyVariables.currImg = resize.trilinearFilter(resize.downScale(
+                            resize.trilinearFilter(MyVariables.currImg,
+                                resize.downScale(MyVariables.currImg, 1.5f * k)), k),
+                            resize.downScale(resize.trilinearFilter(MyVariables.currImg,
+                                resize.downScale(MyVariables.currImg, 1.5f * k)), 1.5f * k))
                     }
 
                     newImg.setImageBitmap(MyVariables.rotateImg)

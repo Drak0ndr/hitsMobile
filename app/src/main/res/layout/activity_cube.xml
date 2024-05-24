@@ -60,13 +60,13 @@
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="@dimen/cube_text_size"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp">
+                        android:layout_marginLeft="@dimen/cube_margin_text"
+                        android:layout_marginRight="@dimen/cube_margin_text">
                     </TextView>
 
                     <SeekBar
                         android:id="@+id/rotationX"
-                        android:layout_width="150dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
@@ -76,7 +76,8 @@
                         android:progressDrawable="@drawable/seekbar_style"
                         android:max="359"
                         android:min="0"
-                        android:progress="0">
+                        android:progress="0"
+                        tools:ignore="NestedWeights">
                     </SeekBar>
 
                 </LinearLayout>
@@ -95,13 +96,13 @@
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="@dimen/cube_text_size"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp">
+                        android:layout_marginLeft="@dimen/cube_margin_text"
+                        android:layout_marginRight="@dimen/cube_margin_text">
                     </TextView>
 
                     <SeekBar
                         android:id="@+id/rotationY"
-                        android:layout_width="150dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
@@ -111,7 +112,8 @@
                         android:progressDrawable="@drawable/seekbar_style"
                         android:max="359"
                         android:min="0"
-                        android:progress="0">
+                        android:progress="0"
+                        tools:ignore="NestedWeights">
                     </SeekBar>
 
                 </LinearLayout>
@@ -130,13 +132,13 @@
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="@dimen/cube_text_size"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp">
+                        android:layout_marginLeft="@dimen/cube_margin_text"
+                        android:layout_marginRight="@dimen/cube_margin_text">
                     </TextView>
 
                     <SeekBar
                         android:id="@+id/rotationZ"
-                        android:layout_width="150dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
@@ -146,7 +148,8 @@
                         android:progressDrawable="@drawable/seekbar_style"
                         android:max="359"
                         android:min="0"
-                        android:progress="0">
+                        android:progress="0"
+                        tools:ignore="NestedWeights">
                     </SeekBar>
 
                 </LinearLayout>

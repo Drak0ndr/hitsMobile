@@ -7,4 +7,6 @@
     <dimen name="circle_margin">10dp</dimen>
     <dimen name="cube_text_size">18sp</dimen>
     <dimen name="cube_seekbar_height">3dp</dimen>
+    <dimen name="cube_margin_text">5dp</dimen>
+    <dimen name="home_page_img_size">320dp</dimen>
 </resources>
