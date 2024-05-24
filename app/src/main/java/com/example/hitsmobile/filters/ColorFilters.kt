@@ -487,7 +487,7 @@ class ColorFilters: PhotoActivity() {
     fun changeContrastSquare(bitmap: Bitmap, openBitmap: Bitmap, k: Float): Bitmap {
         var width = bitmap.width
         var height = bitmap.height
-        var newBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        var newBitmap = bitmap.copy(bitmap.config, true)
 
         var minBright = 1f
         var maxBright = 0f
@@ -540,7 +540,7 @@ class ColorFilters: PhotoActivity() {
                     green = normalizeColor(green)
                     blue = normalizeColor(blue)
 
-                    newBitmap.setPixel(j,i,Color.argb(alfa, red, green, blue))
+                    newBitmap.setPixel(x,i,Color.argb(alfa, red, green, blue))
                     x++
                 }
                 j+=2
