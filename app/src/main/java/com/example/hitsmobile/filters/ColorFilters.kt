@@ -437,6 +437,35 @@ class ColorFilters: PhotoActivity() {
         return newBitmap
     }
 
+    fun toGreenSquare(bitmap: Bitmap, openBitmap: Bitmap): Bitmap? {
+        var width = bitmap.width
+        var height = bitmap.height
+        var newBitmap = bitmap.copy(bitmap.config, true)
+        var x = 0
+        var y = 0
+        while (y < height) {
+            var data = faceDetect(bitmap, openBitmap, y)
+            var k = 0
+            while (k+1 < data.size) {
+                var minVal = data[k]
+                var maxVal = data[k+1]
+                var x = minVal
+                while (x <= maxVal) {
+                    var colorPixel = bitmap.getColor(x, y).components
+                    var green = colorPixel[1]
+                    var alfa = colorPixel[3]
+
+                    newBitmap.setPixel(x, y, Color.argb(alfa, 0f, green, 0f))
+
+                    x++
+                }
+                k+=2
+            }
+            y++
+        }
+        return newBitmap
+    }
+
     fun faceDetect(bitmap: Bitmap, openBitmap: Bitmap, i: Int): MutableList<Int> {
         var j = 0
         var maxVal = -1
