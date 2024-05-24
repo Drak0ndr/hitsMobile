@@ -526,7 +526,7 @@ class ColorFilters: PhotoActivity() {
                 val maxVal = data[j+1]
                 var x = minVal
                 while (x <= maxVal) {
-                    val colorPixel = bitmap.getColor(j, i).components
+                    val colorPixel = bitmap.getColor(x, i).components
                     var red = colorPixel[0]
                     var green = colorPixel[1]
                     var blue = colorPixel[2]
