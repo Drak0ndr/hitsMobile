@@ -791,17 +791,14 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                     MyVariables.rotateImg = MyVariables.currImg
                     MyVariables.isFace = false
 
-                    thread {
-                        runBlocking {
-                            launch {
-                                val resize = Resize()
-                                val newImage = resize.downScale(MyVariables.currImg, 4f)
-                                fillList(newImage)
-                            }
+
+                    runBlocking {
+                        launch {
+                            val resize = Resize()
+                            val newImage = resize.downScale(MyVariables.currImg, 4f)
+                            fillList(newImage)
                         }
                     }
-
-
 
                     filterAdapter.updateAdapter(pairsList2)
                 }
