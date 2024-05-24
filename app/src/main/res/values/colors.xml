@@ -11,5 +11,6 @@
     <color name="pink">#e45eb0</color>
     <color name="green">#34e3c4</color>
     <color name="semi_black_transparent">#99000000</color>
+    <color name="black_filter_text">#90000000</color>
     <color name="our_green">#0f8a75</color>
 </resources>

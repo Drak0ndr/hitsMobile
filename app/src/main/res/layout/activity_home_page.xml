@@ -34,16 +34,16 @@
                         tools:ignore="MissingConstraints">
 
                         <ImageView
-                            android:layout_width="55dp"
-                            android:layout_height="55dp"
-                            android:layout_margin="15dp"
+                            android:layout_width="@dimen/logo_size"
+                            android:layout_height="@dimen/logo_size"
+                            android:layout_margin="@dimen/logo_margin"
                             app:srcCompat="@drawable/pixel_logo">
                         </ImageView>
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="55dp"
-                            android:layout_marginTop="15dp"
+                            android:layout_height="@dimen/logo_size"
+                            android:layout_marginTop="@dimen/logo_margin"
                             android:text="@string/logo"
                             android:gravity="center"
                             android:textColor="@color/white"
@@ -100,20 +100,20 @@
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/algorithmsBtn"
-                            android:layout_width="140dp"
-                            android:layout_height="60dp"
-                            android:layout_marginTop="35dp"
-                            android:layout_marginEnd="20dp"
+                            android:layout_width="@dimen/home_btn_width"
+                            android:layout_height="@dimen/home_btn_height"
+                            android:layout_marginTop="@dimen/home_btn_margin_top"
+                            android:layout_marginEnd="@dimen/home_btn_margin_side"
                             android:text="@string/btn_title1"
                             android:background="@drawable/btn_bg">
                         </androidx.appcompat.widget.AppCompatButton>
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/drawingBtn"
-                            android:layout_width="140dp"
-                            android:layout_height="60dp"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginTop="35dp"
+                            android:layout_width="@dimen/home_btn_width"
+                            android:layout_height="@dimen/home_btn_height"
+                            android:layout_marginStart="@dimen/home_btn_margin_side"
+                            android:layout_marginTop="@dimen/home_btn_margin_top"
                             android:text="@string/btn_title2"
                             android:background="@drawable/btn_bg">
                         </androidx.appcompat.widget.AppCompatButton>
@@ -131,20 +131,20 @@
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn3D"
-                            android:layout_width="140dp"
-                            android:layout_height="60dp"
-                            android:layout_marginTop="35dp"
-                            android:layout_marginEnd="20dp"
+                            android:layout_width="@dimen/home_btn_width"
+                            android:layout_height="@dimen/home_btn_height"
+                            android:layout_marginTop="@dimen/home_btn_margin_top"
+                            android:layout_marginEnd="@dimen/home_btn_margin_side"
                             android:text="@string/btn_title3"
                             android:background="@drawable/btn_bg">
                         </androidx.appcompat.widget.AppCompatButton>
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/splineBtn"
-                            android:layout_width="140dp"
-                            android:layout_height="60dp"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginTop="35dp"
+                            android:layout_width="@dimen/home_btn_width"
+                            android:layout_height="@dimen/home_btn_height"
+                            android:layout_marginStart="@dimen/home_btn_margin_side"
+                            android:layout_marginTop="@dimen/home_btn_margin_top"
                             android:text="@string/btn_title4"
                             android:background="@drawable/btn_bg">
                         </androidx.appcompat.widget.AppCompatButton>

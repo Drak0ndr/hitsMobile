@@ -11,8 +11,8 @@
 
     <ImageView
         android:id="@+id/imgToolIcon"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="@dimen/filter_img_size"
+        android:layout_height="@dimen/filter_img_size"
         android:layout_margin="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
