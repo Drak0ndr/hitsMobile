@@ -212,6 +212,8 @@ class Drawer {
         var c= c
         var cu = t3x
         var cv = t3y
+        val minX = min(c.x ,min(a.x, b.x))
+        val maxX = max(c.x , max(a.x, b.x))
         if (a.y > b.y) {
             d = a
             a = b
@@ -393,12 +395,11 @@ class Drawer {
 
                 var len = 8
                 while (len > 0) {
-                    if (u.toInt() >= 0 && u.toInt() < img.width && v.toInt() >= 0 && v.toInt() < img.height) {
+                    if (u.toInt() >= 0 && u.toInt() < img.width && v.toInt() >= 0 && v.toInt() < img.height && x >=minX && x <=maxX) {
                         var tempColors = img.getColor(u.toInt(),v.toInt()).components
                         var r = tempColors[0]
                         var g = tempColors[1]
                         var b = tempColors[2]
-
                         drawPixel(x.toInt(), y.toInt(), r, g, b)
                     }
                     x++
@@ -430,7 +431,7 @@ class Drawer {
                 var dv = (v_b - v_a) / lenght
 
                 while (lenght > 0) {
-                    if (u.toInt() >= 0 && u.toInt() < img.width && v.toInt() >= 0 && v.toInt() < img.height) {
+                    if (u.toInt() >= 0 && u.toInt() < img.width && v.toInt() >= 0 && v.toInt() < img.height && x>=minX && x<=maxX) {
                         var tempColors = img.getColor(u.toInt(),v.toInt()).components
                         var r = tempColors[0]
                         var g = tempColors[1]
