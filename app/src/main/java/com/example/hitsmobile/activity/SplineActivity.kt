@@ -81,7 +81,7 @@ class SplineActivity : AppCompatActivity() {
             if(MyFun.currShape == 6){
                 imageView5.start()
             }
-            else if(MyFun.currShape == 4){
+            else if(MyFun.currShape == 4 || MyFun.currShape == 5){
                 paint.start()
             }
         }

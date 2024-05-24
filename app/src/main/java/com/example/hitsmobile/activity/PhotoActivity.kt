@@ -271,8 +271,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
                 val transformImg = affinis.transformBitmap(MyVariables.rotateImg, listSecondPoints[0].first, listSecondPoints[0].second,
                     listSecondPoints[1].first, listSecondPoints[1].second, listSecondPoints[2].first, listSecondPoints[2].second,
-                    listFirstPoints[0].first, listFirstPoints[0].second, listFirstPoints[1].first, listFirstPoints[1].second,
-                    listFirstPoints[2].first, listFirstPoints[2].second)
+                    listFirstPoints[0].first, listFirstPoints[1].first, listFirstPoints[2].first, listFirstPoints[0].second,
+                    listFirstPoints[1].second, listFirstPoints[2].second)
 
                 imageView.setImageBitmap(transformImg)
 
