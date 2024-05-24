@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <gradient android:startColor="@color/pink"
+                android:endColor="@color/green"
+                android:angle = "315"/>
+        </shape>
+    </item>
+    <item android:bottom="3dp" android:top="3dp"
+        android:right="3dp"
+        android:left="3dp">
+        <shape android:shape="oval">
+
+        </shape>
+    </item>
+    <item android:drawable="@drawable/baseline_auto_graph_24"
+        android:top = "15dp" android:bottom="15dp"
+        android:left = "15dp" android:right="15dp"/>
+</layer-list>

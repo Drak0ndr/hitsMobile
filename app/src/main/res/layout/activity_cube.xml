@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".activity.SplineActivity"
+    android:id="@+id/cube_bg">
+
+    <ImageView
+        android:id="@+id/draw_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/linear"
+        android:background = "@color/white"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"/>
+
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/rotation"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/cube_text_size"
+                android:padding="4dp">
+            </TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:foregroundGravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="X"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/cube_text_size"
+                        android:layout_marginLeft="@dimen/cube_margin_text"
+                        android:layout_marginRight="@dimen/cube_margin_text">
+                    </TextView>
+
+                    <SeekBar
+                        android:id="@+id/rotationX"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:foregroundGravity="center_vertical"
+                        android:minHeight="@dimen/cube_seekbar_height"
+                        android:maxHeight="@dimen/cube_seekbar_height"
+                        android:progressDrawable="@drawable/seekbar_style"
+                        android:max="359"
+                        android:min="0"
+                        android:progress="0"
+                        tools:ignore="NestedWeights">
+                    </SeekBar>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:foregroundGravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Y"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/cube_text_size"
+                        android:layout_marginLeft="@dimen/cube_margin_text"
+                        android:layout_marginRight="@dimen/cube_margin_text">
+                    </TextView>
+
+                    <SeekBar
+                        android:id="@+id/rotationY"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:foregroundGravity="center_vertical"
+                        android:maxHeight="@dimen/cube_seekbar_height"
+                        android:minHeight="@dimen/cube_seekbar_height"
+                        android:progressDrawable="@drawable/seekbar_style"
+                        android:max="359"
+                        android:min="0"
+                        android:progress="0"
+                        tools:ignore="NestedWeights">
+                    </SeekBar>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:foregroundGravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Z"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/cube_text_size"
+                        android:layout_marginLeft="@dimen/cube_margin_text"
+                        android:layout_marginRight="@dimen/cube_margin_text">
+                    </TextView>
+
+                    <SeekBar
+                        android:id="@+id/rotationZ"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:foregroundGravity="center_vertical"
+                        android:minHeight="@dimen/cube_seekbar_height"
+                        android:maxHeight="@dimen/cube_seekbar_height"
+                        android:progressDrawable="@drawable/seekbar_style"
+                        android:max="359"
+                        android:min="0"
+                        android:progress="0"
+                        tools:ignore="NestedWeights">
+                    </SeekBar>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llCube"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imgHome"
+                android:layout_width="@dimen/circle_size"
+                android:layout_height="@dimen/circle_size"
+                android:layout_marginRight="@dimen/circle_margin"
+                android:layout_marginBottom="@dimen/circle_margin"
+                android:src="@drawable/circle_home"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="@dimen/circle_margin">
+
+            </ImageView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="@string/distance"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/cube_text_size">
+                    </TextView>
+
+                    <SeekBar
+                        android:id="@+id/distance"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="5dp"
+                        android:foregroundGravity="center_horizontal"
+                        android:max="400"
+                        android:maxHeight="@dimen/cube_seekbar_height"
+                        android:min="200"
+                        android:minHeight="@dimen/cube_seekbar_height"
+                        android:padding="4dp"
+                        android:progress="300"
+                        android:progressDrawable="@drawable/seekbar_style">
+                    </SeekBar>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="@string/number_of_faces"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/cube_text_size">
+                    </TextView>
+
+                    <Spinner
+                        android:id="@+id/facesSpinner"
+                        android:layout_width="80dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity = "center"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

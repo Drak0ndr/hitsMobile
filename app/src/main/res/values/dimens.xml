@@ -1,0 +1,12 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="normal_margin">8dp</dimen>
+    <dimen name="large_margin">16dp</dimen>
+    <dimen name="top_tool_icon_width">50dp</dimen>
+    <dimen name="circle_size">45dp</dimen>
+    <dimen name="circle_margin">10dp</dimen>
+    <dimen name="cube_text_size">18sp</dimen>
+    <dimen name="cube_seekbar_height">3dp</dimen>
+    <dimen name="cube_margin_text">5dp</dimen>
+    <dimen name="home_page_img_size">320dp</dimen>
+</resources>

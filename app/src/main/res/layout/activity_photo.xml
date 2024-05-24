@@ -6,97 +6,795 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_bg"
-    tools:context=".PhotoActivity">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/gradient_bg"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <ImageView
+        android:id="@+id/photoEditorView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/main_bg"
+        android:scaleType="fitCenter"
+        android:src="@drawable/white_background"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewTools"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-    </ScrollView>
+        app:layout_constraintVertical_bias="1.0">
+    </ImageView>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
-        android:layout_width="match_parent"
-        android:layout_height="160dp"
-        app:layout_constraintBottom_toBottomOf="@+id/scrollView"
+    <ImageView
+        android:id="@+id/redImg"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/red"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/blueImg"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/blue"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/greenImg"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/green"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </ImageView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="?attr/actionBarSize" />
+
+    <ImageView
+        android:id="@+id/imgCamera"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/circle_camera"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/main"
+        app:layout_constraintRight_toRightOf="@+id/main"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewTools"
+        app:layout_constraintVertical_bias="0.5"
+        android:layout_margin="10dp">
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/imgHome"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/circle_home"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/main"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewTools"
+        android:layout_margin="10dp">
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/imgGallery"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/circle_gallery"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/imgHome"
+        app:layout_constraintRight_toRightOf="@+id/imgCamera"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewTools"
+        android:layout_margin="10dp">
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/imgSave"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        app:layout_constraintLeft_toLeftOf="@+id/imgShare"
+        app:layout_constraintRight_toRightOf="@+id/imgCamera"
+        android:src="@drawable/circle_save"
+        android:layout_margin="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewTools">
+    </ImageView>
 
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/app_bar"
+    <ImageView
+        android:id="@+id/imgShare"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/circle_share"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/imgCamera"
+        app:layout_constraintRight_toRightOf="@+id/imgSave"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewTools"
+        android:layout_margin="10dp">
+    </ImageView>
+
+    <ImageView
+        android:id="@+id/imgClose"
+        android:layout_width="40dp"
+        android:layout_height="25dp"
+        android:background="@drawable/rectangle_bg"
+        android:src="@drawable/ic_close"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewTools"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewTools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/main_bg"
+        android:orientation="horizontal"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:layout_marginBottom="10dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:listitem="@layout/recyclerview_item" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewFilter"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/main_bg"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewTools"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewTools"
+        tools:listitem="@layout/recyclerview_filters" />
+
+    <RelativeLayout
+        android:id="@+id/rotateBlock"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/main_bg"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewTools"
+        app:layout_constraintStart_toStartOf="@+id/recyclerViewTools"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewTools">
+
+        <SeekBar
+            android:id="@+id/seekBarRotate"
+            android:layout_width="250dp"
+            android:layout_height="12dp"
+            android:layout_centerInParent="true"
+            android:max="45"
+            android:min="-45"
+            android:progress="0"
+            android:progressDrawable="@drawable/seekbar_style"
+            android:thumb="@drawable/seekbar_custom_thumb" />
+
+        <ImageView
+            android:id="@+id/imgRightRotate"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/seekBarRotate"
+            android:src="@drawable/right">
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/imgLeftRotate"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_toStartOf="@+id/seekBarRotate"
+            android:src="@drawable/left">
+        </ImageView>
+
+        <TextView
+            android:id="@+id/progressBarMin"
+            style="@style/TextAppearance.Material3.LabelLarge"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_alignStart="@+id/seekBarRotate"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
+            android:text="-45"
+            android:layout_marginLeft = "25dp"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/progressBarMax"
+            style="@style/TextAppearance.Material3.LabelLarge"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_alignEnd="@+id/seekBarRotate"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
+            android:text="45"
+            android:layout_marginRight="25dp"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/progressBarCurr"
+            style="@style/TextAppearance.Material3.LabelLarge"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="8dp"
+            android:layout_centerHorizontal="true"
+            android:text="0"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textAlignment="center"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/resizeBlock"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/main_bg"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewTools"
+        app:layout_constraintStart_toStartOf="@+id/recyclerViewTools"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewTools">
+
+        <Spinner
+            android:id="@+id/mySpinner"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"/>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_gravity="bottom"
-            android:backgroundTint="#282f32"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <RadioGroup
+                    android:id="@+id/radio_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center">
+
+                        <RadioButton
+                            android:id="@+id/radio1"
+                            android:layout_width="150dp"
+                            android:layout_height="match_parent"
+                            android:checked="true"
+                            android:text="Увеличение"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            app:buttonTint="@color/green" />
+
+                        <RadioButton
+                            android:id="@+id/radio2"
+                            android:layout_width="150dp"
+                            android:layout_height="match_parent"
+                            android:text="Уменьшение"
+                            app:buttonTint="@color/green"
+                            android:textColor="@color/white"
+                            android:textSize="20sp" />
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center">
+
+                <SeekBar
+                    android:id="@+id/seekBarResize"
+                    android:layout_width="300dp"
+                    android:layout_height="12dp"
+                    android:layout_below="@+id/radio_group"
+                    android:max="1000"
+                    android:min="100"
+                    android:progress="100"
+                    android:progressDrawable="@drawable/seekbar_style"
+                    android:thumb="@drawable/seekbar_custom_thumb" />
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/progressBarMinResize"
+                    style="@style/TextAppearance.Material3.LabelLarge"
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="1.0"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:textAlignment="center"
+                    android:layout_marginLeft="70dp"/>
+
+                <TextView
+                    android:id="@+id/progressBarMaxResize"
+                    style="@style/TextAppearance.Material3.LabelLarge"
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="10.0"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:textAlignment="center"
+                    android:layout_marginRight="70dp"/>
+
+                <TextView
+                    android:id="@+id/progressBarCurrResize"
+                    style="@style/TextAppearance.Material3.LabelLarge"
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="1.0"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textAlignment="center"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/retouchBlock"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/main_bg"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewTools"
+        app:layout_constraintStart_toStartOf="@+id/recyclerViewTools"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewTools">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:text="Radius"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+                    android:gravity="center">
+                </TextView>
+
+                <SeekBar
+                    android:id="@+id/seekBarRetouchRadius"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:max="10"
+                    android:min="1"
+                    android:progress="5"
+                    android:progressDrawable="@drawable/seekbar_style"
+                    android:thumb="@drawable/seekbar_custom_thumb" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:text="1"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="30dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:text="10"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:layout_marginRight="30dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/currRadius"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:text="5"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+                    </TextView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:text="Sharpness"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+                    android:gravity="center">
+                </TextView>
+
+                <SeekBar
+                    android:id="@+id/seekBarRetouchSharpness"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:max="10"
+                    android:min="1"
+                    android:progress="5"
+                    android:progressDrawable="@drawable/seekbar_style"
+                    android:thumb="@drawable/seekbar_custom_thumb"  />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_marginLeft="30dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:text="1"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                    </TextView>
+
+                    <TextView
+                        android:layout_marginRight="30dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:text="10"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/currSharpness"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:text="5"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+                    </TextView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/maskingBlock"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/main_bg"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewTools"
+        app:layout_constraintStart_toStartOf="@+id/recyclerViewTools"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewTools">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:padding="4dp"
+                    android:text="Intensity indicator"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="24sp">
+                </TextView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp">
+
+                    <SeekBar
+                        android:id="@+id/seekBarMasking"
+                        android:layout_width="match_parent"
+                        android:layout_height="12dp"
+                        android:layout_gravity="center"
+                        android:foregroundGravity="center"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:max="10"
+                        android:min="0"
+                        android:thumb="@drawable/seekbar_custom_thumb"
+                        android:progress="5"
+                        android:progressDrawable="@drawable/seekbar_style" />
+
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp">
+
+                    <TextView
+                        android:id="@+id/progressBarMin2"
+                        style="@style/TextAppearance.Material3.LabelLarge"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:orientation="vertical"
+                        android:text="0"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="35dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/progressBarCurr2"
+                        style="@style/TextAppearance.Material3.LabelLarge"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:orientation="vertical"
+                        android:text="5"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/progressBarMax2"
+                        style="@style/TextAppearance.Material3.LabelLarge"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:text="10"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginRight="35dp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="120dp"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/maskingStartBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/btn_bg"
+                    android:text="Start">
+                </androidx.appcompat.widget.AppCompatButton>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/transformBlock"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/main_bg"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewTools"
+        app:layout_constraintStart_toStartOf="@+id/recyclerViewTools"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewTools">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:layout_weight="1">
 
-                <ImageView
-                    android:id="@+id/imageView1"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="0.6"
-                    app:srcCompat="@android:drawable/ic_menu_gallery"
-                    app:tint="@color/white" />
-
-                <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="0.8"
-                    android:clickable="true"
-                    android:visibility="invisible"
-                    app:srcCompat="@android:drawable/ic_menu_gallery"
-                    app:tint="@color/white" />
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp">
 
-                <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="0.6"
-                    app:srcCompat="@android:drawable/ic_menu_save"
-                    app:tint="@color/white" />
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/pointsBtn1"
+                        android:layout_width="120dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/btn_bg"
+                        android:text="First points"
+                        android:layout_marginRight="10dp"
+                        android:textColor="@color/white"
+                        android:textSize="12sp">
+                    </androidx.appcompat.widget.AppCompatButton>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/pointsBtn2"
+                        android:layout_width="120dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/btn_bg"
+                        android:text="Second points"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/white"
+                        android:textSize="12sp">
+                    </androidx.appcompat.widget.AppCompatButton>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/transformStartBtn"
+                        android:layout_width="120dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/btn_bg"
+                        android:foregroundGravity="center"
+                        android:gravity="center"
+                        android:text="Start"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="14sp">
+                    </androidx.appcompat.widget.AppCompatButton>
+
+                </LinearLayout>
 
             </LinearLayout>
-        </com.google.android.material.bottomappbar.BottomAppBar>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            style="@style/Floating"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            app:layout_anchor="@id/app_bar"
-            app:maxImageSize="30dp"
-            tools:layout_editor_absoluteY="4dp"
-            android:id="@+id/camera"/>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/photo_container"
-        android:layout_width="350dp"
-        android:layout_height="450dp"
-        android:layout_marginTop="70dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/helpImg"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/search2"
+                    android:foregroundGravity="center">
+
+                </ImageView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
