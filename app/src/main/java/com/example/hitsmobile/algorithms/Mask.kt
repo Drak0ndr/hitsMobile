@@ -109,6 +109,19 @@ class Mask {
                 tempGreen = (tempGreen / kernelCoef).toFloat()
                 tempBlue = (tempBlue / kernelCoef).toFloat()
                 tempAlpha = (tempAlpha / kernelCoef).toFloat()
+                if (tempAlpha > 1 && (tempAlpha - 1) < 0.01) {
+                    tempAlpha = 1f
+                }
+                if (tempRed > 1 && (tempRed- 1) < 0.01) {
+                    tempRed = 1f
+                }
+                if (tempGreen > 1 && (tempGreen- 1) < 0.01) {
+                    tempGreen = 1f
+                }
+                if (tempBlue > 1 && (tempBlue- 1) < 0.01) {
+                    tempBlue = 1f
+                }
+
                 if (tempRed < 0 || tempRed > 1 || tempGreen < 0 || tempGreen > 1 || tempBlue < 0 || tempBlue > 1 || tempAlpha < 0 || tempAlpha > 1) {
                     var tempColors = bitmap.getColor(j, i).components
                     tempRed = tempColors[0]
