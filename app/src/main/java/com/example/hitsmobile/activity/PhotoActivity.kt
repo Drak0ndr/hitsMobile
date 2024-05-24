@@ -182,6 +182,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
     private lateinit var selectedItem : String
 
+    private lateinit var backTransformImg : ImageView
+
     @SuppressLint("MissingInflatedId", "ClickableViewAccessibility", "ResourceType",
         "UseCompatLoadingForDrawables"
     )
@@ -453,6 +455,13 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             MyVariables.rotateImg = rotate.rotateRight(MyVariables.rotateImg)
             imageView.setImageBitmap(MyVariables.rotateImg)
             MyVariables.currImg = rotate.rotateRight(MyVariables.currImg)
+        }
+
+        backTransformImg = findViewById(R.id.backImg)
+        backTransformImg.setOnClickListener(){
+            if(listFirstPoints.size == 0){
+                imageView.setImageBitmap(MyVariables.currImg)
+            }
         }
 
         /*Кнопка для алгоритма маскирования*/
@@ -1008,9 +1017,16 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 thread {
                     runBlocking {
                         launch(Dispatchers.IO) {
-                            filterImg = filter.changeContrast(MyVariables.currImg, 100f)
-                            newImg.setImageBitmap(filterImg)
-                            MyVariables.rotateImg = filterImg
+                            if(MyVariables.isFace){
+                                filterImg = filter.changeContrastSquare(MyVariables.currImg, MyVariables.processedBitmap, 100f)
+                                newImg.setImageBitmap(filterImg)
+                                MyVariables.rotateImg = filterImg
+                            }
+                            else{
+                                filterImg = filter.changeContrast(MyVariables.currImg, 100f)
+                                newImg.setImageBitmap(filterImg)
+                                MyVariables.rotateImg = filterImg
+                            }
                         }
                     }
                 }
