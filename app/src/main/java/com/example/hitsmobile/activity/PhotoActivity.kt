@@ -276,6 +276,9 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                     listFirstPoints[0].first, listFirstPoints[1].first, listFirstPoints[2].first, listFirstPoints[0].second,
                     listFirstPoints[1].second, listFirstPoints[2].second)
 
+                MyVariables.backImg = MyVariables.rotateImg
+                MyVariables.rotateImg = transformImg
+
                 imageView.setImageBitmap(transformImg)
 
                 listSecondPoints.clear()
@@ -292,7 +295,6 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 selectedItem = parent.getItemAtPosition(position).toString()
-                println(selectedItem)
 
             }
 
@@ -460,7 +462,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         backTransformImg = findViewById(R.id.backImg)
         backTransformImg.setOnClickListener(){
             if(listFirstPoints.size == 0){
-                imageView.setImageBitmap(MyVariables.currImg)
+                MyVariables.rotateImg = MyVariables.backImg
+                imageView.setImageBitmap(MyVariables.rotateImg)
             }
         }
 
@@ -1110,6 +1113,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             TransitionManager.beginDelayedTransition(mainView, changeBounds)
 
             mConstraintSet.clear(currBlock, ConstraintSet.END)
+
+            currNumberBlock = 0
         }
 
         val changeBounds = ChangeBounds()
@@ -1121,47 +1126,49 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
     }
 
     override fun onToolSelected(toolType: ToolsType) {
-        when (toolType) {
-            ToolsType.ROTATE -> {
-                currNumberBlock = 1
-                showFilter(true)
-            }
+        if(currNumberBlock == 0){
+            when (toolType) {
+                ToolsType.ROTATE -> {
+                    currNumberBlock = 1
+                    showFilter(true)
+                }
 
-            ToolsType.RESIZE -> {
-                currNumberBlock = 2
-                showFilter(true)
-            }
+                ToolsType.RESIZE -> {
+                    currNumberBlock = 2
+                    showFilter(true)
+                }
 
-            /*Скролл для фильтров*/
-            ToolsType.FILTER -> {
-                currNumberBlock = 3
-                showFilter(true)
-            }
+                /*Скролл для фильтров*/
+                ToolsType.FILTER -> {
+                    currNumberBlock = 3
+                    showFilter(true)
+                }
 
-            ToolsType.RETOUCH -> {
-                currNumberBlock = 4
-                showFilter(true)
-                MyVariables.isRetouch = true
-            }
+                ToolsType.RETOUCH -> {
+                    currNumberBlock = 4
+                    showFilter(true)
+                    MyVariables.isRetouch = true
+                }
 
-            ToolsType.MASKING -> {
-                currNumberBlock = 5
-                showFilter(true)
-            }
+                ToolsType.MASKING -> {
+                    currNumberBlock = 5
+                    showFilter(true)
+                }
 
-            ToolsType.AFFINE -> {
-                currNumberBlock = 6
-                showFilter(true)
-            }
+                ToolsType.AFFINE -> {
+                    currNumberBlock = 6
+                    showFilter(true)
+                }
 
-            ToolsType.FACE -> {
-                val imageView = findViewById<ImageView>(R.id.photoEditorView)
+                ToolsType.FACE -> {
+                    val imageView = findViewById<ImageView>(R.id.photoEditorView)
 
-                val bitmap = (imageView.drawable as BitmapDrawable).bitmap
-                val mat = Mat()
-                Utils.bitmapToMat(bitmap, mat)
+                    val bitmap = (imageView.drawable as BitmapDrawable).bitmap
+                    val mat = Mat()
+                    Utils.bitmapToMat(bitmap, mat)
 
-                detectFaces(mat, imageView)
+                    detectFaces(mat, imageView)
+                }
             }
         }
     }
@@ -1229,6 +1236,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         /*Храним изображение, которое обрабатываем*/
         lateinit var currImg: Bitmap
         lateinit var rotateImg: Bitmap
+        lateinit var backImg: Bitmap
 
         var isRetouch : Boolean = false
 
