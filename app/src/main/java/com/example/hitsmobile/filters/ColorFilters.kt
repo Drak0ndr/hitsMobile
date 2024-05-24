@@ -437,7 +437,7 @@ class ColorFilters: PhotoActivity() {
         return newBitmap
     }
 
-    fun toGreenSquare(bitmap: Bitmap, openBitmap: Bitmap): Bitmap? {
+    fun toColorSquare(bitmap: Bitmap, openBitmap: Bitmap, color:String): Bitmap? {
         var width = bitmap.width
         var height = bitmap.height
         var newBitmap = bitmap.copy(bitmap.config, true)
@@ -452,11 +452,29 @@ class ColorFilters: PhotoActivity() {
                 var x = minVal
                 while (x <= maxVal) {
                     var colorPixel = bitmap.getColor(x, y).components
+                    var red = colorPixel[0]
                     var green = colorPixel[1]
+                    var blue = colorPixel[2]
                     var alfa = colorPixel[3]
-
-                    newBitmap.setPixel(x, y, Color.argb(alfa, 0f, green, 0f))
-
+                    if (color == "green") {
+                        newBitmap.setPixel(x, y, Color.argb(alfa, 0f, green, 0f))
+                    }
+                    if (color == "red") {
+                        newBitmap.setPixel(x, y, Color.argb(alfa, red, 0f, 0f))
+                    }
+                    if (color == "blue") {
+                        newBitmap.setPixel(x, y, Color.argb(alfa, 0f, 0f, blue))
+                    }
+                    if (color == "yellow") {
+                        newBitmap.setPixel(x, y, Color.argb(alfa, red, green, 0f))
+                    }
+                    if (color == "gray") {
+                        var gray = 0.2126f * red + 0.7152f * green + 0.0722f * blue
+                        newBitmap.setPixel(x, y, Color.argb(alfa, gray, gray, gray))
+                    }
+                    if (color == "negative") {
+                        newBitmap.setPixel(x, y, Color.argb(alfa, 1 - red, 1 - green, 1 - blue))
+                    }
                     x++
                 }
                 k+=2
