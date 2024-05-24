@@ -7,9 +7,9 @@ import kotlin.math.pow
 
 class Resize: PhotoActivity() {
     fun upScale(bitmap: Bitmap, k: Float): Bitmap {
-        var width = (bitmap.width * k).toInt() + 1
-        var height = (bitmap.height * k).toInt() + 1
-        var scaleBitmap = Bitmap.createBitmap(width, height,Bitmap.Config.ARGB_8888)
+        val width = (bitmap.width * k).toInt() + 1
+        val height = (bitmap.height * k).toInt() + 1
+        val scaleBitmap = Bitmap.createBitmap(width, height,Bitmap.Config.ARGB_8888)
         var y = 0
         var scaleY = 0
         var yDist = k
@@ -20,12 +20,12 @@ class Resize: PhotoActivity() {
             var scaleX = 0
             var fine = 0f
             while (x < bitmap.width) {
-                var colorPixel = bitmap.getColor(x,y).components
-                var red = colorPixel[0]
-                var green = colorPixel[1]
-                var blue = colorPixel[2]
-                var alfa = colorPixel[3]
-                var xDist = k - fine
+                val colorPixel = bitmap.getColor(x,y).components
+                val red = colorPixel[0]
+                val green = colorPixel[1]
+                val blue = colorPixel[2]
+                val alfa = colorPixel[3]
+                val xDist = k - fine
                 var i = 0
                 while (i <= xDist-1) {
                     if (scaleX + i < scaleBitmap.width) {
@@ -36,11 +36,11 @@ class Resize: PhotoActivity() {
                 if (xDist - i > 0) {
                     fine =1 -( xDist - i)
                     if (x+1 < bitmap.width) {
-                        var nextColorPixel = bitmap.getColor(x+1,y).components
-                        var nextRed = nextColorPixel[0] * fine + red * (1-fine)
-                        var nextGreen = nextColorPixel[1] * fine + green * (1-fine)
-                        var nextBlue = nextColorPixel[2] * fine + blue * (1-fine)
-                        var nextAlfa = nextColorPixel[3] * fine + alfa * (1-fine)
+                        val nextColorPixel = bitmap.getColor(x+1,y).components
+                        val nextRed = nextColorPixel[0] * fine + red * (1-fine)
+                        val nextGreen = nextColorPixel[1] * fine + green * (1-fine)
+                        val nextBlue = nextColorPixel[2] * fine + blue * (1-fine)
+                        val nextAlfa = nextColorPixel[3] * fine + alfa * (1-fine)
                         scaleBitmap.setPixel(scaleX + i, scaleY, Color.argb(nextAlfa, nextRed, nextGreen, nextBlue))
                     }
                 } else {
@@ -59,11 +59,11 @@ class Resize: PhotoActivity() {
                 if (scaleY + j < scaleBitmap.height) {
                     x = 0
                     while (x < scaleBitmap.width) {
-                        var colorPixel = scaleBitmap.getColor(x,scaleY).components
-                        var red = colorPixel[0]
-                        var green = colorPixel[1]
-                        var blue = colorPixel[2]
-                        var alfa = colorPixel[3]
+                        val colorPixel = scaleBitmap.getColor(x,scaleY).components
+                        val red = colorPixel[0]
+                        val green = colorPixel[1]
+                        val blue = colorPixel[2]
+                        val alfa = colorPixel[3]
                         scaleBitmap.setPixel(x, scaleY +j, Color.argb(alfa, red, green, blue))
                         x++
                     }
@@ -90,29 +90,29 @@ class Resize: PhotoActivity() {
         while (y < scaleBitmap.height) {
             var x = 0
             while (x < scaleBitmap.width) {
-                var colorPixel = scaleBitmap.getColor(x,y).components
+                val colorPixel = scaleBitmap.getColor(x,y).components
                 var red = colorPixel[0]
                 var green = colorPixel[1]
                 var blue = colorPixel[2]
-                var alfa = colorPixel[3]
+                val alfa = colorPixel[3]
                 if (alfa <= 0) {
                     if (y-1 >= 0 && y+1 < scaleBitmap.height) {
-                        var prevColor = scaleBitmap.getColor(x,y-1).components
-                        var prevRed = prevColor[0]
-                        var prevGreen = prevColor[1]
-                        var prevBlue = prevColor[2]
-                        var prevAlfa = prevColor[3]
+                        val prevColor = scaleBitmap.getColor(x,y-1).components
+                        val prevRed = prevColor[0]
+                        val prevGreen = prevColor[1]
+                        val prevBlue = prevColor[2]
+                        val prevAlfa = prevColor[3]
 
-                        var nextColor = scaleBitmap.getColor(x,y+1).components
-                        var nextRed = nextColor[0]
-                        var nextGreen = nextColor[1]
-                        var nextBlue = nextColor[2]
-                        var nextAlfa = nextColor[3]
+                        val nextColor = scaleBitmap.getColor(x,y+1).components
+                        val nextRed = nextColor[0]
+                        val nextGreen = nextColor[1]
+                        val nextBlue = nextColor[2]
+                        val nextAlfa = nextColor[3]
 
-                        var newRed = 0.5f * prevRed + 0.5f * nextRed
-                        var newGreen = 0.5f * prevGreen + 0.5f * nextGreen
-                        var newBlue = 0.5f * prevBlue + 0.5f * nextBlue
-                        var newAlfa = 0.5f * prevAlfa + 0.5f * nextAlfa
+                        val newRed = 0.5f * prevRed + 0.5f * nextRed
+                        val newGreen = 0.5f * prevGreen + 0.5f * nextGreen
+                        val newBlue = 0.5f * prevBlue + 0.5f * nextBlue
+                        val newAlfa = 0.5f * prevAlfa + 0.5f * nextAlfa
                         if (prevAlfa > 0 && nextAlfa > 0) {
                             scaleBitmap.setPixel(x, y, Color.argb(newAlfa, newRed, newGreen, newBlue))
                         }
@@ -126,9 +126,9 @@ class Resize: PhotoActivity() {
         return scaleBitmap
     }
     fun downScale(bitmap: Bitmap, k: Float): Bitmap {
-        var width = (bitmap.width / k).toInt() + 1
-        var height = (bitmap.height / k).toInt() + 1
-        var scaleBitmap = Bitmap.createBitmap(width, height,Bitmap.Config.ARGB_8888)
+        val width = (bitmap.width / k).toInt() + 1
+        val height = (bitmap.height / k).toInt() + 1
+        val scaleBitmap = Bitmap.createBitmap(width, height,Bitmap.Config.ARGB_8888)
         var y = 0
         var yfine = 0f
         var scaleY = 0
@@ -137,7 +137,7 @@ class Resize: PhotoActivity() {
         while (y < bitmap.height) {
             var x = 0
             var scaleX = 0
-            var yDist = k - yfine
+            val yDist = k - yfine
             var xfine = 0f
             while (x < bitmap.width) {
                 var red = 0f
@@ -145,12 +145,12 @@ class Resize: PhotoActivity() {
                 var blue = 0f
                 var alfa = 0f
                 var square = 0f
-                var xDist = k - xfine
+                val xDist = k - xfine
                 var i = 0
                 if (yfine > 0) {
                     var i = 0
                     while (i <= xDist -1 && x + i < bitmap.width) {
-                        var tempColor = bitmap.getColor(x+i, y-1).components
+                        val tempColor = bitmap.getColor(x+i, y-1).components
                         red+= tempColor[0] / k.pow(2) * yfine
                         green+= tempColor[1] / k.pow(2) * yfine
                         blue+= tempColor[2] / k.pow(2) * yfine
@@ -159,7 +159,7 @@ class Resize: PhotoActivity() {
                         i++
                     }
                     if (x+i < bitmap.width) {
-                        var tempColor = bitmap.getColor(x+i, y-1).components
+                        val tempColor = bitmap.getColor(x+i, y-1).components
                         red+= tempColor[0] / k.pow(2) * yfine * (xDist%1)
                         green+= tempColor[1] / k.pow(2) * yfine * (xDist%1)
                         blue+= tempColor[2] / k.pow(2) * yfine * (xDist%1)
@@ -173,7 +173,7 @@ class Resize: PhotoActivity() {
                 if (xfine > 0) {
                     var j = 0
                     while (j <= yDist-1 && y+j < bitmap.height) {
-                        var tempColor = bitmap.getColor(x-1, y+j).components
+                        val tempColor = bitmap.getColor(x-1, y+j).components
                         red+= tempColor[0] / k.pow(2) * xfine
                         green+= tempColor[1] / k.pow(2) * xfine
                         blue+= tempColor[2] / k.pow(2) * xfine
@@ -182,7 +182,7 @@ class Resize: PhotoActivity() {
                         j++
                     }
                     if (y+j < bitmap.height) {
-                        var tempColor = bitmap.getColor(x-1, y+j).components
+                        val tempColor = bitmap.getColor(x-1, y+j).components
                         red+= tempColor[0] / k.pow(2) * xfine * (yDist%1)
                         green+= tempColor[1] / k.pow(2) * xfine * (yDist%1)
                         blue+= tempColor[2] / k.pow(2) * xfine * (yDist%1)
@@ -195,7 +195,7 @@ class Resize: PhotoActivity() {
                 while (i <= xDist -1 && x+i < bitmap.width) {
                     var j = 0
                     while (j <= yDist -1 && y+j < bitmap.height) {
-                        var tempColor = bitmap.getColor(x+i, y+j).components
+                        val tempColor = bitmap.getColor(x+i, y+j).components
                         red+= tempColor[0] / k.pow(2)
                         green+= tempColor[1] / k.pow(2)
                         blue+= tempColor[2] / k.pow(2)
@@ -208,7 +208,7 @@ class Resize: PhotoActivity() {
                 var j = 0
                 if (x+i < bitmap.width) {
                     while (j <= yDist-1 && y+j < bitmap.height) {
-                        var tempColor = bitmap.getColor(x+i, y+j).components
+                        val tempColor = bitmap.getColor(x+i, y+j).components
                         red+= tempColor[0] / k.pow(2) * (xDist%1)
                         green+= tempColor[1] / k.pow(2) * (xDist%1)
                         blue+= tempColor[2] / k.pow(2) * (xDist%1)
@@ -217,7 +217,7 @@ class Resize: PhotoActivity() {
                         j++
                     }
                     if (y+j < bitmap.height) {
-                        var tempColor = bitmap.getColor(x+i, y+j).components
+                        val tempColor = bitmap.getColor(x+i, y+j).components
                         red+= tempColor[0] / k.pow(2) * (xDist%1) * (yDist%1)
                         green+= tempColor[1] / k.pow(2) * (xDist%1) * (yDist%1)
                         blue+= tempColor[2] / k.pow(2) * (xDist%1) * (yDist%1)
@@ -229,7 +229,7 @@ class Resize: PhotoActivity() {
                 i = 0
                 if (y+j < bitmap.height) {
                     while (i <= xDist-1 && x+i < bitmap.width) {
-                        var tempColor = bitmap.getColor(x+i, y+j).components
+                        val tempColor = bitmap.getColor(x+i, y+j).components
                         red+= tempColor[0] / k.pow(2) * (yDist%1)
                         green+= tempColor[1] / k.pow(2) * (yDist%1)
                         blue+= tempColor[2] / k.pow(2) * (yDist%1)
@@ -238,7 +238,7 @@ class Resize: PhotoActivity() {
                         i++
                     }
                     if (x+i < bitmap.width && xDist < 1) {
-                        var tempColor = bitmap.getColor(x+i, y+j).components
+                        val tempColor = bitmap.getColor(x+i, y+j).components
                         red+= tempColor[0] / k.pow(2) * (yDist%1) * (xDist%1)
                         green+= tempColor[1] / k.pow(2) * (yDist%1) * (xDist%1)
                         blue+= tempColor[2] / k.pow(2) * (yDist%1) * (xDist%1)
@@ -275,14 +275,14 @@ class Resize: PhotoActivity() {
     }
 
     fun bilinearFilter(bitmap: Bitmap):Bitmap {
-        var newBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height,Bitmap.Config.ARGB_8888)
-        var kernel = mutableListOf<MutableList<Int>>()
+        val newBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height,Bitmap.Config.ARGB_8888)
+        val kernel = mutableListOf<MutableList<Int>>()
         kernel.add(mutableListOf(0,1,0))
         kernel.add(mutableListOf(1,1,1))
         kernel.add(mutableListOf(0,1,0))
 
-        var len = 3
-        var mid = 1
+        val len = 3
+        val mid = 1
         var i = 0
         while (i < bitmap.height) {
             var j = 0
@@ -297,7 +297,7 @@ class Resize: PhotoActivity() {
                     var x = 0
                     while (x < len) {
                         if ((j - mid + x) >= 0 && (j - mid + x) < bitmap.width && (i - mid + y) >= 0 && (i - mid + y) < bitmap.height) {
-                            var tempColors = bitmap.getColor(j - mid + x, i - mid + y).components
+                            val tempColors = bitmap.getColor(j - mid + x, i - mid + y).components
                             tempRed+= (tempColors[0] * kernel[y][x]).toFloat()
                             tempGreen+= (tempColors[1] * kernel[y][x]).toFloat()
                             tempBlue+= (tempColors[2] * kernel[y][x]).toFloat()
@@ -322,15 +322,15 @@ class Resize: PhotoActivity() {
     }
 
     fun trilinearFilter(minBitmap: Bitmap, nextBitmap: Bitmap):Bitmap {
-        var ansBitmap = Bitmap.createBitmap(minBitmap.width, minBitmap.height,Bitmap.Config.ARGB_8888)
-        var k = nextBitmap.width.toFloat() / minBitmap.width.toFloat()
-        var blurMinBitmap = bilinearFilter(minBitmap)
-        var blurNextBitmap = bilinearFilter(nextBitmap)
+        val ansBitmap = Bitmap.createBitmap(minBitmap.width, minBitmap.height,Bitmap.Config.ARGB_8888)
+        val k = nextBitmap.width.toFloat() / minBitmap.width.toFloat()
+        val blurMinBitmap = bilinearFilter(minBitmap)
+        val blurNextBitmap = bilinearFilter(nextBitmap)
         var x = 0
         while (x < ansBitmap.width) {
             var y = 0
             while (y < ansBitmap.height) {
-                var colorMin = blurMinBitmap.getColor(x,y).components
+                val colorMin = blurMinBitmap.getColor(x,y).components
                 var nextX = (x*k).toInt()
                 var nextY = (y*k).toInt()
                 if (nextX >= blurNextBitmap.width) {
@@ -339,11 +339,11 @@ class Resize: PhotoActivity() {
                 if (nextY >= blurNextBitmap.height) {
                     nextY = blurNextBitmap.height-1
                 }
-                var colorMax = blurNextBitmap.getColor(nextX, nextY).components
-                var red = (colorMin[0] + colorMax[0]) * 0.5f
-                var green = (colorMin[1] + colorMax[1]) * 0.5f
-                var blue = (colorMin[2] + colorMax[2]) * 0.5f
-                var alpha = (colorMin[3] + colorMax[3]) * 0.5f
+                val colorMax = blurNextBitmap.getColor(nextX, nextY).components
+                val red = (colorMin[0] + colorMax[0]) * 0.5f
+                val green = (colorMin[1] + colorMax[1]) * 0.5f
+                val blue = (colorMin[2] + colorMax[2]) * 0.5f
+                val alpha = (colorMin[3] + colorMax[3]) * 0.5f
                 ansBitmap.setPixel(x,y,Color.argb(alpha, red, green, blue))
                 y++
             }
