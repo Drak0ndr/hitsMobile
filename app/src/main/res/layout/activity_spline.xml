@@ -18,7 +18,7 @@
         android:layout_alignParentEnd="true"/>
 
     <com.example.hitsmobile.canvas.TriangleView
-        android:id="@+id/draw_view2"
+        android:id="@+id/triangle_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/linear"
@@ -29,7 +29,7 @@
         android:visibility="gone"/>
 
     <com.example.hitsmobile.canvas.SquareView
-        android:id="@+id/draw_view3"
+        android:id="@+id/square_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/linear"
@@ -40,7 +40,7 @@
         android:visibility="gone"/>
 
     <com.example.hitsmobile.canvas.HexagonView
-        android:id="@+id/draw_view4"
+        android:id="@+id/hexagon_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/linear"
@@ -51,7 +51,7 @@
         android:visibility="gone"/>
 
     <com.example.hitsmobile.canvas.OctagonView
-        android:id="@+id/draw_view5"
+        android:id="@+id/octagon_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/linear"
@@ -61,8 +61,8 @@
         android:layout_alignParentEnd="true"
         android:visibility="gone"/>
 
-    <com.example.hitsmobile.canvas.PoligonView
-        android:id="@+id/draw_view6"
+    <com.example.hitsmobile.canvas.PolygonView
+        android:id="@+id/polygon_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/linear"

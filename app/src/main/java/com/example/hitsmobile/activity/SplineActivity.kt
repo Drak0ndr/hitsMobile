@@ -15,18 +15,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.hitsmobile.R
-import com.example.hitsmobile.activity.SplineActivity.MyFun.imageView0
-import com.example.hitsmobile.activity.SplineActivity.MyFun.imageView1
-import com.example.hitsmobile.activity.SplineActivity.MyFun.imageView2
-import com.example.hitsmobile.activity.SplineActivity.MyFun.imageView3
-import com.example.hitsmobile.activity.SplineActivity.MyFun.imageView4
-import com.example.hitsmobile.activity.SplineActivity.MyFun.imageView5
-import com.example.hitsmobile.activity.SplineActivity.MyFun.paint
+import com.example.hitsmobile.activity.SplineActivity.MyVarSpline.drawView
+import com.example.hitsmobile.activity.SplineActivity.MyVarSpline.hexagonView
+import com.example.hitsmobile.activity.SplineActivity.MyVarSpline.octagonView
+import com.example.hitsmobile.activity.SplineActivity.MyVarSpline.paint
+import com.example.hitsmobile.activity.SplineActivity.MyVarSpline.polygonView
+import com.example.hitsmobile.activity.SplineActivity.MyVarSpline.squareView
+import com.example.hitsmobile.activity.SplineActivity.MyVarSpline.triangleView
 import com.example.hitsmobile.algorithms.ChoosingShapesFragment
 import com.example.hitsmobile.canvas.CustomView
 import com.example.hitsmobile.canvas.HexagonView
 import com.example.hitsmobile.canvas.OctagonView
-import com.example.hitsmobile.canvas.PoligonView
+import com.example.hitsmobile.canvas.PolygonView
 import com.example.hitsmobile.canvas.SquareView
 import com.example.hitsmobile.canvas.TriangleView
 
@@ -60,12 +60,12 @@ class SplineActivity : AppCompatActivity() {
             insets
         }
 
-        imageView4 = findViewById(R.id.draw_view)
-        imageView0 = findViewById(R.id.draw_view2)
-        imageView1 = findViewById(R.id.draw_view3)
-        imageView2 = findViewById(R.id.draw_view4)
-        imageView3 = findViewById(R.id.draw_view5)
-        imageView5 = findViewById(R.id.draw_view6)
+        drawView = findViewById(R.id.draw_view)
+        triangleView = findViewById(R.id.triangle_view)
+        squareView = findViewById(R.id.square_view)
+        hexagonView = findViewById(R.id.hexagon_view)
+        octagonView = findViewById(R.id.octagon_view)
+        polygonView = findViewById(R.id.polygon_view)
 
         /*Кнопка для диалога*/
         shapeBtn = findViewById(R.id.imgShapes)
@@ -78,10 +78,10 @@ class SplineActivity : AppCompatActivity() {
         /*Кнопка для алгоритма сплайна*/
         startBtn = findViewById(R.id.imgSpline)
         startBtn.setOnClickListener(){
-            if(MyFun.currShape == 6){
-                imageView5.start()
+            if(MyVarSpline.currShape == 6){
+                polygonView.start()
             }
-            else if(MyFun.currShape == 4 || MyFun.currShape == 5){
+            else if(MyVarSpline.currShape == 4 || MyVarSpline.currShape == 5){
                 paint.start()
             }
         }
@@ -99,21 +99,21 @@ class SplineActivity : AppCompatActivity() {
         /*Кнопка для отмены*/
         backBtn = findViewById(R.id.imgBack)
         backBtn.setOnClickListener {
-            when (MyFun.currShape) {
+            when (MyVarSpline.currShape) {
                 0 -> {
-                    imageView0.reset()
+                    triangleView.reset()
                 }
                 1 -> {
-                    imageView1.reset()
+                    squareView.reset()
                 }
                 2 -> {
-                    imageView2.reset()
+                    hexagonView.reset()
                 }
                 3 -> {
-                    imageView3.reset()
+                    octagonView.reset()
                 }
                 6 -> {
-                    imageView5.reset()
+                    polygonView.reset()
                 }
                 else -> {
                     paint.back()
@@ -165,71 +165,71 @@ class SplineActivity : AppCompatActivity() {
         } else super.onKeyDown(keyCode, event)
     }
 
-    object MyFun {
+    object MyVarSpline {
         /*Блок для рисования*/
         lateinit var paint: CustomView
 
         var currShape : Int = 4
-        lateinit var imageView4 : CustomView
-        lateinit var imageView0 : TriangleView
-        lateinit var imageView1 : SquareView
-        lateinit var imageView2 : HexagonView
-        lateinit var imageView3 : OctagonView
-        lateinit var imageView5 : PoligonView
+        lateinit var drawView : CustomView
+        lateinit var triangleView : TriangleView
+        lateinit var squareView : SquareView
+        lateinit var hexagonView : HexagonView
+        lateinit var octagonView : OctagonView
+        lateinit var polygonView : PolygonView
 
         fun checkView(numberView : Int){
             when(numberView){
                 0 -> {
                     currShape = 0
 
-                    imageView4.visibility = View.GONE
-                    imageView0.visibility = View.VISIBLE
-                    imageView1.visibility = View.GONE
-                    imageView2.visibility = View.GONE
-                    imageView3.visibility = View.GONE
-                    imageView5.visibility = View.GONE
+                    drawView.visibility = View.GONE
+                    triangleView.visibility = View.VISIBLE
+                    squareView.visibility = View.GONE
+                    hexagonView.visibility = View.GONE
+                    octagonView.visibility = View.GONE
+                    polygonView.visibility = View.GONE
                 }
                 1 -> {
                     currShape = 1
 
-                    imageView4.visibility = View.GONE
-                    imageView0.visibility = View.GONE
-                    imageView1.visibility = View.VISIBLE
-                    imageView2.visibility = View.GONE
-                    imageView3.visibility = View.GONE
-                    imageView5.visibility = View.GONE
+                    drawView.visibility = View.GONE
+                    triangleView.visibility = View.GONE
+                    squareView.visibility = View.VISIBLE
+                    hexagonView.visibility = View.GONE
+                    octagonView.visibility = View.GONE
+                    polygonView.visibility = View.GONE
                 }
                 2 -> {
                     currShape = 2
 
-                    imageView4.visibility = View.GONE
-                    imageView0.visibility = View.GONE
-                    imageView1.visibility = View.GONE
-                    imageView2.visibility = View.VISIBLE
-                    imageView3.visibility = View.GONE
-                    imageView5.visibility = View.GONE
+                    drawView.visibility = View.GONE
+                    triangleView.visibility = View.GONE
+                    squareView.visibility = View.GONE
+                    hexagonView.visibility = View.VISIBLE
+                    octagonView.visibility = View.GONE
+                    polygonView.visibility = View.GONE
                 }
                 3 -> {
                     currShape = 3
 
-                    imageView4.visibility = View.GONE
-                    imageView0.visibility = View.GONE
-                    imageView1.visibility = View.GONE
-                    imageView2.visibility = View.GONE
-                    imageView3.visibility = View.VISIBLE
-                    imageView5.visibility = View.GONE
+                    drawView.visibility = View.GONE
+                    triangleView.visibility = View.GONE
+                    squareView.visibility = View.GONE
+                    hexagonView.visibility = View.GONE
+                    octagonView.visibility = View.VISIBLE
+                    polygonView.visibility = View.GONE
                 }
                 4 -> {
                     if(currShape != 4){
                         paint.reset()
                         currShape = 4
 
-                        imageView4.visibility = View.VISIBLE
-                        imageView0.visibility = View.GONE
-                        imageView1.visibility = View.GONE
-                        imageView2.visibility = View.GONE
-                        imageView3.visibility = View.GONE
-                        imageView5.visibility = View.GONE
+                        drawView.visibility = View.VISIBLE
+                        triangleView.visibility = View.GONE
+                        squareView.visibility = View.GONE
+                        hexagonView.visibility = View.GONE
+                        octagonView.visibility = View.GONE
+                        polygonView.visibility = View.GONE
                     }
                 }
                 5 -> {
@@ -237,23 +237,23 @@ class SplineActivity : AppCompatActivity() {
                         paint.reset()
                         currShape = 5
 
-                        imageView4.visibility = View.VISIBLE
-                        imageView0.visibility = View.GONE
-                        imageView1.visibility = View.GONE
-                        imageView2.visibility = View.GONE
-                        imageView3.visibility = View.GONE
-                        imageView5.visibility = View.GONE
+                        drawView.visibility = View.VISIBLE
+                        triangleView.visibility = View.GONE
+                        squareView.visibility = View.GONE
+                        hexagonView.visibility = View.GONE
+                        octagonView.visibility = View.GONE
+                        polygonView.visibility = View.GONE
                     }
                 }
                 6 ->{
                     currShape = 6
 
-                    imageView4.visibility = View.GONE
-                    imageView0.visibility = View.GONE
-                    imageView1.visibility = View.GONE
-                    imageView2.visibility = View.GONE
-                    imageView3.visibility = View.GONE
-                    imageView5.visibility = View.VISIBLE
+                    drawView.visibility = View.GONE
+                    triangleView.visibility = View.GONE
+                    squareView.visibility = View.GONE
+                    hexagonView.visibility = View.GONE
+                    octagonView.visibility = View.GONE
+                    polygonView.visibility = View.VISIBLE
                 }
             }
         }

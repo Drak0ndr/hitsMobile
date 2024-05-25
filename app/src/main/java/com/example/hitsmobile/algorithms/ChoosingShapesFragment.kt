@@ -32,7 +32,7 @@ class ChoosingShapesFragment : DialogFragment() {
                 }
                 .setPositiveButton("OK"
                 ) { dialog, id ->
-                    SplineActivity.MyFun.checkView(currShape)
+                    SplineActivity.MyVarSpline.checkView(currShape)
                 }
                 .setNegativeButton("Отмена") {
                         dialog, id ->

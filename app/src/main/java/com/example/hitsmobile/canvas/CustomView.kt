@@ -54,7 +54,7 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
     }
 
     fun back() {
-        if(SplineActivity.MyFun.currShape == 5){
+        if(SplineActivity.MyVarSpline.currShape == 5){
             reset()
             invalidate()
         }
@@ -167,7 +167,7 @@ class CustomView @JvmOverloads constructor(context: Context?, attrs: AttributeSe
 
     fun start(){
         if(points.size > 1){
-            if(SplineActivity.MyFun.currShape == 4){
+            if(SplineActivity.MyVarSpline.currShape == 4){
                 points.add(points[points.size - 1])
                 points.add(0, points[0])
 

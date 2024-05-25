@@ -56,7 +56,38 @@ class Affinis {
             }
             x++
         }
-
+        x = 0
+        while (x < width) {
+            var y = 0
+            while (y < height) {
+                var k = 0f
+                var r = 0f
+                var g = 0f
+                var b = 0f
+                var a = 0f
+                var i = -1
+                while (i <= 1) {
+                    var j = -1
+                    while (j <= 1) {
+                        if (x + i >= 0 && x+i < width && y+j >= 0 && y + j < height) {
+                            var tempColor = resultBitmap.getColor(x+i, y+j).components
+                            r += tempColor[0]
+                            g += tempColor[1]
+                            b += tempColor[2]
+                            a += tempColor[3]
+                            k+=1
+                        }
+                        j++
+                    }
+                    i++
+                }
+                if (resultBitmap.getColor(x, y).components[3] == 0f) {
+                    resultBitmap.setPixel(x,y,Color.argb(a/k, r/k, g/k, b/k))
+                }
+                y++
+            }
+            x++
+        }
         return resultBitmap
     }
 }
