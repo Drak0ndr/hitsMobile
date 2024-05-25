@@ -12,7 +12,7 @@ import android.view.MotionEvent
 import android.view.View
 import kotlin.math.pow
 
-class PoligonView(context: Context, attrs: AttributeSet) : View(context, attrs) {
+class PolygonView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     private var pointSize = 20f
     private var pointMiddleSize = 15f
