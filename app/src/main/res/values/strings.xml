@@ -14,6 +14,14 @@
     <string name="btn_title2">Графический\nредактор</string>
     <string name="btn_title3">3D куб</string>
     <string name="btn_title4">Сплайны</string>
+    <string name="increase">Увеличение</string>
+    <string name="decrease">Уменьшение</string>
+    <string name="radius">Radius</string>
+    <string name="sharpness">Sharpness</string>
+    <string name="intensity_indicator">Intensity indicator</string>
+    <string name="start">Start</string>
+    <string name="first_points">First points</string>
+    <string name="second_points">Second points</string>
     <string-array name="choiceFilter">
         <item>Без фильтрации</item>
         <item>Билинейная</item>

@@ -45,6 +45,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
 import com.example.hitsmobile.R
+import com.example.hitsmobile.algorithms.Affinis
 import com.example.hitsmobile.algorithms.Mask
 import com.example.hitsmobile.algorithms.MyDialogFragment
 import com.example.hitsmobile.algorithms.Resize
@@ -181,6 +182,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
 
     private lateinit var selectedItem : String
 
+    private lateinit var backTransformImg : ImageView
+
     @SuppressLint("MissingInflatedId", "ClickableViewAccessibility", "ResourceType",
         "UseCompatLoadingForDrawables"
     )
@@ -266,6 +269,17 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 blueImg.visibility = View.GONE
                 greenImg.visibility = View.GONE
 
+                val affinis = Affinis()
+
+                val transformImg = affinis.transformBitmap(MyVariables.rotateImg, listSecondPoints[0].first, listSecondPoints[0].second,
+                    listSecondPoints[1].first, listSecondPoints[1].second, listSecondPoints[2].first, listSecondPoints[2].second,
+                    listFirstPoints[0].first, listFirstPoints[1].first, listFirstPoints[2].first, listFirstPoints[0].second,
+                    listFirstPoints[1].second, listFirstPoints[2].second)
+
+                MyVariables.backImg = MyVariables.rotateImg
+                MyVariables.rotateImg = transformImg
+
+                imageView.setImageBitmap(transformImg)
 
                 listSecondPoints.clear()
                 listFirstPoints.clear()
@@ -281,7 +295,6 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 selectedItem = parent.getItemAtPosition(position).toString()
-                println(selectedItem)
 
             }
 
@@ -446,6 +459,14 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             MyVariables.currImg = rotate.rotateRight(MyVariables.currImg)
         }
 
+        backTransformImg = findViewById(R.id.backImg)
+        backTransformImg.setOnClickListener(){
+            if(listFirstPoints.size == 0){
+                MyVariables.rotateImg = MyVariables.backImg
+                imageView.setImageBitmap(MyVariables.rotateImg)
+            }
+        }
+
         /*Кнопка для алгоритма маскирования*/
         maskingStartBtn = findViewById(R.id.maskingStartBtn)
         maskingStartBtn.setOnClickListener {
@@ -545,26 +566,28 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 val k = (seekBarResize.progress).toFloat() / 100
 
                 if(currRadio == 1){
-                    if(selectedItem == "Без фильтрации"){
-                        MyVariables.rotateImg = resize.bilinearFilter(resize.upScale(MyVariables.rotateImg, k))
+                    when (selectedItem) {
+                        "Без фильтрации" -> {
+                            MyVariables.rotateImg = resize.bilinearFilter(resize.upScale(MyVariables.rotateImg, k))
 
-                        MyVariables.currImg = resize.bilinearFilter(resize.upScale(MyVariables.currImg, k))
-                    }
-                    else if(selectedItem == "Билинейная"){
-                        MyVariables.rotateImg = resize.bilinearFilter(resize.upScale(
-                            resize.bilinearFilter(MyVariables.rotateImg), k))
+                            MyVariables.currImg = resize.bilinearFilter(resize.upScale(MyVariables.currImg, k))
+                        }
+                        "Билинейная" -> {
+                            MyVariables.rotateImg = resize.bilinearFilter(resize.upScale(
+                                resize.bilinearFilter(MyVariables.rotateImg), k))
 
-                        MyVariables.currImg = resize.bilinearFilter(resize.upScale(
-                            resize.bilinearFilter(MyVariables.currImg), k))
-                    }
-                    else{
-                        MyVariables.rotateImg = resize.bilinearFilter(resize.upScale(
-                            resize.trilinearFilter(MyVariables.rotateImg,
-                                resize.upScale(MyVariables.currImg, 1.5f * k)), k))
+                            MyVariables.currImg = resize.bilinearFilter(resize.upScale(
+                                resize.bilinearFilter(MyVariables.currImg), k))
+                        }
+                        else -> {
+                            MyVariables.rotateImg = resize.bilinearFilter(resize.upScale(
+                                resize.trilinearFilter(MyVariables.rotateImg,
+                                    resize.upScale(MyVariables.currImg, 1.5f * k)), k))
 
-                        MyVariables.currImg = resize.bilinearFilter(resize.upScale(
-                            resize.trilinearFilter(MyVariables.currImg,
-                                resize.upScale(MyVariables.currImg, 1.5f * k)), k))
+                            MyVariables.currImg = resize.bilinearFilter(resize.upScale(
+                                resize.trilinearFilter(MyVariables.currImg,
+                                    resize.upScale(MyVariables.currImg, 1.5f * k)), k))
+                        }
                     }
 
                     newImg.setImageBitmap(MyVariables.rotateImg)
@@ -572,34 +595,36 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                     seekBarResize.progress = 0
                 }
                 else{
-                    if(selectedItem == "Без фильтрации"){
-                        MyVariables.rotateImg = resize.trilinearFilter(resize.downScale(MyVariables.rotateImg, k),
-                            resize.downScale(MyVariables.rotateImg, 1.5f * k))
+                    when (selectedItem) {
+                        "Без фильтрации" -> {
+                            MyVariables.rotateImg = resize.trilinearFilter(resize.downScale(MyVariables.rotateImg, k),
+                                resize.downScale(MyVariables.rotateImg, 1.5f * k))
 
-                        MyVariables.currImg = resize.trilinearFilter(resize.downScale(MyVariables.currImg, k),
-                            resize.downScale(MyVariables.currImg, 1.5f * k))
-                    }
-                    else if(selectedItem == "Билинейная"){
-                        MyVariables.rotateImg = resize.trilinearFilter(resize.downScale(
-                            resize.bilinearFilter(MyVariables.rotateImg), k),
-                            resize.downScale(resize.bilinearFilter(MyVariables.rotateImg), 1.5f * k))
+                            MyVariables.currImg = resize.trilinearFilter(resize.downScale(MyVariables.currImg, k),
+                                resize.downScale(MyVariables.currImg, 1.5f * k))
+                        }
+                        "Билинейная" -> {
+                            MyVariables.rotateImg = resize.trilinearFilter(resize.downScale(
+                                resize.bilinearFilter(MyVariables.rotateImg), k),
+                                resize.downScale(resize.bilinearFilter(MyVariables.rotateImg), 1.5f * k))
 
-                        MyVariables.currImg = resize.trilinearFilter(resize.downScale(
-                            resize.bilinearFilter(MyVariables.currImg), k),
-                            resize.downScale(resize.bilinearFilter(MyVariables.currImg), 1.5f * k))
-                    }
-                    else{
-                        MyVariables.rotateImg = resize.trilinearFilter(resize.downScale(
-                            resize.trilinearFilter(MyVariables.rotateImg,
-                                resize.downScale(MyVariables.rotateImg, 1.5f * k)), k),
-                            resize.downScale(resize.trilinearFilter(MyVariables.rotateImg,
-                                resize.downScale(MyVariables.rotateImg, 1.5f * k)), 1.5f * k))
+                            MyVariables.currImg = resize.trilinearFilter(resize.downScale(
+                                resize.bilinearFilter(MyVariables.currImg), k),
+                                resize.downScale(resize.bilinearFilter(MyVariables.currImg), 1.5f * k))
+                        }
+                        else -> {
+                            MyVariables.rotateImg = resize.trilinearFilter(resize.downScale(
+                                resize.trilinearFilter(MyVariables.rotateImg,
+                                    resize.downScale(MyVariables.rotateImg, 1.5f * k)), k),
+                                resize.downScale(resize.trilinearFilter(MyVariables.rotateImg,
+                                    resize.downScale(MyVariables.rotateImg, 1.5f * k)), 1.5f * k))
 
-                        MyVariables.currImg = resize.trilinearFilter(resize.downScale(
-                            resize.trilinearFilter(MyVariables.currImg,
-                                resize.downScale(MyVariables.currImg, 1.5f * k)), k),
-                            resize.downScale(resize.trilinearFilter(MyVariables.currImg,
-                                resize.downScale(MyVariables.currImg, 1.5f * k)), 1.5f * k))
+                            MyVariables.currImg = resize.trilinearFilter(resize.downScale(
+                                resize.trilinearFilter(MyVariables.currImg,
+                                    resize.downScale(MyVariables.currImg, 1.5f * k)), k),
+                                resize.downScale(resize.trilinearFilter(MyVariables.currImg,
+                                    resize.downScale(MyVariables.currImg, 1.5f * k)), 1.5f * k))
+                        }
                     }
 
                     newImg.setImageBitmap(MyVariables.rotateImg)
@@ -619,49 +644,60 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                         val  x = event.x
                         val y = event.y
 
-                        if(MyVariables.isFirstPoints && x > 0 && y > 0 && x < pictureWidth && y < pictureHeight){
+                        imageView.imageMatrix.invert(inverse)
+                        val pts = floatArrayOf(event.x, event.y)
+                        inverse.mapPoints(pts)
+
+                        Log.d(
+                            ContentValues.TAG,
+                            "onTouch x: " + floor(pts[0].toDouble()) + ", y: " + floor(pts[1].toDouble())
+                        )
+
+                        if(MyVariables.isFirstPoints && floor(pts[0]) > 0 && floor(pts[1]) > 0 &&
+                            floor(pts[0]) < pictureWidth && floor(pts[1]) < pictureHeight){
                             when (listFirstPoints.size) {
                                 0 -> {
                                     val param = redImg.layoutParams as ViewGroup.MarginLayoutParams
                                     param.setMargins(x.toInt() - 30 ,y.toInt() - 30,0,0)
                                     redImg.visibility = View.VISIBLE
-                                    listFirstPoints.add(x to y)
+                                    listFirstPoints.add(floor(pts[0]) to floor(pts[1]))
                                 }
                                 1 -> {
                                     val param = blueImg.layoutParams as ViewGroup.MarginLayoutParams
                                     param.setMargins(x.toInt() - 30 ,y.toInt() - 30,0,0)
                                     blueImg.visibility = View.VISIBLE
-                                    listFirstPoints.add(x to y)
+                                    listFirstPoints.add(floor(pts[0]) to floor(pts[1]))
                                 }
                                 2 -> {
                                     val param = greenImg.layoutParams as ViewGroup.MarginLayoutParams
                                     param.setMargins(x.toInt() - 30,y.toInt() - 30,0,0)
                                     greenImg.visibility = View.VISIBLE
-                                    listFirstPoints.add(x to y)
+                                    listFirstPoints.add(floor(pts[0]) to floor(pts[1]))
                                     firstPointsBtn.background = this@PhotoActivity.getResources().getDrawable(R.drawable.btn_bg)
                                     MyVariables.isFirstPoints = false
                                 }
                             }
                         }
-                        else if(MyVariables.isSecondPoints && x > 0 && y > 0 && x < pictureWidth && y < pictureHeight){
+                        else if(MyVariables.isSecondPoints && floor(pts[0]) > 0 && floor(pts[1]) > 0 &&
+                            floor(pts[0]) < pictureWidth && floor(pts[1]) < pictureHeight){
                             when (listSecondPoints.size) {
                                 0 -> {
                                     val param = redImg.layoutParams as ViewGroup.MarginLayoutParams
                                     param.setMargins(x.toInt() - 30 ,y.toInt() - 30,0,0)
                                     redImg.visibility = View.VISIBLE
-                                    listSecondPoints.add(x to y)
+                                    listSecondPoints.add(floor(pts[0]) to floor(pts[1]))
                                 }
                                 1 -> {
                                     val param = blueImg.layoutParams as ViewGroup.MarginLayoutParams
                                     param.setMargins(x.toInt() - 30 ,y.toInt() - 30,0,0)
                                     blueImg.visibility = View.VISIBLE
-                                    listSecondPoints.add(x to y)
+                                    listSecondPoints.add(floor(pts[0]) to floor(pts[1]))
                                 }
                                 2 -> {
                                     val param = greenImg.layoutParams as ViewGroup.MarginLayoutParams
                                     param.setMargins(x.toInt() - 30,y.toInt() - 30,0,0)
                                     greenImg.visibility = View.VISIBLE
-                                    listSecondPoints.add(x to y)
+                                    listSecondPoints.add(floor(pts[0]) to floor(pts[1]))
                                     secondPointsBtn.background = this@PhotoActivity.getResources().getDrawable(R.drawable.btn_bg)
                                     MyVariables.isSecondPoints = false
                                 }
@@ -746,6 +782,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
     }
 
     /*Загружаем фото из галереи или камеры*/
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -791,7 +828,6 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                     MyVariables.rotateImg = MyVariables.currImg
                     MyVariables.isFace = false
 
-
                     runBlocking {
                         launch {
                             val resize = Resize()
@@ -807,6 +843,16 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 e.printStackTrace()
             }
         }
+
+        MyVariables.isFirstPoints = false
+        MyVariables.isSecondPoints = false
+        redImg.visibility = View.GONE
+        blueImg.visibility = View.GONE
+        greenImg.visibility = View.GONE
+        listSecondPoints.clear()
+        listFirstPoints.clear()
+        secondPointsBtn.background = this@PhotoActivity.getResources().getDrawable(R.drawable.btn_bg)
+        firstPointsBtn.background = this@PhotoActivity.getResources().getDrawable(R.drawable.btn_bg)
     }
 
     suspend fun fillList(image: Bitmap){
@@ -974,9 +1020,16 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
                 thread {
                     runBlocking {
                         launch(Dispatchers.IO) {
-                            filterImg = filter.changeContrast(MyVariables.currImg, 100f)
-                            newImg.setImageBitmap(filterImg)
-                            MyVariables.rotateImg = filterImg
+                            if(MyVariables.isFace){
+                                filterImg = filter.changeContrastSquare(MyVariables.currImg, MyVariables.processedBitmap, 100f)
+                                newImg.setImageBitmap(filterImg)
+                                MyVariables.rotateImg = filterImg
+                            }
+                            else{
+                                filterImg = filter.changeContrast(MyVariables.currImg, 100f)
+                                newImg.setImageBitmap(filterImg)
+                                MyVariables.rotateImg = filterImg
+                            }
                         }
                     }
                 }
@@ -1060,6 +1113,8 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
             TransitionManager.beginDelayedTransition(mainView, changeBounds)
 
             mConstraintSet.clear(currBlock, ConstraintSet.END)
+
+            currNumberBlock = 0
         }
 
         val changeBounds = ChangeBounds()
@@ -1071,47 +1126,49 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
     }
 
     override fun onToolSelected(toolType: ToolsType) {
-        when (toolType) {
-            ToolsType.ROTATE -> {
-                currNumberBlock = 1
-                showFilter(true)
-            }
+        if(currNumberBlock == 0){
+            when (toolType) {
+                ToolsType.ROTATE -> {
+                    currNumberBlock = 1
+                    showFilter(true)
+                }
 
-            ToolsType.RESIZE -> {
-                currNumberBlock = 2
-                showFilter(true)
-            }
+                ToolsType.RESIZE -> {
+                    currNumberBlock = 2
+                    showFilter(true)
+                }
 
-            /*Скролл для фильтров*/
-            ToolsType.FILTER -> {
-                currNumberBlock = 3
-                showFilter(true)
-            }
+                /*Скролл для фильтров*/
+                ToolsType.FILTER -> {
+                    currNumberBlock = 3
+                    showFilter(true)
+                }
 
-            ToolsType.RETOUCH -> {
-                currNumberBlock = 4
-                showFilter(true)
-                MyVariables.isRetouch = true
-            }
+                ToolsType.RETOUCH -> {
+                    currNumberBlock = 4
+                    showFilter(true)
+                    MyVariables.isRetouch = true
+                }
 
-            ToolsType.MASKING -> {
-                currNumberBlock = 5
-                showFilter(true)
-            }
+                ToolsType.MASKING -> {
+                    currNumberBlock = 5
+                    showFilter(true)
+                }
 
-            ToolsType.AFFINE -> {
-                currNumberBlock = 6
-                showFilter(true)
-            }
+                ToolsType.AFFINE -> {
+                    currNumberBlock = 6
+                    showFilter(true)
+                }
 
-            ToolsType.FACE -> {
-                val imageView = findViewById<ImageView>(R.id.photoEditorView)
+                ToolsType.FACE -> {
+                    val imageView = findViewById<ImageView>(R.id.photoEditorView)
 
-                val bitmap = (imageView.drawable as BitmapDrawable).bitmap
-                val mat = Mat()
-                Utils.bitmapToMat(bitmap, mat)
+                    val bitmap = (imageView.drawable as BitmapDrawable).bitmap
+                    val mat = Mat()
+                    Utils.bitmapToMat(bitmap, mat)
 
-                detectFaces(mat, imageView)
+                    detectFaces(mat, imageView)
+                }
             }
         }
     }
@@ -1179,6 +1236,7 @@ open class PhotoActivity: AppCompatActivity(), OnItemSelected, FilterViewAdapter
         /*Храним изображение, которое обрабатываем*/
         lateinit var currImg: Bitmap
         lateinit var rotateImg: Bitmap
+        lateinit var backImg: Bitmap
 
         var isRetouch : Boolean = false
 

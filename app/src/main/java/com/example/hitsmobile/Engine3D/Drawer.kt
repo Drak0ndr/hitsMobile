@@ -374,24 +374,24 @@ class Drawer {
             if (lenght > 1000) {
                 lenght = 1000
             }
-            var uz_a = uz1
-            var vz_a = vz1
-            var wz_a = wz1
-            var u_a = uz_a / wz_a
-            var v_a = vz_a / wz_a
+            var uzA = uz1
+            var vzA = vz1
+            var wzA = wz1
+            var uA = uzA / wzA
+            var vA = vzA / wzA
             var x = x1.toInt()
             while (lenght >= 8) {
-                var uz_b = uz_a + 8 * duz
-                var vz_b = vz_a + 8 * dvz
-                var wz_b = wz_a + 8 * dwz
-                var u_b = uz_b / wz_b
-                var v_b = vz_b / wz_b
+                var uzB = uzA + 8 * duz
+                var vzB = vzA + 8 * dvz
+                var wzB = wzA + 8 * dwz
+                var uB = uzB / wzB
+                var vB = vzB / wzB
 
-                u = u_a
-                v = v_a
+                u = uA
+                v = vA
 
-                var du = (u_b - u_a) / 8
-                var dv = (v_b - v_a) / 8
+                var du = (uB - uA) / 8
+                var dv = (vB - vA) / 8
 
                 var len = 8
                 while (len > 0) {
@@ -409,26 +409,26 @@ class Drawer {
                 }
 
                 lenght-=8
-                uz_a = uz_b
-                vz_a = vz_b
-                wz_a = wz_b
-                u_a = u_b
-                v_a = v_b
+                uzA = uzB
+                vzA = vzB
+                wzA = wzB
+                uA = uB
+                vA = vB
 
             }
 
             if (lenght > 0) {
-                var uz_b = uz2
-                var vz_b = vz2
-                var wz_b = wz2
-                var u_b = uz_b / wz_b
-                var v_b = vz_b / wz_b
+                var uzB = uz2
+                var vzB = vz2
+                var wzB = wz2
+                var uB = uzB / wzB
+                var vB = vzB / wzB
 
-                u = u_a
-                v = v_a
+                u = uA
+                v = vA
 
-                var du = (u_b - u_a) / lenght
-                var dv = (v_b - v_a) / lenght
+                var du = (uB - uA) / lenght
+                var dv = (vB - vA) / lenght
 
                 while (lenght > 0) {
                     if (u.toInt() >= 0 && u.toInt() < img.width && v.toInt() >= 0 && v.toInt() < img.height && x>=minX && x<=maxX) {

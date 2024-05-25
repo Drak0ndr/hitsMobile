@@ -2,22 +2,22 @@ package com.example.hitsmobile.algorithms
 
 import android.graphics.Bitmap
 import android.graphics.Color
-import kotlin.math.*
+import kotlin.math.pow
 
 class Retouch {
     fun gaussian(sigma: Float, y:Int,x:Int): Double {
-        var temp =  (- (x*x + y*y) / (2 * sigma.pow(2))).toDouble()
-        var ans = (1 / (3.14 * sigma.pow(2)) * 2.71.pow(temp))
+        val temp =  (- (x*x + y*y) / (2 * sigma.pow(2))).toDouble()
+        val ans = (1 / (3.14 * sigma.pow(2)) * 2.71.pow(temp))
         return ans
     }
     fun blurPixel(bitmap: Bitmap, x0:Int, y0:Int, r:Float): MutableList<Float> {
-        var kernel = mutableListOf<MutableList<Double>>()
-        var len = (r).toInt() * 2 + 1
-        var sigma = r/3
-        var mid = (r).toInt()
+        val kernel = mutableListOf<MutableList<Double>>()
+        val len = (r).toInt() * 2 + 1
+        val sigma = r/3
+        val mid = (r).toInt()
         var i = 0
         while (i < len) {
-            var temp = mutableListOf<Double>()
+            val temp = mutableListOf<Double>()
             var j = 0
             while (j < len) {
                 temp.add(gaussian(sigma, i-mid, j-mid))
@@ -36,7 +36,7 @@ class Retouch {
             var x = 0
             while (x < len) {
                 if ((x0 - mid + x) >= 0 && (x0 - mid + x) < bitmap.width && (y0 - mid + y) >= 0 && (y0 - mid + y) < bitmap.height) {
-                    var tempColors = bitmap.getColor(x0 - mid + x, y0 - mid + y).components
+                    val tempColors = bitmap.getColor(x0 - mid + x, y0 - mid + y).components
                     tempRed+= (tempColors[0] * kernel[y][x]).toFloat()
                     tempGreen+= (tempColors[1] * kernel[y][x]).toFloat()
                     tempBlue+= (tempColors[2] * kernel[y][x]).toFloat()
@@ -52,11 +52,11 @@ class Retouch {
         tempGreen = (tempGreen / kernelCoef).toFloat()
         tempBlue = (tempBlue / kernelCoef).toFloat()
         tempAlpha = (tempAlpha / kernelCoef).toFloat()
-        var ans = mutableListOf(tempAlpha, tempRed, tempGreen, tempBlue)
+        val ans = mutableListOf(tempAlpha, tempRed, tempGreen, tempBlue)
         return ans
     }
     fun blur(bitmap: Bitmap, r:Float, intensive:Float, x0:Int, y0:Int):Bitmap {
-        var testBitmap = bitmap.copy(bitmap.config, true)
+        val testBitmap = bitmap.copy(bitmap.config, true)
 //        var i = 0
 //        while (i < bitmap.width) {
 //            var j = 0
@@ -92,10 +92,10 @@ class Retouch {
         while (y <= endY && y < bitmap.height) {
             var x = startX
             while (x <= endX && x < bitmap.width) {
-                var dist = ((x-x0) * (x-x0) + (y-y0) * (y-y0)).toFloat().pow(0.5f)
+                val dist = ((x-x0) * (x-x0) + (y-y0) * (y-y0)).toFloat().pow(0.5f)
                 if (dist < r) {
-                    var delta = (dist).toInt() * intensive/r
-                    var data = blurPixel(bitmap, x,y, intensive - delta)
+                    val delta = (dist).toInt() * intensive/r
+                    val data = blurPixel(bitmap, x,y, intensive - delta)
                     testBitmap.setPixel(x, y, Color.argb(data[0], data[1], data[2], data[3]))
                 }
                 x++

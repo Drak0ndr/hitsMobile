@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape>
-            <gradient android:startColor = "#997c3660"
+            <gradient android:startColor = "@color/pink_bg"
                 android:type = "radial"
                 android:gradientRadius = "110%p"
                 android:centerX = "0.2"/>
@@ -10,7 +10,7 @@
     </item>
     <item>
         <shape>
-            <gradient android:startColor = "#800f8a75"
+            <gradient android:startColor = "@color/green_bg"
                 android:type = "radial"
                 android:gradientRadius = "110%p"
                 android:centerY = "0.6"

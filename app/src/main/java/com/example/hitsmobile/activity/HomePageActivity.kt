@@ -15,16 +15,16 @@ class HomePageActivity : AppCompatActivity() {
     var backPressedTime: Long = 0
 
     /*Переход на страницу с фото*/
-    public lateinit var algorithmsBtn : AppCompatButton
+    lateinit var algorithmsBtn : AppCompatButton
 
     /*Переход на страницу с рисованием*/
-    public lateinit var drawingBtn : AppCompatButton
+    lateinit var drawingBtn : AppCompatButton
 
     /*Переход на страницу со сплайнами*/
-    public lateinit var splineBtn : AppCompatButton
+    lateinit var splineBtn : AppCompatButton
 
     /*Переход на страницу с кубом*/
-    public lateinit var btn3D : AppCompatButton
+    lateinit var btn3D : AppCompatButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

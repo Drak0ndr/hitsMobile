@@ -136,8 +136,8 @@ class TriangleView (context: Context, attrs: AttributeSet) : View(context, attrs
         invalidate()
     }
 
-    fun cubicInterpolation(path : Path, x1 : Float, y1 : Float, x2 : Float, y2 : Float,
-                           x3 : Float, y3 : Float){
+    private fun cubicInterpolation(path : Path, x1 : Float, y1 : Float, x2 : Float, y2 : Float,
+                                   x3 : Float, y3 : Float){
         var t = 0.0f
 
         while(t <= 1) {

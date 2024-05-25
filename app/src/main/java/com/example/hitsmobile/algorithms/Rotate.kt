@@ -11,19 +11,19 @@ import kotlin.math.sin
 
 class Rotate: PhotoActivity() {
     fun rotateRight(bitmap: Bitmap): Bitmap {
-        var rotatedBitmap = Bitmap.createBitmap(bitmap.height, bitmap.width,Bitmap.Config.ARGB_8888)
-        var width = bitmap.width
-        var height = bitmap.height
+        val rotatedBitmap = Bitmap.createBitmap(bitmap.height, bitmap.width,Bitmap.Config.ARGB_8888)
+        val width = bitmap.width
+        val height = bitmap.height
         var x = 0
         var y = 0
         while (x < width) {
             y = 0
             while (y< height) {
-                var colorPixel = bitmap.getColor(x,y).components
-                var red = colorPixel[0]
-                var green = colorPixel[1]
-                var blue = colorPixel[2]
-                var alfa = colorPixel[3]
+                val colorPixel = bitmap.getColor(x,y).components
+                val red = colorPixel[0]
+                val green = colorPixel[1]
+                val blue = colorPixel[2]
+                val alfa = colorPixel[3]
                 rotatedBitmap.setPixel(height -1 -y, x, Color.argb(alfa, red, green, blue))
                 y++
             }
@@ -33,19 +33,19 @@ class Rotate: PhotoActivity() {
     }
 
     fun rotateLeft(bitmap: Bitmap): Bitmap {
-        var rotatedBitmap = Bitmap.createBitmap(bitmap.height, bitmap.width,Bitmap.Config.ARGB_8888)
-        var width = bitmap.width
-        var height = bitmap.height
+        val rotatedBitmap = Bitmap.createBitmap(bitmap.height, bitmap.width,Bitmap.Config.ARGB_8888)
+        val width = bitmap.width
+        val height = bitmap.height
         var x = 0
         var y = 0
         while (x < width) {
             y = 0
             while (y< height) {
-                var colorPixel = bitmap.getColor(x,y).components
-                var red = colorPixel[0]
-                var green = colorPixel[1]
-                var blue = colorPixel[2]
-                var alfa = colorPixel[3]
+                val colorPixel = bitmap.getColor(x,y).components
+                val red = colorPixel[0]
+                val green = colorPixel[1]
+                val blue = colorPixel[2]
+                val alfa = colorPixel[3]
                 rotatedBitmap.setPixel(y, width -1 - x, Color.argb(alfa, red, green, blue))
                 y++
             }
@@ -56,13 +56,13 @@ class Rotate: PhotoActivity() {
 
     fun getFourPixels(arr: MutableList<MutableList<Float>>, x0: Float, y0:Float): MutableList<MutableList<Float>> {
         val mutableCopy = arr.toMutableList()
-        var ans = mutableListOf<MutableList<Float>>()
+        val ans = mutableListOf<MutableList<Float>>()
         var i = 0
         while (i < 4) {
             var pixel = mutableListOf<Float>()
             var distPixel = Float.MAX_VALUE
             for (item in mutableCopy) {
-                var dist = ((item[0] - x0).pow(2) + (item[1] - y0).pow(2)).pow(0.5f)
+                val dist = ((item[0] - x0).pow(2) + (item[1] - y0).pow(2)).pow(0.5f)
                 if (dist < distPixel) {
                     distPixel = dist
                     pixel = item
@@ -80,40 +80,40 @@ class Rotate: PhotoActivity() {
     }
 
     fun rotatefloat(bitmap: Bitmap, deg: Int): Bitmap {
-        var rotatedBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height,Bitmap.Config.ARGB_8888)
-        var arr = mutableListOf<MutableList<Float>>()
-        var y0 = bitmap.height /2
-        var x0 = bitmap.width /2
-        var angle = PI / 360 * deg
+        val rotatedBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height,Bitmap.Config.ARGB_8888)
+        val arr = mutableListOf<MutableList<Float>>()
+        val y0 = bitmap.height /2
+        val x0 = bitmap.width /2
+        val angle = PI / 360 * deg
         var y = 0
         while (y < bitmap.height) {
             var x = 0
             while (x < bitmap.width) {
-                var colorPixel = bitmap.getColor(x,y).components
-                var red = colorPixel[0]
-                var green = colorPixel[1]
-                var blue = colorPixel[2]
-                var alfa = colorPixel[3]
-                var newX:Float = ((x0 - x) * cos(angle) - (y0- y) * sin(angle)).toFloat()
-                var newY:Float = ((x0 - x) * sin(angle) + (y0- y) * cos(angle)).toFloat()
+                val colorPixel = bitmap.getColor(x,y).components
+                val red = colorPixel[0]
+                val green = colorPixel[1]
+                val blue = colorPixel[2]
+                val alfa = colorPixel[3]
+                val newX:Float = ((x0 - x) * cos(angle) - (y0- y) * sin(angle)).toFloat()
+                val newY:Float = ((x0 - x) * sin(angle) + (y0- y) * cos(angle)).toFloat()
 
-                var data = mutableListOf(newX, newY, red, green, blue, alfa)
+                val data = mutableListOf(newX, newY, red, green, blue, alfa)
                 arr.add(data)
                 x++
             }
             y++
         }
-        var centerX = rotatedBitmap.width / 2
-        var centerY = rotatedBitmap.height / 2
+        val centerX = rotatedBitmap.width / 2
+        val centerY = rotatedBitmap.height / 2
         y = 0
         while (y < rotatedBitmap.height) {
             var x = 0
             while (x < rotatedBitmap.width) {
-                var temp = getFourPixels(arr, (centerX - x).toFloat(), (centerY - y).toFloat())
-                var red =  0.5f * temp[0][2] + 0.25f * temp[1][2] + 0.13f * temp[2][2] + 0.12f * temp[3][2]
-                var green = 0.5f * temp[0][3] + 0.25f * temp[1][3] + 0.13f * temp[2][3] + 0.12f * temp[3][3]
-                var blue = 0.5f * temp[0][4] + 0.25f * temp[1][4] + 0.13f * temp[2][4] + 0.12f * temp[3][4]
-                var alfa = 0.5f * temp[0][5] + 0.25f * temp[1][5] + 0.13f * temp[2][5] + 0.12f * temp[3][5]
+                val temp = getFourPixels(arr, (centerX - x).toFloat(), (centerY - y).toFloat())
+                val red =  0.5f * temp[0][2] + 0.25f * temp[1][2] + 0.13f * temp[2][2] + 0.12f * temp[3][2]
+                val green = 0.5f * temp[0][3] + 0.25f * temp[1][3] + 0.13f * temp[2][3] + 0.12f * temp[3][3]
+                val blue = 0.5f * temp[0][4] + 0.25f * temp[1][4] + 0.13f * temp[2][4] + 0.12f * temp[3][4]
+                val alfa = 0.5f * temp[0][5] + 0.25f * temp[1][5] + 0.13f * temp[2][5] + 0.12f * temp[3][5]
                 rotatedBitmap.setPixel(x, y, Color.argb(alfa, red, green, blue))
 
                 x++
@@ -126,37 +126,37 @@ class Rotate: PhotoActivity() {
 
     fun rotateAny(bitmap: Bitmap, deg: Int): Bitmap {
 
-        var arr = mutableListOf<MutableList<Float>>()
-        var y0 = bitmap.height /2
-        var x0 = bitmap.width /2
-        var angle = PI / 180 * deg
-        var newWidth = (x0 * cos(angle) + y0 * abs(sin(angle))).toInt() * 2
-        var newHeight = (x0 * abs(sin(angle)) + y0 * cos(angle)).toInt() * 2
-        var rotatedBitmap = Bitmap.createBitmap(newWidth, newHeight ,Bitmap.Config.ARGB_8888)
+        val arr = mutableListOf<MutableList<Float>>()
+        val y0 = bitmap.height /2
+        val x0 = bitmap.width /2
+        val angle = PI / 180 * deg
+        val newWidth = (x0 * cos(angle) + y0 * abs(sin(angle))).toInt() * 2
+        val newHeight = (x0 * abs(sin(angle)) + y0 * cos(angle)).toInt() * 2
+        val rotatedBitmap = Bitmap.createBitmap(newWidth, newHeight ,Bitmap.Config.ARGB_8888)
         var y = 0
-        var xCenter = rotatedBitmap.width / 2
-        var yCenter = rotatedBitmap.height / 2
+        val xCenter = rotatedBitmap.width / 2
+        val yCenter = rotatedBitmap.height / 2
         while (y < bitmap.height) {
             var x = 0
             while (x < bitmap.width) {
-                var colorPixel = bitmap.getColor(x,y).components
-                var red = colorPixel[0]
-                var green = colorPixel[1]
-                var blue = colorPixel[2]
-                var alfa = colorPixel[3]
-                var newX:Float = ((x0 - x) * cos(angle) - (y0- y) * sin(angle)).toFloat()
-                var newY:Float = ((x0 - x) * sin(angle) + (y0- y) * cos(angle)).toFloat()
+                val colorPixel = bitmap.getColor(x,y).components
+                val red = colorPixel[0]
+                val green = colorPixel[1]
+                val blue = colorPixel[2]
+                val alfa = colorPixel[3]
+                val newX:Float = ((x0 - x) * cos(angle) - (y0- y) * sin(angle)).toFloat()
+                val newY:Float = ((x0 - x) * sin(angle) + (y0- y) * cos(angle)).toFloat()
                 var bestDist = Float.MAX_VALUE
                 var bestX = 0
                 var bestY = 0
-                var indX = newX.toInt()
-                var indY = newY.toInt()
+                val indX = newX.toInt()
+                val indY = newY.toInt()
 
                 var i = -1
                 while (i <= 1) {
                     var j = -1
                     while (j <= 1) {
-                        var dist = ((indX + i - newX).pow(2) + (indY + j - newY).pow(2)).pow(0.5f)
+                        val dist = ((indX + i - newX).pow(2) + (indY + j - newY).pow(2)).pow(0.5f)
                         if (dist < bestDist) {
                             bestDist = dist
                             bestX = indX + i
@@ -170,25 +170,25 @@ class Rotate: PhotoActivity() {
                     rotatedBitmap.setPixel(xCenter - bestX, yCenter -bestY, Color.argb(alfa, red, green, blue))
                 }
 
-                var data = mutableListOf(newX, newY, red, green, blue, alfa)
+                val data = mutableListOf(newX, newY, red, green, blue, alfa)
                 arr.add(data)
                 x++
             }
             y++
         }
-        var ans = fillEmptyPixels(rotatedBitmap)
+        val ans = fillEmptyPixels(rotatedBitmap)
         return ans
     }
 
     fun fillEmptyPixels(bitmap: Bitmap): Bitmap {
-        var newBitmap = bitmap.copy(bitmap.config, true)
+        val newBitmap = bitmap.copy(bitmap.config, true)
         var x = 0
         var y = 0
         while (x < bitmap.width) {
             y = 0
             while (y < bitmap.height) {
-                var colorPixel = bitmap.getColor(x,y).components
-                var neighboringPixels = mutableListOf<MutableList<Float>>()
+                val colorPixel = bitmap.getColor(x,y).components
+                val neighboringPixels = mutableListOf<MutableList<Float>>()
 
                 if (colorPixel[3] <= 0) {
                     var i = -1
@@ -197,13 +197,13 @@ class Rotate: PhotoActivity() {
                         j = -1
                         while (j <=1) {
                             if ((x+i) >= 0 && (x+i) < bitmap.width && (y+j) >=0 && (y+j) < bitmap.height) {
-                                var tempColorPixel = bitmap.getColor(x + i,y + j).components
-                                var red = tempColorPixel[0]
-                                var green = tempColorPixel[1]
-                                var blue = tempColorPixel[2]
-                                var alfa = tempColorPixel[3]
+                                val tempColorPixel = bitmap.getColor(x + i,y + j).components
+                                val red = tempColorPixel[0]
+                                val green = tempColorPixel[1]
+                                val blue = tempColorPixel[2]
+                                val alfa = tempColorPixel[3]
                                 if (alfa > 0) {
-                                    var data = mutableListOf(red, green, blue, alfa)
+                                    val data = mutableListOf(red, green, blue, alfa)
                                     neighboringPixels.add(data)
                                 }
                             }

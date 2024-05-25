@@ -25,8 +25,8 @@
 
     <ImageView
         android:id="@+id/redImg"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/point_size"
+        android:layout_height="@dimen/point_size"
         android:background="@drawable/red"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,8 +35,8 @@
 
     <ImageView
         android:id="@+id/blueImg"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/point_size"
+        android:layout_height="@dimen/point_size"
         android:background="@drawable/blue"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,8 +45,8 @@
 
     <ImageView
         android:id="@+id/greenImg"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/point_size"
+        android:layout_height="@dimen/point_size"
         android:background="@drawable/green"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
@@ -62,48 +62,48 @@
 
     <ImageView
         android:id="@+id/imgCamera"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="@dimen/circle_size"
+        android:layout_height="@dimen/circle_size"
         android:src="@drawable/circle_camera"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/main"
         app:layout_constraintRight_toRightOf="@+id/main"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewTools"
         app:layout_constraintVertical_bias="0.5"
-        android:layout_margin="10dp">
+        android:layout_margin="@dimen/circle_margin">
     </ImageView>
 
     <ImageView
         android:id="@+id/imgHome"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="@dimen/circle_size"
+        android:layout_height="@dimen/circle_size"
         android:src="@drawable/circle_home"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/main"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewTools"
-        android:layout_margin="10dp">
+        android:layout_margin="@dimen/circle_margin">
     </ImageView>
 
     <ImageView
         android:id="@+id/imgGallery"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="@dimen/circle_size"
+        android:layout_height="@dimen/circle_size"
         android:src="@drawable/circle_gallery"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/imgHome"
         app:layout_constraintRight_toRightOf="@+id/imgCamera"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewTools"
-        android:layout_margin="10dp">
+        android:layout_margin="@dimen/circle_margin">
     </ImageView>
 
     <ImageView
         android:id="@+id/imgSave"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="@dimen/circle_size"
+        android:layout_height="@dimen/circle_size"
         app:layout_constraintLeft_toLeftOf="@+id/imgShare"
         app:layout_constraintRight_toRightOf="@+id/imgCamera"
         android:src="@drawable/circle_save"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/circle_margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewTools">
@@ -111,14 +111,14 @@
 
     <ImageView
         android:id="@+id/imgShare"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="@dimen/circle_size"
+        android:layout_height="@dimen/circle_size"
         android:src="@drawable/circle_share"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/imgCamera"
         app:layout_constraintRight_toRightOf="@+id/imgSave"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewTools"
-        android:layout_margin="10dp">
+        android:layout_margin="@dimen/circle_margin">
     </ImageView>
 
     <ImageView
@@ -180,8 +180,8 @@
 
         <ImageView
             android:id="@+id/imgRightRotate"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="@dimen/circle_size"
+            android:layout_height="@dimen/circle_size"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
             android:layout_toEndOf="@+id/seekBarRotate"
@@ -190,8 +190,8 @@
 
         <ImageView
             android:id="@+id/imgLeftRotate"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="@dimen/circle_size"
+            android:layout_height="@dimen/circle_size"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
             android:layout_toStartOf="@+id/seekBarRotate"
@@ -201,44 +201,44 @@
         <TextView
             android:id="@+id/progressBarMin"
             style="@style/TextAppearance.Material3.LabelLarge"
-            android:layout_width="40dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/progress_text_width"
+            android:layout_height="@dimen/progress_text_height"
             android:layout_alignStart="@+id/seekBarRotate"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="8dp"
             android:orientation="vertical"
             android:text="-45"
-            android:layout_marginLeft = "25dp"
+            android:layout_marginStart = "@dimen/progress_text_margin_side"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="@dimen/progress_text_size"
             android:textAlignment="center"/>
 
         <TextView
             android:id="@+id/progressBarMax"
             style="@style/TextAppearance.Material3.LabelLarge"
-            android:layout_width="40dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/progress_text_width"
+            android:layout_height="@dimen/progress_text_height"
             android:layout_alignEnd="@+id/seekBarRotate"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="@dimen/progress_text_margin_bottom"
             android:orientation="vertical"
             android:text="45"
-            android:layout_marginRight="25dp"
+            android:layout_marginEnd="@dimen/progress_text_margin_side"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="@dimen/progress_text_size"
             android:textAlignment="center"/>
 
         <TextView
             android:id="@+id/progressBarCurr"
             style="@style/TextAppearance.Material3.LabelLarge"
-            android:layout_width="40dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/progress_text_width"
+            android:layout_height="@dimen/progress_text_height"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="@dimen/progress_text_margin_bottom"
             android:layout_centerHorizontal="true"
             android:text="0"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="@dimen/progress_text_size"
             android:textAlignment="center"/>
 
     </RelativeLayout>
@@ -255,8 +255,8 @@
 
         <Spinner
             android:id="@+id/mySpinner"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="@dimen/circle_size"
+            android:layout_height="@dimen/circle_size"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"/>
 
@@ -283,27 +283,26 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
                     android:gravity="center"
-                    android:layout_centerInParent="true"
                     android:layout_gravity="center">
 
                         <RadioButton
                             android:id="@+id/radio1"
-                            android:layout_width="150dp"
+                            android:layout_width="@dimen/radio_btn_width"
                             android:layout_height="match_parent"
                             android:checked="true"
-                            android:text="Увеличение"
+                            android:text="@string/increase"
                             android:textColor="@color/white"
-                            android:textSize="20sp"
+                            android:textSize="@dimen/progress_text_size"
                             app:buttonTint="@color/green" />
 
                         <RadioButton
                             android:id="@+id/radio2"
-                            android:layout_width="150dp"
+                            android:layout_width="@dimen/radio_btn_width"
                             android:layout_height="match_parent"
-                            android:text="Уменьшение"
+                            android:text="@string/decrease"
                             app:buttonTint="@color/green"
                             android:textColor="@color/white"
-                            android:textSize="20sp" />
+                            android:textSize="@dimen/progress_text_size" />
 
                 </RadioGroup>
 
@@ -313,14 +312,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
                 android:gravity="center"
-                android:layout_centerInParent="true"
                 android:layout_gravity="center">
 
                 <SeekBar
                     android:id="@+id/seekBarResize"
                     android:layout_width="300dp"
                     android:layout_height="12dp"
-                    android:layout_below="@+id/radio_group"
                     android:max="1000"
                     android:min="100"
                     android:progress="100"
@@ -336,43 +333,43 @@
                 <TextView
                     android:id="@+id/progressBarMinResize"
                     style="@style/TextAppearance.Material3.LabelLarge"
-                    android:layout_width="50dp"
-                    android:layout_height="30dp"
+                    android:layout_width="@dimen/resize_txt_width"
+                    android:layout_height="@dimen/resize_txt_height"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:text="1.0"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/progress_text_size"
                     android:textColor="@color/white"
                     android:textAlignment="center"
-                    android:layout_marginLeft="70dp"/>
+                    android:layout_marginStart="@dimen/resize_txt_margin"/>
 
                 <TextView
                     android:id="@+id/progressBarMaxResize"
                     style="@style/TextAppearance.Material3.LabelLarge"
-                    android:layout_width="50dp"
-                    android:layout_height="30dp"
+                    android:layout_width="@dimen/resize_txt_width"
+                    android:layout_height="@dimen/resize_txt_height"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:text="10.0"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/progress_text_size"
                     android:textColor="@color/white"
                     android:textAlignment="center"
-                    android:layout_marginRight="70dp"/>
+                    android:layout_marginEnd="@dimen/resize_txt_margin"/>
 
                 <TextView
                     android:id="@+id/progressBarCurrResize"
                     style="@style/TextAppearance.Material3.LabelLarge"
-                    android:layout_width="50dp"
-                    android:layout_height="30dp"
+                    android:layout_width="@dimen/resize_txt_width"
+                    android:layout_height="@dimen/resize_txt_height"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:text="1.0"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/progress_text_size"
                     android:textAlignment="center"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -414,7 +411,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
-                    android:text="Radius"
+                    android:text="@string/radius"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="22sp"
@@ -438,13 +435,13 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="@dimen/retouch_img_size"
+                        android:layout_height="@dimen/retouch_img_size"
                         android:text="1"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="20sp"
-                        android:layout_marginLeft="30dp"
+                        android:textSize="@dimen/retouch_txt_size"
+                        android:layout_marginStart="@dimen/retouch_img_margin"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent">
@@ -452,13 +449,13 @@
                     </TextView>
 
                     <TextView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="@dimen/retouch_img_size"
+                        android:layout_height="@dimen/retouch_img_size"
                         android:text="10"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="20sp"
-                        android:layout_marginRight="30dp"
+                        android:textSize="@dimen/retouch_txt_size"
+                        android:layout_marginEnd="@dimen/retouch_img_margin"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent">
@@ -466,12 +463,12 @@
 
                     <TextView
                         android:id="@+id/currRadius"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="@dimen/retouch_img_size"
+                        android:layout_height="@dimen/retouch_img_size"
                         android:text="5"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/retouch_txt_size"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -491,7 +488,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
-                    android:text="Sharpness"
+                    android:text="@string/sharpness"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="22sp"
@@ -515,13 +512,13 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:layout_marginLeft="30dp"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_marginStart="@dimen/retouch_img_margin"
+                        android:layout_width="@dimen/retouch_img_size"
+                        android:layout_height="@dimen/retouch_img_size"
                         android:text="1"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/retouch_txt_size"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent">
@@ -529,13 +526,13 @@
                     </TextView>
 
                     <TextView
-                        android:layout_marginRight="30dp"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_marginEnd="@dimen/retouch_img_margin"
+                        android:layout_width="@dimen/retouch_img_size"
+                        android:layout_height="@dimen/retouch_img_size"
                         android:text="10"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/retouch_txt_size"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent">
@@ -543,12 +540,12 @@
 
                     <TextView
                         android:id="@+id/currSharpness"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="@dimen/retouch_img_size"
+                        android:layout_height="@dimen/retouch_img_size"
                         android:text="5"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/retouch_txt_size"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -595,7 +592,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
                     android:padding="4dp"
-                    android:text="Intensity indicator"
+                    android:text="@string/intensity_indicator"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="24sp">
@@ -628,27 +625,27 @@
                     <TextView
                         android:id="@+id/progressBarMin2"
                         style="@style/TextAppearance.Material3.LabelLarge"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="@dimen/masking_img_size"
+                        android:layout_height="@dimen/masking_img_size"
                         android:orientation="vertical"
                         android:text="0"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="20sp"
-                        android:layout_marginLeft="35dp"
+                        android:textSize="@dimen/progress_text_size"
+                        android:layout_marginStart="35dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/progressBarCurr2"
                         style="@style/TextAppearance.Material3.LabelLarge"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="@dimen/masking_img_size"
+                        android:layout_height="@dimen/masking_img_size"
                         android:orientation="vertical"
                         android:text="5"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/progress_text_size"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"/>
@@ -656,15 +653,15 @@
                     <TextView
                         android:id="@+id/progressBarMax2"
                         style="@style/TextAppearance.Material3.LabelLarge"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="@dimen/masking_img_size"
+                        android:layout_height="@dimen/masking_img_size"
                         android:text="10"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/progress_text_size"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginRight="35dp"/>
+                        android:layout_marginEnd="35dp"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -682,7 +679,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="40dp"
                     android:background="@drawable/btn_bg"
-                    android:text="Start">
+                    android:text="@string/start">
                 </androidx.appcompat.widget.AppCompatButton>
 
             </LinearLayout>
@@ -725,22 +722,22 @@
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/pointsBtn1"
-                        android:layout_width="120dp"
-                        android:layout_height="36dp"
+                        android:layout_width="@dimen/transform_btn_width"
+                        android:layout_height="@dimen/transform_btn_height"
                         android:background="@drawable/btn_bg"
-                        android:text="First points"
-                        android:layout_marginRight="10dp"
+                        android:text="@string/first_points"
+                        android:layout_marginEnd="@dimen/transform_btn_margin"
                         android:textColor="@color/white"
                         android:textSize="12sp">
                     </androidx.appcompat.widget.AppCompatButton>
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/pointsBtn2"
-                        android:layout_width="120dp"
-                        android:layout_height="36dp"
+                        android:layout_width="@dimen/transform_btn_width"
+                        android:layout_height="@dimen/transform_btn_height"
                         android:background="@drawable/btn_bg"
-                        android:text="Second points"
-                        android:layout_marginLeft="10dp"
+                        android:text="@string/second_points"
+                        android:layout_marginStart="@dimen/transform_btn_margin"
                         android:textColor="@color/white"
                         android:textSize="12sp">
                     </androidx.appcompat.widget.AppCompatButton>
@@ -753,19 +750,20 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_weight="1"
-                    android:gravity="center">
+                    android:gravity="center"
+                    tools:ignore="NestedWeights">
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/transformStartBtn"
-                        android:layout_width="120dp"
-                        android:layout_height="36dp"
+                        android:layout_width="@dimen/transform_btn_width"
+                        android:layout_height="@dimen/transform_btn_height"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="@dimen/transform_btn_height"
+                        android:layout_marginRight="@dimen/transform_btn_margin"
                         android:background="@drawable/btn_bg"
                         android:foregroundGravity="center"
                         android:gravity="center"
-                        android:text="Start"
+                        android:text="@string/start"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="14sp">
@@ -777,19 +775,30 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/helpImg"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="@dimen/search_img_size"
+                    android:layout_height="@dimen/search_img_size"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_margin="@dimen/circle_margin"
                     android:background="@drawable/search2"
                     android:foregroundGravity="center">
 
                 </ImageView>
+
+                <ImageView
+                    android:id="@+id/backImg"
+                    android:layout_width="@dimen/search_img_size"
+                    android:layout_height="@dimen/search_img_size"
+                    android:layout_marginStart="@dimen/circle_margin"
+                    android:layout_marginEnd="@dimen/circle_margin"
+                    android:background="@drawable/back_transform">
+
+                </ImageView>
+
 
             </LinearLayout>
 
